@@ -66,7 +66,17 @@ module fpga (
      * UART: 500000 bps, 8N1
      */
     input  wire       uart_rxd,
-    output wire       uart_txd
+    output wire       uart_txd,
+
+    /*
+     * HDMI: Receive port J3
+     */
+    input  wire             hdmi_rx_clk_p,      
+    input  wire             hdmi_rx_clk_n,      
+    input  wire [2:0]       hdmi_rx_p,
+    input  wire [2:0]       hdmi_rx_n,
+    input wire              hdmi_rx_scl,
+    inout wire              hdmi_rx_sda
 );
 
 
