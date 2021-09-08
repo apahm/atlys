@@ -34,49 +34,52 @@ module fpga (
      * Clock: 100MHz
      * Reset: Push button, active low
      */
-    input  wire       clk,
-    input  wire       reset_n,
+    input   wire                clk,
+    input   wire                reset_n,
 
     /*
      * GPIO
      */
-    input  wire       btnu,
-    input  wire       btnl,
-    input  wire       btnd,
-    input  wire       btnr,
-    input  wire       btnc,
-    input  wire [7:0] sw,
-    output wire [7:0] led,
+    input   wire                btnu,
+    input   wire                btnl,
+    input   wire                btnd,
+    input   wire                btnr,
+    input   wire                btnc,
+    input   wire    [7:0]       sw,
+    output  wire    [7:0]       led,
 
     /*
      * Ethernet: 1000BASE-T GMII
      */
-    input  wire       phy_rx_clk,
-    input  wire [7:0] phy_rxd,
-    input  wire       phy_rx_dv,
-    input  wire       phy_rx_er,
-    output wire       phy_gtx_clk,
-    input  wire       phy_tx_clk,
-    output wire [7:0] phy_txd,
-    output wire       phy_tx_en,
-    output wire       phy_tx_er,
-    output wire       phy_reset_n,
+    input   wire                phy_rx_clk,
+    input   wire    [7:0]       phy_rxd,
+    input   wire                phy_rx_dv,
+    input   wire                phy_rx_er,
+    output  wire                phy_gtx_clk,
+    input   wire                phy_tx_clk,
+    output  wire    [7:0]       phy_txd,
+    output  wire                phy_tx_en,
+    output  wire                phy_tx_er,
+    output  wire                phy_reset_n,
 
     /*
      * UART: 500000 bps, 8N1
      */
-    input  wire       uart_rxd,
-    output wire       uart_txd,
+    input   wire                uart_rxd,
+    output  wire                uart_txd
 
     /*
      * HDMI: Receive port J3
      */
-    input  wire             hdmi_rx_clk_p,      
-    input  wire             hdmi_rx_clk_n,      
-    input  wire [2:0]       hdmi_rx_p,
-    input  wire [2:0]       hdmi_rx_n,
-    input wire              hdmi_rx_scl,
-    inout wire              hdmi_rx_sda
+    /*
+    input   wire                hdmi_rx_clk_p,      
+    input   wire                hdmi_rx_clk_n,      
+    input   wire    [2:0]       hdmi_rx_p,
+    input   wire    [2:0]       hdmi_rx_n,
+    
+    input   wire                hdmi_rx_scl,
+    inout   wire                hdmi_rx_sda
+	 */
 );
 
 

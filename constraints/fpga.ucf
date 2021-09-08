@@ -195,14 +195,14 @@ NET "uart_txd" LOC = "B16" | IOSTANDARD=LVCMOS33; # IO_L66P_SCP1 (USBB-TXD)
 
 
 #HDMI in Ports - J3 IN port
-NET "hdmi_rx_clk_p"  	            LOC = "H17" |IOSTANDARD = TMDS_33 ; # CLK
-NET "hdmi_rx_clk_n"                 LOC = "H18" |IOSTANDARD = TMDS_33 ;
-NET "hdmi_rx_p(2)"  	            LOC = "J16" |IOSTANDARD = TMDS_33 ; # Red
-NET "hdmi_rx_n(2)"                  LOC = "J18" |IOSTANDARD = TMDS_33 ;
-NET "hdmi_rx_p(1)"  	            LOC = "L17" |IOSTANDARD = TMDS_33 ; # Green	
-NET "hdmi_rx_n(1)"                  LOC = "L18" |IOSTANDARD = TMDS_33 ;
-NET "hdmi_rx_p(0)"  	            LOC = "K17" |IOSTANDARD = TMDS_33 ; # Blue	
-NET "hdmi_rx_n(0)"                  LOC = "K18" |IOSTANDARD = TMDS_33 ;
+#NET "hdmi_rx_clk_p"  	            LOC = "H17" |IOSTANDARD = TMDS_33 ; # CLK
+#NET "hdmi_rx_clk_n"                 LOC = "H18" |IOSTANDARD = TMDS_33 ;
+#NET "hdmi_rx_p(2)"  	            LOC = "J16" |IOSTANDARD = TMDS_33 ; # Red
+#NET "hdmi_rx_n(2)"                  LOC = "J18" |IOSTANDARD = TMDS_33 ;
+#NET "hdmi_rx_p(1)"  	            LOC = "L17" |IOSTANDARD = TMDS_33 ; # Green	
+#NET "hdmi_rx_n(1)"                  LOC = "L18" |IOSTANDARD = TMDS_33 ;
+#NET "hdmi_rx_p(0)"  	            LOC = "K17" |IOSTANDARD = TMDS_33 ; # Blue	
+#NET "hdmi_rx_n(0)"                  LOC = "K18" |IOSTANDARD = TMDS_33 ;
 
-NET "hdmi_rx_scl"                   LOC = "M16";
-NET "hdmi_rx_sda"                   LOC = "M18";
+#NET "hdmi_rx_scl"                   LOC = "M16";
+#NET "hdmi_rx_sda"                   LOC = "M18";
