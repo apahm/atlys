@@ -38,7 +38,7 @@
 //              limitation shall apply not-withstanding the failure ofthe
 //              essential purpose of any limited remedies herein.
 //
-//  Copyright © 2004 Xilinx, Inc.
+//  Copyright ï¿½ 2004 Xilinx, Inc.
 //  All rights reserved
 //
 //////////////////////////////////////////////////////////////////////////////
@@ -110,16 +110,34 @@ module dvi_decoder (
   // Send TMDS clock to a differential buffer and then a BUFIO2
   // This is a required path in Spartan-6 feed a PLL CLKIN
   //
-  wire rxclkint;
-  IBUFDS  #(.IOSTANDARD("TMDS_33"), .DIFF_TERM("FALSE")
-  ) ibuf_rxclk (.I(tmdsclk_p), .IB(tmdsclk_n), .O(rxclkint));
- 
+wire rxclkint;
+IBUFDS  #(
+    .IOSTANDARD("TMDS_33"),
+    .DIFF_TERM("FALSE")
+) 
+ibuf_rxclk (
+    .I(tmdsclk_p), 
+    .IB(tmdsclk_n), 
+    .O(rxclkint)
+);
+
   wire rxclk;
 
-  BUFIO2 #(.DIVIDE_BYPASS("TRUE"), .DIVIDE(1))
-  bufio_tmdsclk (.DIVCLK(rxclk), .IOCLK(), .SERDESSTROBE(), .I(rxclkint));
+  BUFIO2 #(
+    .DIVIDE_BYPASS("TRUE"),
+    .DIVIDE(1)
+  )
+  bufio_tmdsclk (
+    .DIVCLK(rxclk), 
+    .IOCLK(), 
+    .SERDESSTROBE(), 
+    .I(rxclkint)
+  );
 
-  BUFG tmdsclk_bufg (.I(rxclk), .O(tmdsclk));
+  BUFG tmdsclk_bufg (
+    .I(rxclk), 
+    .O(tmdsclk)
+  );
 
   //
   // PLL is used to generate three clocks:
