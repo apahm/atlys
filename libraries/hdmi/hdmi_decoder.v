@@ -129,10 +129,10 @@ BUFIO2 #(
     .DIVIDE(1)
 )
 bufio_tmdsclk (
+    .I(rxclkint),
     .DIVCLK(rxclk), 
     .IOCLK(), 
-    .SERDESSTROBE(), 
-    .I(rxclkint)
+    .SERDESSTROBE() 
 );
 
 BUFG tmdsclk_bufg (

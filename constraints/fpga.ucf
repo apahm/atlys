@@ -204,5 +204,8 @@ NET "hdmi_rx_n(1)"                  LOC = "L18" |IOSTANDARD = TMDS_33 ;
 NET "hdmi_rx_p(0)"  	            LOC = "K17" |IOSTANDARD = TMDS_33 ; # Blue	
 NET "hdmi_rx_n(0)"                  LOC = "K18" |IOSTANDARD = TMDS_33 ;
 
+NET "core_inst/hdmi_top_inst/dvi_rx0/rxclk" TNM_NET = DVI_CLOCK0;
+TIMESPEC TS_DVI_CLOCK0 = PERIOD "DVI_CLOCK0" 100 MHz HIGH 50%;
+
 #NET "hdmi_rx_scl"                   LOC = "M16";
 #NET "hdmi_rx_sda"                   LOC = "M18";

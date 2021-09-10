@@ -92,7 +92,7 @@ hdmi_top_inst
 /* 
 *   Module Uart
 */
-wire [30:0] uart_setup = 31'h0006c8;
+wire [30:0] uart_setup = 31'h00043D;
 
 wire        tx_uart_busy;
 wire [7:0]  tx_uart_data;
@@ -102,7 +102,7 @@ wire [7:0]  rx_uart_data;
 wire        rx_uart_valid;
 
 rxuart# (
-    .INITIAL_SETUP(31'h0006c8)
+    .INITIAL_SETUP(31'h00043D)
 )
 rxuart_inst
 (
@@ -119,7 +119,7 @@ rxuart_inst
 );
 
 txuart# (
-    .INITIAL_SETUP(31'h0006c8)
+    .INITIAL_SETUP(31'h00043D)
 )
 txuart_inst
 (
@@ -133,6 +133,16 @@ txuart_inst
     .o_uart_tx      (uart_txd),
     .o_busy         (tx_uart_busy)
 );
+
+assign led[0] = tx_uart_valid;
+assign led[1] = tx_uart_busy;
+
+assign led[2] = 1'b0;
+assign led[3] = 1'b0;
+assign led[4] = 1'b0;
+assign led[5] = 1'b0;
+assign led[6] = 1'b0;
+assign led[7] = 1'b0;
 
 axis_fifo #(
     .DEPTH(256),
@@ -174,7 +184,25 @@ uart_fifo (
     .status_good_frame()
 );
 
+/*reg [7:0] led_reg = 0;
+reg valid_last = 0;
 
+always @(posedge clk) begin
+    if (rst) begin
+        led_reg <= 0;
+    end else begin
+        if (rx_uart_valid) begin
+            if (!valid_last) begin
+                led_reg <= rx_uart_data;
+                valid_last <= 1'b1;
+            end
+        end
+    end
+end
+
+
+assign led = led_reg;
+*/
 
 /* 
 *   Module Ethernet: UDP
@@ -387,6 +415,7 @@ assign rx_fifo_udp_payload_axis_tlast = rx_udp_payload_axis_tlast;
 assign rx_fifo_udp_payload_axis_tuser = rx_udp_payload_axis_tuser;
 
 // Place first payload byte onto LEDs
+/*
 reg valid_last = 0;
 reg [7:0] led_reg = 0;
 
@@ -408,6 +437,7 @@ end
 
 //assign led = sw;
 assign led = led_reg;
+*/
 assign phy_reset_n = !rst;
 
 eth_mac_1g_gmii_fifo #(

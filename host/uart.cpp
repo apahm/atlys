@@ -1,47 +1,77 @@
+#include <iostream>
+
 #include "uart.h"
- 
-#include <QDebug>
- 
+
 Uart::Uart()
 {
     // Инициализация последовательного порта.
     m_pSerialPort = new QSerialPort();
-    m_pSerialPort->setPortName("COM3");
-    // Скорость передачи данных. 19200 бит/с.
-    m_pSerialPort->setBaudRate(QSerialPort::Baud19200);
+    m_pSerialPort->setPortName("/dev/ttyXRUSB0");
+    
+    m_pSerialPort->setBaudRate(QSerialPort::Baud115200);
     m_pSerialPort->setDataBits(QSerialPort::Data8);
     m_pSerialPort->setParity(QSerialPort::NoParity);
     m_pSerialPort->setStopBits(QSerialPort::OneStop);
     m_pSerialPort->setFlowControl(QSerialPort::NoFlowControl);
- 
-    connectToEmitter();
+    
+    connect();
+}
+
+Uart::~Uart()
+{
+    delete m_pSerialPort;
 }
  
-bool Uart::isConnected() const
+bool Uart::is_connected() const
 {
     return m_isConnected;
 }
  
-void Uart::connectToEmitter()
+void Uart::connect()
 {
     if (m_pSerialPort->open(QSerialPort::ReadWrite))
+    {
         m_isConnected = true;
+#ifdef DEBUG
+        std::cout << "Connect to fpga successful!" << std::endl;
+#endif
+    }
     else
         m_isConnected = false;
 }
  
-QByteArray Uart::writeAndRead()
+QByteArray Uart::test_uart()
 {
-
     QByteArray sentData;
     sentData.resize(6);
     sentData[0] = STARTBYTE;
     sentData[1] = DEV;
+    sentData[2] = 0x2f;
+    sentData[3] = 0x7a;
+    sentData[4] = 0x8b;
+    sentData[5] = 0xd9;
+
  
-    m_pSerialPort->write(sentData);
+    int ret = m_pSerialPort->write(sentData);
+    if(ret != 6)
+    {
+        std::cout << "Write error!" << std::endl;
+    }
     m_pSerialPort->waitForBytesWritten(100);
- 
+
     m_pSerialPort->waitForReadyRead(50);
-    return m_pSerialPort->readAll();
+    const QByteArray data = m_pSerialPort->readAll();
+
+    if (( (0xFF & data.at(0)) == STARTBYTE) 
+     && ( (0xFF & data.at(1)) == DEV) 
+     && ( (0xFF & data.at(2)) == 0x2f) 
+     && ( (0xFF & data.at(3)) == 0x7a) 
+     && ( (0xFF & data.at(4)) == 0x8b) 
+     && ( (0xFF & data.at(5)) == 0xd9))
+    {
+        std::cout << "Test successful!" << std::endl;
+    }
+
+    return 0;
 }
 

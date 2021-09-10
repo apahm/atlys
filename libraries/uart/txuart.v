@@ -144,7 +144,7 @@ module txuart #(
 	reg	[30:0]	r_setup;
 	assign	clocks_per_baud = { 4'h0, r_setup[23:0] };
 	assign	break_condition = { r_setup[23:0], 4'h0 };
-	assign	hw_flow_control = !r_setup[30];
+	assign	hw_flow_control = r_setup[30];
 	assign	i_data_bits     =  i_setup[29:28];
 	assign	data_bits       =  r_setup[29:28];
 	assign	dblstop         =  r_setup[27];
