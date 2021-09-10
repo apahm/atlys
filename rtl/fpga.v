@@ -40,12 +40,6 @@ module fpga (
     /*
      * GPIO
      */
-    input   wire                btnu,
-    input   wire                btnl,
-    input   wire                btnd,
-    input   wire                btnr,
-    input   wire                btnc,
-    input   wire    [7:0]       sw,
     output  wire    [7:0]       led,
 
     /*
@@ -63,7 +57,7 @@ module fpga (
     output  wire                phy_reset_n,
 
     /*
-     * UART: 500000 bps, 8N1
+     * UART: 115200 bps, 8N1
      */
     input   wire                uart_rxd,
     output  wire                uart_txd
@@ -153,36 +147,6 @@ sync_reset_inst (
     .out(rst_int)
 );
 
-// GPIO
-wire btnu_int;
-wire btnl_int;
-wire btnd_int;
-wire btnr_int;
-wire btnc_int;
-wire [7:0] sw_int;
-
-debounce_switch #(
-    .WIDTH(13),
-    .N(4),
-    .RATE(125000)
-)
-debounce_switch_inst (
-    .clk(clk_int),
-    .rst(rst_int),
-    .in({btnu,
-        btnl,
-        btnd,
-        btnr,
-        btnc,
-        sw}),
-    .out({btnu_int,
-        btnl_int,
-        btnd_int,
-        btnr_int,
-        btnc_int,
-        sw_int})
-);
-
 sync_signal #(
     .WIDTH(1),
     .N(2)
@@ -201,12 +165,6 @@ core_inst (
     .clk(clk_int),
     .rst(rst_int),
 
-    .btnu(btnu_int),
-    .btnl(btnl_int),
-    .btnd(btnd_int),
-    .btnr(btnr_int),
-    .btnc(btnc_int),
-    .sw(sw_int),
     .led(led),
 
     .phy_rx_clk(phy_rx_clk),

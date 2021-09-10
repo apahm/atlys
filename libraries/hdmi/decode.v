@@ -38,7 +38,7 @@
 //              limitation shall apply not-withstanding the failure ofthe
 //              essential purpose of any limited remedies herein.
 //
-//  Copyright © 2004 Xilinx, Inc.
+//  Copyright ï¿½ 2004 Xilinx, Inc.
 //  All rights reserved
 //
 //////////////////////////////////////////////////////////////////////////////
@@ -144,7 +144,8 @@ module decode (
   ///////////////////////////////////////
   // Phase Alignment Instance
   ///////////////////////////////////////
-  phsaligner phsalgn_0 (
+  phsaligner 
+  phsalgn_0 (
      .rst(reset),
      .clk(pclk),
      .sdata(rawdata),

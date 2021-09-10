@@ -83,10 +83,11 @@ module dvi_decoder (
   output wire [29:0] sdout,
   output wire [7:0] red,      // pixel data out
   output wire [7:0] green,    // pixel data out
-  output wire [7:0] blue);    // pixel data out
+  output wire [7:0] blue      // pixel data out
+);   
     
 
-  wire [9:0] sdout_blue, sdout_green, sdout_red;
+wire [9:0] sdout_blue, sdout_green, sdout_red;
 /*
   assign sdout = {sdout_red[9], sdout_green[9], sdout_blue[9], sdout_red[8], sdout_green[8], sdout_blue[8],
                   sdout_red[7], sdout_green[7], sdout_blue[7], sdout_red[6], sdout_green[6], sdout_blue[6],
@@ -94,17 +95,17 @@ module dvi_decoder (
                   sdout_red[3], sdout_green[3], sdout_blue[3], sdout_red[2], sdout_green[2], sdout_blue[2],
                   sdout_red[1], sdout_green[1], sdout_blue[1], sdout_red[0], sdout_green[0], sdout_blue[0]} ;
 */
-  assign sdout = {sdout_red[9:5], sdout_green[9:5], sdout_blue[9:5],
+assign sdout = {sdout_red[9:5], sdout_green[9:5], sdout_blue[9:5],
                   sdout_red[4:0], sdout_green[4:0], sdout_blue[4:0]};
 
-  wire de_b, de_g, de_r;
+wire de_b, de_g, de_r;
 
-  assign de = de_b;
+assign de = de_b;
 
  //wire blue_vld, green_vld, red_vld;
  //wire blue_rdy, green_rdy, red_rdy;
 
-  wire blue_psalgnerr, green_psalgnerr, red_psalgnerr;
+wire blue_psalgnerr, green_psalgnerr, red_psalgnerr;
 
   //
   // Send TMDS clock to a differential buffer and then a BUFIO2
@@ -121,23 +122,23 @@ ibuf_rxclk (
     .O(rxclkint)
 );
 
-  wire rxclk;
+wire rxclk;
 
-  BUFIO2 #(
+BUFIO2 #(
     .DIVIDE_BYPASS("TRUE"),
     .DIVIDE(1)
-  )
-  bufio_tmdsclk (
+)
+bufio_tmdsclk (
     .DIVCLK(rxclk), 
     .IOCLK(), 
     .SERDESSTROBE(), 
     .I(rxclkint)
-  );
+);
 
-  BUFG tmdsclk_bufg (
+BUFG tmdsclk_bufg (
     .I(rxclk), 
     .O(tmdsclk)
-  );
+);
 
   //
   // PLL is used to generate three clocks:
@@ -145,14 +146,15 @@ ibuf_rxclk (
   // 2. pclkx2:  double rate of pclk used for 5:10 soft gear box and ISERDES DIVCLK
   // 3. pclkx10: 10x rate of pclk used as IO clock
   //
-  PLL_BASE # (
+PLL_BASE # (
     .CLKIN_PERIOD(10),
     .CLKFBOUT_MULT(10), //set VCO to 10x of CLKIN
     .CLKOUT0_DIVIDE(1),
     .CLKOUT1_DIVIDE(10),
     .CLKOUT2_DIVIDE(5),
     .COMPENSATION("INTERNAL")
-  ) PLL_ISERDES (
+) 
+PLL_ISERDES (
     .CLKFBOUT(clkfbout),
     .CLKOUT0(pllclk0),
     .CLKOUT1(pllclk1),
@@ -164,30 +166,39 @@ ibuf_rxclk (
     .CLKFBIN(clkfbout),
     .CLKIN(rxclk),
     .RST(exrst)
-  );
+);
 
   //
   // Pixel Rate clock buffer
   //
-  BUFG pclkbufg (.I(pllclk1), .O(pclk));
+BUFG pclkbufg (.I(pllclk1), .O(pclk));
 
   //////////////////////////////////////////////////////////////////
   // 2x pclk is going to be used to drive IOSERDES2 DIVCLK
   //////////////////////////////////////////////////////////////////
-  BUFG pclkx2bufg (.I(pllclk2), .O(pclkx2));
+BUFG pclkx2bufg (.I(pllclk2), .O(pclkx2));
 
   //////////////////////////////////////////////////////////////////
   // 10x pclk is used to drive IOCLK network so a bit rate reference
   // can be used by IOSERDES2
   //////////////////////////////////////////////////////////////////
   
-  wire bufpll_lock;
-  BUFPLL #(.DIVIDE(5)) ioclk_buf (.PLLIN(pllclk0), .GCLK(pclkx2), .LOCKED(pll_lckd),
-           .IOCLK(pclkx10), .SERDESSTROBE(serdesstrobe), .LOCK(bufpll_lock));
+wire bufpll_lock;
+BUFPLL #(
+    .DIVIDE(5)
+) 
+ioclk_buf (
+    .PLLIN(pllclk0),
+    .GCLK(pclkx2),
+    .LOCKED(pll_lckd),
+    .IOCLK(pclkx10),
+    .SERDESSTROBE(serdesstrobe),
+    .LOCK(bufpll_lock)
+);
 
-  assign reset = ~bufpll_lock;
+assign reset = ~bufpll_lock;
 
-  decode dec_b (
+decode dec_b (
     .reset        (reset),
     .pclk         (pclk),
     .pclkx2       (pclkx2),
@@ -209,7 +220,7 @@ ibuf_rxclk (
     .sdout        (sdout_blue),
     .dout         (blue)) ;
 
-  decode dec_g (
+decode dec_g (
     .reset        (reset),
     .pclk         (pclk),
     .pclkx2       (pclkx2),
@@ -231,7 +242,7 @@ ibuf_rxclk (
     .sdout        (sdout_green),
     .dout         (green)) ;
     
-  decode dec_r (
+decode dec_r (
     .reset        (reset),
     .pclk         (pclk),
     .pclkx2       (pclkx2),
@@ -255,6 +266,6 @@ ibuf_rxclk (
 
 
 
-  assign psalgnerr = red_psalgnerr | blue_psalgnerr | green_psalgnerr;
+assign psalgnerr = red_psalgnerr | blue_psalgnerr | green_psalgnerr;
 
 endmodule

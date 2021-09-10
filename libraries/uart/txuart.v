@@ -117,21 +117,21 @@ module txuart #(
 		// }}}
 	) (
 		// {{{
-		input	wire		i_clk, i_reset,
+		input	wire			i_clk, i_reset,
 		input	wire	[30:0]	i_setup,
-		input	wire		i_break,
-		input	wire		i_wr,
+		input	wire			i_break,
+		input	wire			i_wr,
 		input	wire	[7:0]	i_data,
 		// Hardware flow control Ready-To-Send bit.  Set this to one to
 		// use the core without flow control.  (A more appropriate name
 		// would be the Ready-To-Receive bit ...)
-		input	wire		i_cts_n,
+		input	wire			i_cts_n,
 		// And the UART input line itself
-		output	reg		o_uart_tx,
+		output	reg				o_uart_tx,
 		// A line to tell others when we are ready to accept data.  If
 		// (i_wr)&&(!o_busy) is ever true, then the core has accepted a
 		// byte for transmission.
-		output	wire		o_busy
+		output	wire			o_busy
 		// }}}
 	);
 

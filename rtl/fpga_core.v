@@ -44,12 +44,6 @@ module fpga_core #
     /*
      * GPIO
      */
-    input  wire       btnu,
-    input  wire       btnl,
-    input  wire       btnd,
-    input  wire       btnr,
-    input  wire       btnc,
-    input  wire [7:0] sw,
     output wire [7:0] led,
 
     /*
@@ -72,6 +66,99 @@ module fpga_core #
     input  wire       uart_rxd,
     output wire       uart_txd
 );
+
+/* 
+*   Module Uart
+*/
+
+
+wire [30:0] uart_setup = 31'h0006c8;
+
+wire        tx_uart_busy;
+wire [7:0]  tx_uart_data;
+wire        tx_uart_valid;
+
+wire [7:0]  rx_uart_data;
+wire        rx_uart_valid;
+
+rxuart# (
+    INITIAL_SETUP = 31'h0006c8
+)
+rxuart_inst
+(
+    .i_clk          (clk),
+    .i_reset        (rst),
+    .i_setup        (uart_setup),
+    .i_uart_rx      (uart_rxd),
+    .o_wr           (rx_uart_valid),
+    .o_data         (rx_uart_data),
+    .o_break        (),
+    .o_parity_err   (),
+    .o_frame_err    (),
+    .o_ck_uart      ()
+);
+
+txuart# (
+    INITIAL_SETUP = 31'h0006c8
+)
+txuart_inst
+(
+    .i_clk          (clk),
+    .i_reset        (rst),
+    .i_setup        (uart_setup),
+    .i_break        (),
+    .i_wr           (tx_uart_valid),
+    .i_data         (tx_uart_data),
+    .i_cts_n        (1'b1),
+    .o_uart_tx      (uart_txd),
+    .o_busy         (tx_uart_busy)
+);
+
+axis_fifo #(
+    .DEPTH(256),
+    .DATA_WIDTH(8),
+    .KEEP_ENABLE(0),
+    .ID_ENABLE(0),
+    .DEST_ENABLE(0),
+    .USER_ENABLE(1),
+    .USER_WIDTH(1),
+    .FRAME_FIFO(0)
+)
+uart_fifo (
+    .clk(clk),
+    .rst(rst),
+
+    // AXI input
+    .s_axis_tdata(rx_uart_data),
+    .s_axis_tkeep(0),
+    .s_axis_tvalid(rx_uart_valid),
+    .s_axis_tready(),
+    .s_axis_tlast(),
+    .s_axis_tid(0),
+    .s_axis_tdest(0),
+    .s_axis_tuser(),
+
+    // AXI output
+    .m_axis_tdata(tx_uart_data),
+    .m_axis_tkeep(),
+    .m_axis_tvalid(tx_uart_valid),
+    .m_axis_tready(!tx_uart_busy),
+    .m_axis_tlast(),
+    .m_axis_tid(),
+    .m_axis_tdest(),
+    .m_axis_tuser(),
+
+    // Status
+    .status_overflow(),
+    .status_bad_frame(),
+    .status_good_frame()
+);
+
+
+
+/* 
+*   Module Ethernet: UDP
+*/
 
 // AXI between MAC and Ethernet modules
 wire [7:0] rx_axis_tdata;
