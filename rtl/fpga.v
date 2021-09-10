@@ -69,10 +69,8 @@ module fpga (
     input   wire                hdmi_rx_clk_p,      
     input   wire                hdmi_rx_clk_n,      
     input   wire    [2:0]       hdmi_rx_p,
-    input   wire    [2:0]       hdmi_rx_n,
+    input   wire    [2:0]       hdmi_rx_n
     
-    input   wire                hdmi_rx_scl,
-    inout   wire                hdmi_rx_sda
 	 */
 );
 
@@ -157,6 +155,7 @@ sync_signal_inst (
     .out({uart_rxd_int})
 );
 
+
 fpga_core #(
     .TARGET("XILINX")
 )
@@ -179,7 +178,12 @@ core_inst (
     .phy_reset_n(phy_reset_n),
 
     .uart_rxd(uart_rxd_int),
-    .uart_txd(uart_txd)
+    .uart_txd(uart_txd),
+
+    .hdmi_rx_clk_p  (hdmi_rx_clk_p),      
+    .hdmi_rx_clk_n  (hdmi_rx_clk_n),      
+    .hdmi_rx_p      (hdmi_rx_p),
+    .hdmi_rx_n      (hdmi_rx_n)
 );
 
 endmodule

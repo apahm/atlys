@@ -49,69 +49,17 @@
 
 `timescale 1 ns / 1 ps
 
-module dvi_demo (
-  input wire        rstbtn_n,    //The pink reset button
-  input wire        clk100,      //100 MHz osicallator
-  input wire [3:0]  RX0_TMDS,
-  input wire [3:0]  RX0_TMDSB,
+module hdmi_top (
+  
+  input   wire                rst,
 
-  input  wire [1:0] SW,
-
-  output wire [7:0] LED
+  input   wire                hdmi_rx_clk_p,      
+  input   wire                hdmi_rx_clk_n,      
+  input   wire    [2:0]       hdmi_rx_p,
+  input   wire    [2:0]       hdmi_rx_n,
+  
+  output  wire    [7:0]       led
 );
-
-wire clk25, clk25m;
-
-BUFIO2 #(
-    .DIVIDE_BYPASS("FALSE"),
-    .DIVIDE(5)
-)
-sysclk_div 
-(   .DIVCLK(clk25m), 
-    .IOCLK(),   
-    .SERDESSTROBE(),    
-    .I(clk100)
-);
-
-BUFG 
-clk25_buf (   
-    .I(clk25m),     
-    .O(clk25)
-);
-
-wire [1:0] sws;
-
-synchro #(
-    .INITIALIZE("LOGIC0")
-)
-synchro_sws_0 
-(
-    .async(SW[0]),
-    .sync(sws[0]),
-    .clk(clk25)
-);
-
-synchro #(
-    .INITIALIZE("LOGIC0")
-)
-synchro_sws_1 
-(
-    .async(SW[1]),
-    .sync(sws[1]),
-    .clk(clk25)
-);
-
-wire [1:0] select = sws;
-
-reg [1:0] select_q = 2'b00;
-reg [1:0] switch = 2'b00;
-
-always @ (posedge clk25) begin
-    select_q <= select;
-
-    switch[0] = select[0] ^ select_q[0];
-    switch[1] = select[1] ^ select_q[1];
-end
 
 wire rx0_pclk, rx0_pclkx2, rx0_pclkx10, rx0_pllclk0;
 wire rx0_plllckd;
@@ -134,15 +82,15 @@ wire rx0_red_rdy;
 
 dvi_decoder dvi_rx0 (
     //These are input ports
-    .tmdsclk_p   (RX0_TMDS[3]),
-    .tmdsclk_n   (RX0_TMDSB[3]),
-    .blue_p      (RX0_TMDS[0]),
-    .green_p     (RX0_TMDS[1]),
-    .red_p       (RX0_TMDS[2]),
-    .blue_n      (RX0_TMDSB[0]),
-    .green_n     (RX0_TMDSB[1]),
-    .red_n       (RX0_TMDSB[2]),
-    .exrst       (~rstbtn_n),
+    .tmdsclk_p   (hdmi_rx_clk_p),
+    .tmdsclk_n   (hdmi_rx_clk_n),
+    .blue_p      (hdmi_rx_p[0]),
+    .green_p     (hdmi_rx_p[1]),
+    .red_p       (hdmi_rx_p[2]),
+    .blue_n      (hdmi_rx_n[0]),
+    .green_n     (hdmi_rx_n[1]),
+    .red_n       (hdmi_rx_n[2]),
+    .exrst       (rst),
 
     //These are output ports
     .reset       (rx0_reset),
@@ -177,6 +125,6 @@ dvi_decoder dvi_rx0 (
 /*
 * Status LED
 */
-assign LED = {rx0_red_rdy, rx0_green_rdy, rx0_blue_rdy, rx1_red_rdy, rx1_green_rdy, rx1_blue_rdy, rx0_de, rx1_de};
+assign led = {rx0_red_rdy, rx0_green_rdy, rx0_blue_rdy, rx1_red_rdy, rx1_green_rdy, rx1_blue_rdy, rx0_de, rx1_de};
 
 endmodule

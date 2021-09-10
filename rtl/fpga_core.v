@@ -63,15 +63,37 @@ module fpga_core #
     /*
      * UART: 115200 bps, 8N1
      */
-    input  wire       uart_rxd,
-    output wire       uart_txd
+    input  wire                 uart_rxd,
+    output wire                 uart_txd,
+
+    input   wire                hdmi_rx_clk_p,      
+    input   wire                hdmi_rx_clk_n,      
+    input   wire    [2:0]       hdmi_rx_p,
+    input   wire    [2:0]       hdmi_rx_n
+    
 );
+
+/* 
+*   Module HDMI
+*/
+
+hdmi_top 
+hdmi_top_inst
+(
+    .rst                (rst),
+
+    .hdmi_rx_clk_p      (hdmi_rx_clk_p), 
+    .hdmi_rx_clk_n      (hdmi_rx_clk_n), 
+    .hdmi_rx_p          (hdmi_rx_p),
+    .hdmi_rx_n          (hdmi_rx_n),
+
+    .led                (led)
+);
+
 
 /* 
 *   Module Uart
 */
-
-
 wire [30:0] uart_setup = 31'h0006c8;
 
 wire        tx_uart_busy;
