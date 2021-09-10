@@ -85,9 +85,7 @@ hdmi_top_inst
     .hdmi_rx_clk_p      (hdmi_rx_clk_p), 
     .hdmi_rx_clk_n      (hdmi_rx_clk_n), 
     .hdmi_rx_p          (hdmi_rx_p),
-    .hdmi_rx_n          (hdmi_rx_n),
-
-    .led                (led)
+    .hdmi_rx_n          (hdmi_rx_n)
 );
 
 
@@ -104,7 +102,7 @@ wire [7:0]  rx_uart_data;
 wire        rx_uart_valid;
 
 rxuart# (
-    INITIAL_SETUP = 31'h0006c8
+    .INITIAL_SETUP(31'h0006c8)
 )
 rxuart_inst
 (
@@ -121,7 +119,7 @@ rxuart_inst
 );
 
 txuart# (
-    INITIAL_SETUP = 31'h0006c8
+    .INITIAL_SETUP(31'h0006c8)
 )
 txuart_inst
 (
@@ -411,8 +409,6 @@ end
 //assign led = sw;
 assign led = led_reg;
 assign phy_reset_n = !rst;
-
-assign uart_txd = 0;
 
 eth_mac_1g_gmii_fifo #(
     .TARGET(TARGET),

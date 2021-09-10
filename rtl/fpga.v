@@ -60,18 +60,18 @@ module fpga (
      * UART: 115200 bps, 8N1
      */
     input   wire                uart_rxd,
-    output  wire                uart_txd
+    output  wire                uart_txd,
 
     /*
      * HDMI: Receive port J3
      */
-    /*
+    
     input   wire                hdmi_rx_clk_p,      
     input   wire                hdmi_rx_clk_n,      
     input   wire    [2:0]       hdmi_rx_p,
     input   wire    [2:0]       hdmi_rx_n
     
-	 */
+	 
 );
 
 
@@ -144,6 +144,8 @@ sync_reset_inst (
     .rst(~dcm_locked),
     .out(rst_int)
 );
+
+wire uart_rxd_int;
 
 sync_signal #(
     .WIDTH(1),

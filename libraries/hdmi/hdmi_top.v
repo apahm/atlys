@@ -63,6 +63,9 @@ module hdmi_top (
 
 wire rx0_pclk, rx0_pclkx2, rx0_pclkx10, rx0_pllclk0;
 wire rx0_plllckd;
+wire rx0_pllclk1;
+wire rx0_pllclk2;
+wire rx0_tmdsclk;
 wire rx0_reset;
 wire rx0_serdesstrobe;
 wire rx0_hsync;          // hsync data
@@ -125,6 +128,6 @@ dvi_decoder dvi_rx0 (
 /*
 * Status LED
 */
-assign led = {rx0_red_rdy, rx0_green_rdy, rx0_blue_rdy, rx1_red_rdy, rx1_green_rdy, rx1_blue_rdy, rx0_de, rx1_de};
+assign led = {rx0_red_rdy, rx0_green_rdy, rx0_blue_rdy, rx0_de,3'b0};
 
 endmodule

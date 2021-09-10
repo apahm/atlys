@@ -21,21 +21,21 @@ NET "led<7>" LOC = "N12" | IOSTANDARD=LVCMOS33 | SLEW=QUIETIO | DRIVE=2; # Bank 
 NET "reset_n" LOC = "T15" | IOSTANDARD=LVCMOS33; # IO_L1N_M0_CMPMISO_2 (M0/RESET)
 
 # Push Buttons: I/O Bank 3 (not used)
-NET "btnu" LOC = "N4"; # IO_L1P (BTNU)
-NET "btnl" LOC = "P4"; # IO_L2P (BTNL)
-NET "btnd" LOC = "P3"; # IO_L2N (BTND)
-NET "btnr" LOC = "F6"; # IO_L55P_M3A13 (BTNR)
-NET "btnc" LOC = "F5"; # IO_L55N_M3A14 (BTNC)
+#NET "btnu" LOC = "N4"; # IO_L1P (BTNU)
+#NET "btnl" LOC = "P4"; # IO_L2P (BTNL)
+#NET "btnd" LOC = "P3"; # IO_L2N (BTND)
+#NET "btnr" LOC = "F6"; # IO_L55P_M3A13 (BTNR)
+#NET "btnc" LOC = "F5"; # IO_L55N_M3A14 (BTNC)
  
 # Toggle Switches (not used)
-NET "sw<0>" LOC = "A10"; # Bank = 0, IO_L37N_GCLK12 (SW0)
-NET "sw<1>" LOC = "D14"; # Bank = 0, IO_L65P_SCP3 (SW1)
-NET "sw<2>" LOC = "C14"; # Bank = 0, IO_L65N_SCP2 (SW2)
-NET "sw<3>" LOC = "P15"; # Bank = 1, IO_L74P_AWAKE_1 (SW3)
-NET "sw<4>" LOC = "P12"; # Bank = 2, IO_L13N_D10 (SW4)
-NET "sw<5>" LOC = "R5";  # Bank = 2, IO_L48P_D7 (SW5)
-NET "sw<6>" LOC = "T5";  # Bank = 2, IO_L48N_RDWR_B_VREF_2 (SW6)
-NET "sw<7>" LOC = "E4";  # Bank = 3, IO_L54P_M3RESET (SW7)
+#NET "sw<0>" LOC = "A10"; # Bank = 0, IO_L37N_GCLK12 (SW0)
+#NET "sw<1>" LOC = "D14"; # Bank = 0, IO_L65P_SCP3 (SW1)
+#NET "sw<2>" LOC = "C14"; # Bank = 0, IO_L65N_SCP2 (SW2)
+#NET "sw<3>" LOC = "P15"; # Bank = 1, IO_L74P_AWAKE_1 (SW3)
+#NET "sw<4>" LOC = "P12"; # Bank = 2, IO_L13N_D10 (SW4)
+#NET "sw<5>" LOC = "R5";  # Bank = 2, IO_L48P_D7 (SW5)
+#NET "sw<6>" LOC = "T5";  # Bank = 2, IO_L48N_RDWR_B_VREF_2 (SW6)
+#NET "sw<7>" LOC = "E4";  # Bank = 3, IO_L54P_M3RESET (SW7)
 
 # Marvell M88E1111 Tri-Mode Ethernet PHY (1000BASE-T): I/O Bank 1
 # Interrupt, Reset, MDIO
@@ -195,14 +195,14 @@ NET "uart_txd" LOC = "B16" | IOSTANDARD=LVCMOS33; # IO_L66P_SCP1 (USBB-TXD)
 
 
 #HDMI in Ports - J3 IN port
-#NET "hdmi_rx_clk_p"  	            LOC = "H17" |IOSTANDARD = TMDS_33 ; # CLK
-#NET "hdmi_rx_clk_n"                 LOC = "H18" |IOSTANDARD = TMDS_33 ;
-#NET "hdmi_rx_p(2)"  	            LOC = "J16" |IOSTANDARD = TMDS_33 ; # Red
-#NET "hdmi_rx_n(2)"                  LOC = "J18" |IOSTANDARD = TMDS_33 ;
-#NET "hdmi_rx_p(1)"  	            LOC = "L17" |IOSTANDARD = TMDS_33 ; # Green	
-#NET "hdmi_rx_n(1)"                  LOC = "L18" |IOSTANDARD = TMDS_33 ;
-#NET "hdmi_rx_p(0)"  	            LOC = "K17" |IOSTANDARD = TMDS_33 ; # Blue	
-#NET "hdmi_rx_n(0)"                  LOC = "K18" |IOSTANDARD = TMDS_33 ;
+NET "hdmi_rx_clk_p"  	            LOC = "H17" |IOSTANDARD = TMDS_33 ; # CLK
+NET "hdmi_rx_clk_n"                 LOC = "H18" |IOSTANDARD = TMDS_33 ;
+NET "hdmi_rx_p(2)"  	            LOC = "J16" |IOSTANDARD = TMDS_33 ; # Red
+NET "hdmi_rx_n(2)"                  LOC = "J18" |IOSTANDARD = TMDS_33 ;
+NET "hdmi_rx_p(1)"  	            LOC = "L17" |IOSTANDARD = TMDS_33 ; # Green	
+NET "hdmi_rx_n(1)"                  LOC = "L18" |IOSTANDARD = TMDS_33 ;
+NET "hdmi_rx_p(0)"  	            LOC = "K17" |IOSTANDARD = TMDS_33 ; # Blue	
+NET "hdmi_rx_n(0)"                  LOC = "K18" |IOSTANDARD = TMDS_33 ;
 
 #NET "hdmi_rx_scl"                   LOC = "M16";
 #NET "hdmi_rx_sda"                   LOC = "M18";
