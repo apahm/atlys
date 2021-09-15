@@ -134,15 +134,6 @@ txuart_inst
     .o_busy         (tx_uart_busy)
 );
 
-assign led[0] = tx_uart_valid;
-assign led[1] = tx_uart_busy;
-
-assign led[2] = 1'b0;
-assign led[3] = 1'b0;
-assign led[4] = 1'b0;
-assign led[5] = 1'b0;
-assign led[6] = 1'b0;
-assign led[7] = 1'b0;
 
 axis_fifo #(
     .DEPTH(256),
@@ -183,26 +174,6 @@ uart_fifo (
     .status_bad_frame(),
     .status_good_frame()
 );
-
-/*reg [7:0] led_reg = 0;
-reg valid_last = 0;
-
-always @(posedge clk) begin
-    if (rst) begin
-        led_reg <= 0;
-    end else begin
-        if (rx_uart_valid) begin
-            if (!valid_last) begin
-                led_reg <= rx_uart_data;
-                valid_last <= 1'b1;
-            end
-        end
-    end
-end
-
-
-assign led = led_reg;
-*/
 
 /* 
 *   Module Ethernet: UDP
