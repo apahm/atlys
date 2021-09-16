@@ -38,38 +38,63 @@ module fpga_core #
      * Clock: 125MHz
      * Synchronous reset
      */
-    input  wire       clk,
-    input  wire       rst,
+    input  wire                                         clk,
+    input  wire                                         rst,
+
+    /*
+     * Clock: 200 MHz
+     * DDR2: MIRA P3R1GE3EGF G8E DDR2 
+     */
+    input   wire                                        ddr_clk,
+    input   wire                                        ddr_rst,
+    inout   wire     [15:0]                             ddr_dq,
+    output  wire     [12:0]                             ddr_a,
+    output  wire     [2:0]                              ddr_ba,
+    output  wire                                        ddr_ras_n,
+    output  wire                                        ddr_cas_n,
+    output  wire                                        ddr_we_n,
+    output  wire                                        ddr_odt,
+    output  wire                                        ddr_cke,
+    output  wire                                        ddr_dm,
+    inout   wire                                        ddr_udqs,
+    inout   wire                                        ddr_udqs_n,
+    inout   wire                                        ddr_dqs,
+    inout   wire                                        ddr_dqs_n,
+    output  wire                                        ddr_ck,
+    output  wire                                        ddr_ck_n,
+    inout   wire                                        ddr_rzq,
+    inout   wire                                        ddr_zio,
+    output  wire                                        ddr_udm,
 
     /*
      * GPIO
      */
-    output wire [7:0] led,
+    output wire     [7:0]                               led,
 
     /*
      * Ethernet: 1000BASE-T GMII
      */
-    input  wire       phy_rx_clk,
-    input  wire [7:0] phy_rxd,
-    input  wire       phy_rx_dv,
-    input  wire       phy_rx_er,
-    output wire       phy_gtx_clk,
-    input  wire       phy_tx_clk,
-    output wire [7:0] phy_txd,
-    output wire       phy_tx_en,
-    output wire       phy_tx_er,
-    output wire       phy_reset_n,
+    input  wire                                         phy_rx_clk,
+    input  wire     [7:0]                               phy_rxd,
+    input  wire                                         phy_rx_dv,
+    input  wire                                         phy_rx_er,
+    output wire                                         phy_gtx_clk,
+    input  wire                                         phy_tx_clk,
+    output wire     [7:0]                               phy_txd,
+    output wire                                         phy_tx_en,
+    output wire                                         phy_tx_er,
+    output wire                                         phy_reset_n,
 
     /*
      * UART: 115200 bps, 8N1
      */
-    input  wire                 uart_rxd,
-    output wire                 uart_txd,
+    input  wire                                         uart_rxd,
+    output wire                                         uart_txd,
 
-    input   wire                hdmi_rx_clk_p,      
-    input   wire                hdmi_rx_clk_n,      
-    input   wire    [2:0]       hdmi_rx_p,
-    input   wire    [2:0]       hdmi_rx_n
+    input   wire                                        hdmi_rx_clk_p,      
+    input   wire                                        hdmi_rx_clk_n,      
+    input   wire    [2:0]                               hdmi_rx_p,
+    input   wire    [2:0]                               hdmi_rx_n
     
 );
 
@@ -77,7 +102,53 @@ module fpga_core #
 *   Module DDR2 Controller
 */
 
- ddr2_controller # (
+wire				                c3_p0_cmd_clk;
+wire				                c3_p0_cmd_en;
+wire    [2:0]			            c3_p0_cmd_instr;
+wire    [5:0]			            c3_p0_cmd_bl;
+wire    [29:0]			            c3_p0_cmd_byte_addr;
+wire				                c3_p0_cmd_empty;
+wire				                c3_p0_cmd_full;
+
+wire				                c3_p0_wr_clk;
+wire				                c3_p0_wr_en;
+wire    [3:0]	                    c3_p0_wr_mask;
+wire    [31:0]	                    c3_p0_wr_data;
+wire				                c3_p0_wr_full;
+wire				                c3_p0_wr_empty;
+wire	[6:0]		                c3_p0_wr_count;
+wire				                c3_p0_wr_underrun;
+wire				                c3_p0_wr_error;
+
+wire				                c3_p0_rd_clk;
+wire				                c3_p0_rd_en;
+wire    [31:0]	                    c3_p0_rd_data;
+wire				                c3_p0_rd_full;
+wire				                c3_p0_rd_empty;
+wire    [6:0]			            c3_p0_rd_count;
+wire				                c3_p0_rd_overflow;
+wire				                c3_p0_rd_error;
+
+wire				                c3_p2_cmd_clk;
+wire				                c3_p2_cmd_en;
+wire    [2:0]			            c3_p2_cmd_instr;
+wire    [5:0]			            c3_p2_cmd_bl;
+wire    [29:0]			            c3_p2_cmd_byte_addr;
+wire				                c3_p2_cmd_empty;
+wire				                c3_p2_cmd_full;
+
+wire				                c3_p2_rd_clk;
+wire				                c3_p2_rd_en;
+wire    [31:0]			            c3_p2_rd_data;
+wire				                c3_p2_rd_full;
+wire				                c3_p2_rd_empty;
+wire    [6:0]			            c3_p2_rd_count;
+wire				                c3_p2_rd_overflow;
+wire				                c3_p2_rd_error;
+
+
+
+ddr2_controller# (
     .C3_P0_MASK_SIZE(4),
     .C3_P0_DATA_PORT_SIZE(32),
     .C3_P1_MASK_SIZE(4),
@@ -93,9 +164,10 @@ module fpga_core #
     .C3_MEM_ADDR_WIDTH(13),
     .C3_MEM_BANKADDR_WIDTH(3)
 )
-ddr2_controller_inst (
+ddr2_controller_inst 
+(
 
-    .c3_sys_clk           (c3_sys_clk),
+    .c3_sys_clk             (c3_sys_clk),
     .c3_sys_rst_i           (c3_sys_rst_i),                        
 
     .mcb3_dram_dq           (mcb3_dram_dq),  
@@ -122,7 +194,8 @@ ddr2_controller_inst (
     .mcb3_rzq               (rzq3),
                
     .mcb3_zio               (zio3),
-               
+
+    // config_port_0             
     .c3_p0_cmd_clk                          (c3_p0_cmd_clk),
     .c3_p0_cmd_en                           (c3_p0_cmd_en),
     .c3_p0_cmd_instr                        (c3_p0_cmd_instr),
@@ -130,6 +203,7 @@ ddr2_controller_inst (
     .c3_p0_cmd_byte_addr                    (c3_p0_cmd_byte_addr),
     .c3_p0_cmd_empty                        (c3_p0_cmd_empty),
     .c3_p0_cmd_full                         (c3_p0_cmd_full),
+
     .c3_p0_wr_clk                           (c3_p0_wr_clk),
     .c3_p0_wr_en                            (c3_p0_wr_en),
     .c3_p0_wr_mask                          (c3_p0_wr_mask),
@@ -139,6 +213,7 @@ ddr2_controller_inst (
     .c3_p0_wr_count                         (c3_p0_wr_count),
     .c3_p0_wr_underrun                      (c3_p0_wr_underrun),
     .c3_p0_wr_error                         (c3_p0_wr_error),
+    
     .c3_p0_rd_clk                           (c3_p0_rd_clk),
     .c3_p0_rd_en                            (c3_p0_rd_en),
     .c3_p0_rd_data                          (c3_p0_rd_data),
@@ -147,6 +222,8 @@ ddr2_controller_inst (
     .c3_p0_rd_count                         (c3_p0_rd_count),
     .c3_p0_rd_overflow                      (c3_p0_rd_overflow),
     .c3_p0_rd_error                         (c3_p0_rd_error),
+    
+    // config_port_2 
     .c3_p2_cmd_clk                          (c3_p2_cmd_clk),
     .c3_p2_cmd_en                           (c3_p2_cmd_en),
     .c3_p2_cmd_instr                        (c3_p2_cmd_instr),
@@ -154,6 +231,7 @@ ddr2_controller_inst (
     .c3_p2_cmd_byte_addr                    (c3_p2_cmd_byte_addr),
     .c3_p2_cmd_empty                        (c3_p2_cmd_empty),
     .c3_p2_cmd_full                         (c3_p2_cmd_full),
+    
     .c3_p2_rd_clk                           (c3_p2_rd_clk),
     .c3_p2_rd_en                            (c3_p2_rd_en),
     .c3_p2_rd_data                          (c3_p2_rd_data),
