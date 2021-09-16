@@ -35,14 +35,14 @@ CONFIG MCB_PERFORMANCE= STANDARD;
 ##################################################################################
 # Timing Ignore constraints for paths crossing the clock domain 
 ##################################################################################
-NET "memc?_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/selfrefresh_mcb_mode" TIG;
-NET "c?_pll_lock" TIG;
-INST "memc?_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/DONE_SOFTANDHARD_CAL*" TIG;
+NET "core_inst/ddr2_controller_inst/memc3_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/selfrefresh_mcb_mode" TIG;
+NET "ore_inst/ddr2_controller_inst/c3_pll_lock" TIG;
+INST "core_inst/ddr2_controller_inst/memc3_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/DONE_SOFTANDHARD_CAL*" TIG;
 
 #Please uncomment the below TIG if used in a design which enables self-refresh mode
 #NET "memc?_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/SELFREFRESH_MCB_REQ" TIG;
      
-NET "memc?_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/CKE_Train" TIG; ##This path exists for DDR2 only
+NET "core_inst/ddr2_controller_inst/memc3_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/CKE_Train" TIG; ##This path exists for DDR2 only
      
 
 ############################################################################
@@ -56,7 +56,7 @@ NET "memc?_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_
 ############################################################################
 ## Clock constraints                                                        
 ############################################################################
-NET "memc3_infrastructure_inst/sys_clk_ibufg" TNM_NET = "SYS_CLK3";
+NET "core_inst/ddr2_controller_inst/memc3_infrastructure_inst/sys_clk_ibufg" TNM_NET = "SYS_CLK3";
 TIMESPEC "TS_SYS_CLK3" = PERIOD "SYS_CLK3"  5  ns HIGH 50 %;
 ############################################################################
 
@@ -91,17 +91,14 @@ NET  "mcb3_dram_dm"                                  IOSTANDARD = SSTL18_II ;
 NET  "mcb3_dram_udm"                                 IOSTANDARD = SSTL18_II ;
 NET  "mcb3_rzq"                                      IOSTANDARD = SSTL18_II ;
 NET  "mcb3_zio"                                      IOSTANDARD = SSTL18_II ;
-NET  "c3_sys_clk"                                  IOSTANDARD = LVCMOS25 ;
-NET  "c3_sys_rst_i"                                IOSTANDARD = LVCMOS18 ;
+NET  "c3_sys_clk"                                    IOSTANDARD = LVCMOS25 ;
+NET  "c3_sys_rst_i"                                  IOSTANDARD = LVCMOS18 ;
 ############################################################################
 # MCB 3
 # Pin Location Constraints for Clock, Masks, Address, and Controls
 ############################################################################
 
 NET  "mcb3_dram_a[0]"                            LOC = "J7" ;
-NET  "mcb3_dram_a[10]"                           LOC = "F4" ;
-NET  "mcb3_dram_a[11]"                           LOC = "D3" ;
-NET  "mcb3_dram_a[12]"                           LOC = "G6" ;
 NET  "mcb3_dram_a[1]"                            LOC = "J6" ;
 NET  "mcb3_dram_a[2]"                            LOC = "H5" ;
 NET  "mcb3_dram_a[3]"                            LOC = "L7" ;
@@ -111,6 +108,10 @@ NET  "mcb3_dram_a[6]"                            LOC = "H3" ;
 NET  "mcb3_dram_a[7]"                            LOC = "H6" ;
 NET  "mcb3_dram_a[8]"                            LOC = "D2" ;
 NET  "mcb3_dram_a[9]"                            LOC = "D1" ;
+NET  "mcb3_dram_a[10]"                           LOC = "F4" ;
+NET  "mcb3_dram_a[11]"                           LOC = "D3" ;
+NET  "mcb3_dram_a[12]"                           LOC = "G6" ;
+
 NET  "mcb3_dram_ba[0]"                           LOC = "F2" ;
 NET  "mcb3_dram_ba[1]"                           LOC = "F1" ;
 NET  "mcb3_dram_ba[2]"                           LOC = "E1" ;
@@ -153,11 +154,11 @@ NET  "mcb3_dram_we_n"                            LOC = "E3" ;
 #a 2R resistor should be connected between RZQand ground, where R is the desired#
 #input termination value.  Otherwise, RZQ should be left as a no-connect (NC) pin.#
 ##################################################################################
-NET  "mcb3_rzq"                                  LOC = "N4" ;
+#NET  "mcb3_rzq"                                  LOC = "N4" ;
 ##################################################################################
 #ZIO is only required for MCB designs using Calibrated Input Termination.#
 #ZIO can be moved to any valid package pin (i.e. bonded IO) within the#
 #MCB bank but must be left as a no-connect (NC) pin.#
 ##################################################################################
-NET  "mcb3_zio"                                  LOC = "P4" ;
+#NET  "mcb3_zio"                                  LOC = "P4" ;
 

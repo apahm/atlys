@@ -62,8 +62,6 @@ module fpga_core #
     inout   wire                                        ddr_dqs_n,
     output  wire                                        ddr_ck,
     output  wire                                        ddr_ck_n,
-    inout   wire                                        ddr_rzq,
-    inout   wire                                        ddr_zio,
     output  wire                                        ddr_udm,
 
     /*
@@ -146,7 +144,12 @@ wire    [6:0]			            c3_p2_rd_count;
 wire				                c3_p2_rd_overflow;
 wire				                c3_p2_rd_error;
 
+wire c3_clk0;
+wire c3_rst0;
+wire c3_calib_done;
 
+wire ddr_rzq;
+wire ddr_zio;
 
 ddr2_controller# (
     .C3_P0_MASK_SIZE(4),
@@ -167,33 +170,33 @@ ddr2_controller# (
 ddr2_controller_inst 
 (
 
-    .c3_sys_clk             (c3_sys_clk),
-    .c3_sys_rst_i           (c3_sys_rst_i),                        
+    .c3_sys_clk             (ddr_clk),
+    .c3_sys_rst_i           (ddr_rst),                        
 
-    .mcb3_dram_dq           (mcb3_dram_dq),  
-    .mcb3_dram_a            (mcb3_dram_a),  
-    .mcb3_dram_ba           (mcb3_dram_ba),
-    .mcb3_dram_ras_n        (mcb3_dram_ras_n),                        
-    .mcb3_dram_cas_n        (mcb3_dram_cas_n),                        
-    .mcb3_dram_we_n         (mcb3_dram_we_n),                          
-    .mcb3_dram_odt          (mcb3_dram_odt),
-    .mcb3_dram_cke          (mcb3_dram_cke),                          
-    .mcb3_dram_ck           (mcb3_dram_ck),                          
-    .mcb3_dram_ck_n         (mcb3_dram_ck_n),       
-    .mcb3_dram_dqs          (mcb3_dram_dqs),                          
-    .mcb3_dram_dqs_n        (mcb3_dram_dqs_n),
-    .mcb3_dram_udqs         (mcb3_dram_udqs),                       
-    .mcb3_dram_udqs_n       (mcb3_dram_udqs_n),  
-    .mcb3_dram_udm          (mcb3_dram_udm),     
-    .mcb3_dram_dm           (mcb3_dram_dm),
+    .mcb3_dram_dq           (ddr_dq),  
+    .mcb3_dram_a            (ddr_a),  
+    .mcb3_dram_ba           (ddr_ba),
+    .mcb3_dram_ras_n        (ddr_ras_n),                        
+    .mcb3_dram_cas_n        (ddr_cas_n),                        
+    .mcb3_dram_we_n         (ddr_we_n),                          
+    .mcb3_dram_odt          (ddr_odt),
+    .mcb3_dram_cke          (ddr_cke),                          
+    .mcb3_dram_ck           (ddr_ck),                          
+    .mcb3_dram_ck_n         (ddr_ck_n),       
+    .mcb3_dram_dqs          (ddr_dqs),                          
+    .mcb3_dram_dqs_n        (ddr_dqs_n),
+    .mcb3_dram_udqs         (ddr_udqs),                       
+    .mcb3_dram_udqs_n       (ddr_udqs_n),  
+    .mcb3_dram_udm          (ddr_udm),     
+    .mcb3_dram_dm           (ddr_dm),
     .c3_clk0		        (c3_clk0),
     .c3_rst0		        (c3_rst0),
 	
  
     .c3_calib_done          (c3_calib_done),
-    .mcb3_rzq               (rzq3),
+    .mcb3_rzq               (ddr_rzq),
                
-    .mcb3_zio               (zio3),
+    .mcb3_zio               (ddr_zio),
 
     // config_port_0             
     .c3_p0_cmd_clk                          (c3_p0_cmd_clk),

@@ -69,9 +69,27 @@ module fpga (
     input   wire                hdmi_rx_clk_p,      
     input   wire                hdmi_rx_clk_n,      
     input   wire    [2:0]       hdmi_rx_p,
-    input   wire    [2:0]       hdmi_rx_n
-    
-	 
+    input   wire    [2:0]       hdmi_rx_n,
+
+    /*
+     * DDR2: MIRA P3R1GE3EGF G8E DDR2 
+     */
+    inout   wire     [15:0]     ddr_dq,
+    output  wire     [12:0]     ddr_a,
+    output  wire     [2:0]      ddr_ba,
+    output  wire                ddr_ras_n,
+    output  wire                ddr_cas_n,
+    output  wire                ddr_we_n,
+    output  wire                ddr_odt,
+    output  wire                ddr_cke,
+    output  wire                ddr_dm,
+    inout   wire                ddr_udqs,
+    inout   wire                ddr_udqs_n,
+    inout   wire                ddr_dqs,
+    inout   wire                ddr_dqs_n,
+    output  wire                ddr_ck,
+    output  wire                ddr_ck_n,
+    output  wire                ddr_udm
 );
 
 
@@ -193,7 +211,26 @@ core_inst (
     .hdmi_rx_clk_p  (hdmi_rx_clk_p),      
     .hdmi_rx_clk_n  (hdmi_rx_clk_n),      
     .hdmi_rx_p      (hdmi_rx_p),
-    .hdmi_rx_n      (hdmi_rx_n)
+    .hdmi_rx_n      (hdmi_rx_n),
+
+    .ddr_clk        (clk_ddr2),
+    .ddr_rst        (rst_int),
+    .ddr_dq         (ddr_dq),
+    .ddr_a          (ddr_a),
+    .ddr_ba         (ddr_ba),
+    .ddr_ras_n      (ddr_ras_n),
+    .ddr_cas_n      (ddr_cas_n),
+    .ddr_we_n       (ddr_we_n),
+    .ddr_odt        (ddr_odt),
+    .ddr_cke        (ddr_cke),
+    .ddr_dm         (ddr_dm),
+    .ddr_udqs       (ddr_udqs),
+    .ddr_udqs_n     (ddr_udqs_n),
+    .ddr_dqs        (ddr_dqs),
+    .ddr_dqs_n      (ddr_dqs_n),
+    .ddr_ck         (ddr_ck),
+    .ddr_ck_n       (ddr_ck_n),
+    .ddr_udm        (ddr_udm)
 );
 
 endmodule
