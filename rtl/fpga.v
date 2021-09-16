@@ -82,6 +82,8 @@ wire clk_ibufg;
 // Internal 125 MHz clock
 wire clk_dcm_out;
 wire clk_int;
+wire clk2x;
+wire clk_ddr2;
 wire rst_int;
 
 wire dcm_rst;
@@ -120,7 +122,7 @@ clk_dcm_inst (
     .CLK90(),
     .CLK180(),
     .CLK270(),
-    .CLK2X(),
+    .CLK2X(clk2x),
     .CLK2X180(),
     .CLKDV(),
     .CLKFX(clk_dcm_out),
@@ -134,6 +136,12 @@ BUFG
 clk_bufg_inst (
     .I(clk_dcm_out),
     .O(clk_int)
+);
+
+BUFG 
+clkout2_buf (
+    .I   (clk2x),
+    .O   (clk_ddr2)
 );
 
 sync_reset #(
