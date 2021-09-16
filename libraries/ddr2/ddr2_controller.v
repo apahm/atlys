@@ -102,68 +102,68 @@ module ddr2_controller #
 
 (
 
-   inout  [C3_NUM_DQ_PINS-1:0]                      mcb3_dram_dq,
-   output [C3_MEM_ADDR_WIDTH-1:0]                   mcb3_dram_a,
-   output [C3_MEM_BANKADDR_WIDTH-1:0]               mcb3_dram_ba,
-   output                                           mcb3_dram_ras_n,
-   output                                           mcb3_dram_cas_n,
-   output                                           mcb3_dram_we_n,
-   output                                           mcb3_dram_odt,
-   output                                           mcb3_dram_cke,
-   output                                           mcb3_dram_dm,
-   inout                                            mcb3_dram_udqs,
-   inout                                            mcb3_dram_udqs_n,
-   inout                                            mcb3_rzq,
-   inout                                            mcb3_zio,
-   output                                           mcb3_dram_udm,
-   input                                            c3_sys_clk,
-   input                                            c3_sys_rst_i,
-   output                                           c3_calib_done,
-   output                                           c3_clk0,
-   output                                           c3_rst0,
-   inout                                            mcb3_dram_dqs,
-   inout                                            mcb3_dram_dqs_n,
-   output                                           mcb3_dram_ck,
-   output                                           mcb3_dram_ck_n,
-      input		c3_p0_cmd_clk,
-      input		c3_p0_cmd_en,
-      input [2:0]	c3_p0_cmd_instr,
-      input [5:0]	c3_p0_cmd_bl,
-      input [29:0]	c3_p0_cmd_byte_addr,
-      output		c3_p0_cmd_empty,
-      output		c3_p0_cmd_full,
-      input		c3_p0_wr_clk,
-      input		c3_p0_wr_en,
-      input [C3_P0_MASK_SIZE - 1:0]	c3_p0_wr_mask,
-      input [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_wr_data,
-      output		c3_p0_wr_full,
-      output		c3_p0_wr_empty,
-      output [6:0]	c3_p0_wr_count,
-      output		c3_p0_wr_underrun,
-      output		c3_p0_wr_error,
-      input		c3_p0_rd_clk,
-      input		c3_p0_rd_en,
-      output [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_rd_data,
-      output		c3_p0_rd_full,
-      output		c3_p0_rd_empty,
-      output [6:0]	c3_p0_rd_count,
-      output		c3_p0_rd_overflow,
-      output		c3_p0_rd_error,
-      input		c3_p2_cmd_clk,
-      input		c3_p2_cmd_en,
-      input [2:0]	c3_p2_cmd_instr,
-      input [5:0]	c3_p2_cmd_bl,
-      input [29:0]	c3_p2_cmd_byte_addr,
-      output		c3_p2_cmd_empty,
-      output		c3_p2_cmd_full,
-      input		c3_p2_rd_clk,
-      input		c3_p2_rd_en,
-      output [31:0]	c3_p2_rd_data,
-      output		c3_p2_rd_full,
-      output		c3_p2_rd_empty,
-      output [6:0]	c3_p2_rd_count,
-      output		c3_p2_rd_overflow,
-      output		c3_p2_rd_error
+   inout    wire [C3_NUM_DQ_PINS-1:0]                      mcb3_dram_dq,
+   output   wire [C3_MEM_ADDR_WIDTH-1:0]                   mcb3_dram_a,
+   output   wire [C3_MEM_BANKADDR_WIDTH-1:0]               mcb3_dram_ba,
+   output   wire                                           mcb3_dram_ras_n,
+   output   wire                                           mcb3_dram_cas_n,
+   output   wire                                           mcb3_dram_we_n,
+   output   wire                                           mcb3_dram_odt,
+   output   wire                                           mcb3_dram_cke,
+   output   wire                                           mcb3_dram_dm,
+   inout    wire                                           mcb3_dram_udqs,
+   inout    wire                                           mcb3_dram_udqs_n,
+   inout    wire                                           mcb3_rzq,
+   inout    wire                                           mcb3_zio,
+   output   wire                                           mcb3_dram_udm,
+   input    wire                                           c3_sys_clk,
+   input    wire                                           c3_sys_rst_i,
+   output   wire                                           c3_calib_done,
+   output   wire                                           c3_clk0,
+   output   wire                                           c3_rst0,
+   inout    wire                                           mcb3_dram_dqs,
+   inout    wire                                           mcb3_dram_dqs_n,
+   output   wire                                           mcb3_dram_ck,
+   output   wire                                           mcb3_dram_ck_n,
+   input	   wire   	c3_p0_cmd_clk,
+   input	   wire   	c3_p0_cmd_en,
+   input    wire   [2:0]	c3_p0_cmd_instr,
+   input    wire   [5:0]	c3_p0_cmd_bl,
+   input    wire   [29:0]	c3_p0_cmd_byte_addr,
+   output   wire   		c3_p0_cmd_empty,
+   output   wire   		c3_p0_cmd_full,
+   input	   wire   	c3_p0_wr_clk,
+   input	   wire   	c3_p0_wr_en,
+   input    wire   [C3_P0_MASK_SIZE - 1:0]	c3_p0_wr_mask,
+   input    wire   [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_wr_data,
+   output   wire   		c3_p0_wr_full,
+   output   wire   		c3_p0_wr_empty,
+   output   wire    [6:0]	c3_p0_wr_count,
+   output   wire   		c3_p0_wr_underrun,
+   output   wire   		c3_p0_wr_error,
+   input	   wire   	c3_p0_rd_clk,
+   input	   wire   	c3_p0_rd_en,
+   output   wire    [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_rd_data,
+   output   wire   		c3_p0_rd_full,
+   output   wire   		c3_p0_rd_empty,
+   output   wire    [6:0]	c3_p0_rd_count,
+   output   wire   		c3_p0_rd_overflow,
+   output   wire   		c3_p0_rd_error,
+   input	   wire   	c3_p2_cmd_clk,
+   input	   wire   	c3_p2_cmd_en,
+   input    wire   [2:0]	c3_p2_cmd_instr,
+   input    wire   [5:0]	c3_p2_cmd_bl,
+   input    wire   [29:0]	c3_p2_cmd_byte_addr,
+   output   wire   		c3_p2_cmd_empty,
+   output   wire   		c3_p2_cmd_full,
+   input	   wire   	c3_p2_rd_clk,
+   input	   wire   	c3_p2_rd_en,
+   output   wire    [31:0]	c3_p2_rd_data,
+   output   wire   		c3_p2_rd_full,
+   output   wire   		c3_p2_rd_empty,
+   output   wire    [6:0]	c3_p2_rd_count,
+   output   wire   		c3_p2_rd_overflow,
+   output   wire   		c3_p2_rd_error
 );
 // The parameter CX_PORT_ENABLE shows all the active user ports in the design.
 // For example, the value 6'b111100 tells that only port-2, port-3, port-4
@@ -754,104 +754,14 @@ assign  c3_sys_clk_n = 1'b0;
          .p5_rd_error                    (c3_p5_rd_error),
 
          .selfrefresh_enter              (1'b0), 
-         .selfrefresh_mode               (c3_selfrefresh_mode)
+         .selfrefresh_mode               ()
       );
    
 
 
 
 
-  generate 
-  if(DEBUG_EN == 1) begin:gen_dbg_enable
-    // controller 3
-    assign c3_dbg_data[255:0] = 
-			     {122'b0,
-			      c3_p0_cmd_en,
-			      c3_p0_cmd_instr,
-			      c3_p0_cmd_bl,
-			      c3_p0_cmd_byte_addr,
-			      c3_p0_cmd_empty,
-			      c3_p0_cmd_full,
-			      c3_p0_rd_en,
-			      c3_p0_rd_data[31:0],
-			      c3_p0_rd_full,
-			      c3_p0_rd_empty,
-			      c3_p0_rd_count,
-			      c3_p0_rd_overflow,
-			      c3_p0_rd_error,
-			      c3_p0_wr_en,
-			      c3_p0_wr_mask[3:0],
-			      c3_p0_wr_data[31:0],
-			      c3_p0_wr_full,
-			      c3_p0_wr_empty,
-			      c3_p0_wr_count,
-			      c3_p0_wr_underrun,
-			      c3_p0_wr_error
-				};
-  assign c3_dbg_trig[1:0] = { c3_calib_done,1'b0 };
-
-   //---------------------------------------------------------------------------
-   //  ICON core instance
-   //---------------------------------------------------------------------------
-   icon my_icon_c3
-     (
-      .CONTROL0 ( c3_control0 ),
-      .CONTROL1 ( c3_control1 )
-      );
-   //---------------------------------------------------------------------------
-   //  ILA core instance
-   //---------------------------------------------------------------------------
-   ila my_ila_c3
-     (
-      .CONTROL ( c3_control0 ),
-      .CLK     ( c3_clk0 ),
-      .DATA    ( c3_dbg_data ),
-      .TRIG0   ( c3_dbg_trig )
-      );
-	
-   //---------------------------------------------------------------------------
-   //  VIO core instance
-   //---------------------------------------------------------------------------
-   vio my_vio_c3     (
-      .CONTROL    ( c3_control1 ),
-      .ASYNC_OUT  ( c3_vio_out )
-      );  
-  end
-  endgenerate 
-
 
 endmodule   
 
- 
-//------------------------------------------------------------------------------
-//  ICON core module declaration
-//------------------------------------------------------------------------------
-module icon
-  (
-   inout [35:0] CONTROL0,
-   inout [35:0] CONTROL1
-   )/* synthesis syn_black_box syn_noprune=1 */;
-endmodule
-
-//------------------------------------------------------------------------------
-//  ILA core module declaration
-//------------------------------------------------------------------------------
-module ila
-  (
-   input CLK,
-   inout [35:0] CONTROL,
-   input [1:0]  TRIG0,
-   input [255:0] DATA
-   )/* synthesis syn_black_box syn_noprune=1 */;
-endmodule
-
-//------------------------------------------------------------------------------
-//  VIO core module declaration
-//------------------------------------------------------------------------------
-module vio
-  (
-   inout [35:0] CONTROL,
-   output [6:0] ASYNC_OUT
-   )/* synthesis syn_black_box syn_noprune=1 */;
-endmodule
 

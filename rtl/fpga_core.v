@@ -199,7 +199,7 @@ ddr2_controller_inst
     .mcb3_zio               (ddr_zio),
 
     // config_port_0             
-    .c3_p0_cmd_clk                          (c3_p0_cmd_clk),
+    .c3_p0_cmd_clk                          (c3_clk0),
     .c3_p0_cmd_en                           (c3_p0_cmd_en),
     .c3_p0_cmd_instr                        (c3_p0_cmd_instr),
     .c3_p0_cmd_bl                           (c3_p0_cmd_bl),
@@ -207,7 +207,7 @@ ddr2_controller_inst
     .c3_p0_cmd_empty                        (c3_p0_cmd_empty),
     .c3_p0_cmd_full                         (c3_p0_cmd_full),
 
-    .c3_p0_wr_clk                           (c3_p0_wr_clk),
+    .c3_p0_wr_clk                           (c3_clk0),
     .c3_p0_wr_en                            (c3_p0_wr_en),
     .c3_p0_wr_mask                          (c3_p0_wr_mask),
     .c3_p0_wr_data                          (c3_p0_wr_data),
@@ -217,7 +217,7 @@ ddr2_controller_inst
     .c3_p0_wr_underrun                      (c3_p0_wr_underrun),
     .c3_p0_wr_error                         (c3_p0_wr_error),
     
-    .c3_p0_rd_clk                           (c3_p0_rd_clk),
+    .c3_p0_rd_clk                           (c3_clk0),
     .c3_p0_rd_en                            (c3_p0_rd_en),
     .c3_p0_rd_data                          (c3_p0_rd_data),
     .c3_p0_rd_full                          (c3_p0_rd_full),
@@ -227,7 +227,7 @@ ddr2_controller_inst
     .c3_p0_rd_error                         (c3_p0_rd_error),
     
     // config_port_2 
-    .c3_p2_cmd_clk                          (c3_p2_cmd_clk),
+    .c3_p2_cmd_clk                          (c3_clk0),
     .c3_p2_cmd_en                           (c3_p2_cmd_en),
     .c3_p2_cmd_instr                        (c3_p2_cmd_instr),
     .c3_p2_cmd_bl                           (c3_p2_cmd_bl),
@@ -235,7 +235,7 @@ ddr2_controller_inst
     .c3_p2_cmd_empty                        (c3_p2_cmd_empty),
     .c3_p2_cmd_full                         (c3_p2_cmd_full),
     
-    .c3_p2_rd_clk                           (c3_p2_rd_clk),
+    .c3_p2_rd_clk                           (c3_clk0),
     .c3_p2_rd_en                            (c3_p2_rd_en),
     .c3_p2_rd_data                          (c3_p2_rd_data),
     .c3_p2_rd_full                          (c3_p2_rd_full),

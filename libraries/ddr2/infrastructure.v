@@ -128,7 +128,7 @@ module infrastructure #
   assign sys_rst = C_RST_ACT_LOW ? ~sys_rst_i: sys_rst_i;
   assign clk0        = clk0_bufg;
   assign pll_lock    = bufpll_mcb_locked;
-
+	assign sys_clk_ibufg = sys_clk;
   generate
     if (C_INPUT_CLK_TYPE == "DIFFERENTIAL") begin: diff_input_clk
 
@@ -153,11 +153,12 @@ module infrastructure #
       // SINGLE_ENDED input clock input buffers
       //***********************************************************************
 
-      IBUFG  u_ibufg_sys_clk
+      /*IBUFG  u_ibufg_sys_clk
           (
            .I  (sys_clk),
            .O  (sys_clk_ibufg)
            );
+		*/
    end
   endgenerate
 
