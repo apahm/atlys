@@ -73,7 +73,7 @@ module ddr2_controller #
    parameter C3_P0_DATA_PORT_SIZE      = 32,
    parameter C3_P1_MASK_SIZE           = 4,
    parameter C3_P1_DATA_PORT_SIZE      = 32,
-   parameter DEBUG_EN                = 1,       
+   parameter DEBUG_EN                = 0,       
                                        // # = 1, Enable debug signals/controls,
                                        //   = 0, Disable debug signals/controls.
    parameter C3_MEMCLK_PERIOD        = 5000,       
