@@ -157,7 +157,7 @@ ddr2_controller# (
     .C3_P1_MASK_SIZE(4),
     .C3_P1_DATA_PORT_SIZE(32),
     .DEBUG_EN(0),
-    .C3_MEMCLK_PERIOD(5000),
+    .C3_MEMCLK_PERIOD(8000),
     .C3_CALIB_SOFT_IP("TRUE"),
     .C3_SIMULATION("FALSE"),
     .C3_RST_ACT_LOW(0),
@@ -248,6 +248,20 @@ ddr2_controller_inst
 *   Module HDMI
 */
 
+wire hdmi_pixel_clk;          
+wire hdmi_hsync;         
+wire hdmi_vsync;         
+wire hdmi_de;            
+wire hdmi_blue_vld;
+wire hdmi_green_vld;
+wire hdmi_red_vld;
+wire hdmi_blue_rdy;
+wire hdmi_green_rdy;
+wire hdmi_red_rdy;
+wire [7:0] hdmi_red;    
+wire [7:0] hdmi_green;   
+wire [7:0] hdmi_blue;  
+
 hdmi_top 
 hdmi_top_inst
 (
@@ -256,9 +270,26 @@ hdmi_top_inst
     .hdmi_rx_clk_p      (hdmi_rx_clk_p), 
     .hdmi_rx_clk_n      (hdmi_rx_clk_n), 
     .hdmi_rx_p          (hdmi_rx_p),
-    .hdmi_rx_n          (hdmi_rx_n)
-);
+    .hdmi_rx_n          (hdmi_rx_n),
 
+    .reset              (),
+    .pclk               (hdmi_pixel_clk),
+
+    .hsync              (hdmi_hsync),
+    .vsync              (hdmi_vsync),
+    .de                 (hdmi_de),
+
+    .blue_vld           (hdmi_blue_vld),
+    .green_vld          (hdmi_green_vld),
+    .red_vld            (hdmi_red_vld),
+    .blue_rdy           (hdmi_blue_rdy),
+    .green_rdy          (hdmi_green_rdy),
+    .red_rdy            (hdmi_red_rdy),
+
+    .red                (hdmi_red),
+    .green              (hdmi_green),
+    .blue               (hdmi_blue)
+);
 
 /* 
 *   Module Uart

@@ -51,15 +51,49 @@
 
 module hdmi_top (
   
-  input   wire                rst,
+    input   wire                rst,
 
-  input   wire                hdmi_rx_clk_p,      
-  input   wire                hdmi_rx_clk_n,      
-  input   wire    [2:0]       hdmi_rx_p,
-  input   wire    [2:0]       hdmi_rx_n,
+    input   wire                hdmi_rx_clk_p,      
+    input   wire                hdmi_rx_clk_n,      
+    input   wire    [2:0]       hdmi_rx_p,
+    input   wire    [2:0]       hdmi_rx_n,
   
-  output  wire    [7:0]       led
+    output  wire    [7:0]       led,
+
+    output wire reset,          // rx reset
+    output wire pclk,           // regenerated pixel clock
+
+    output wire hsync,          // hsync data
+    output wire vsync,          // vsync data
+    output wire de,             // data enable
+  
+    output wire blue_vld,
+    output wire green_vld,
+    output wire red_vld,
+    output wire blue_rdy,
+    output wire green_rdy,
+    output wire red_rdy,
+
+    output wire [7:0] red,      // pixel data out
+    output wire [7:0] green,    // pixel data out
+    output wire [7:0] blue   
+
 );
+
+assign reset = rx0_reset;          
+assign pclk = rx0_pclk;          
+assign hsync = rx0_hsync;         
+assign vsync = rx0_vsync;         
+assign de = rx0_de;            
+assign blue_vld = rx0_blue_vld;
+assign green_vld = rx0_green_vld;
+assign red_vld = rx0_red_vld;
+assign blue_rdy = rx0_blue_rdy;
+assign green_rdy = rx0_green_rdy;
+assign red_rdy = rx0_red_rdy;
+assign red = rx0_red;     
+assign green = rx0_green;   
+assign blue = rx0_blue;  
 
 wire rx0_pclk, rx0_pclkx2, rx0_pclkx10, rx0_pllclk0;
 wire rx0_plllckd;
