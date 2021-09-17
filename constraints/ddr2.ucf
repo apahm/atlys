@@ -20,7 +20,7 @@
 ############################################################################
 # VCC AUX VOLTAGE 
 ############################################################################
-CONFIG VCCAUX=2.5; # Valid values are 2.5 and 3.3
+CONFIG VCCAUX=3.3; # Valid values are 2.5 and 3.3
 
 ############################################################################
 # DDR2 requires the MCB to operate in Extended performance mode with higher Vccint
@@ -37,7 +37,7 @@ CONFIG MCB_PERFORMANCE= STANDARD;
 ##################################################################################
 NET "core_inst/ddr2_controller_inst/memc3_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/selfrefresh_mcb_mode" TIG;
 NET "core_inst/ddr2_controller_inst/c3_pll_lock" TIG;
-INST "core_inst/ddr2_controller_inst/memc3_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/DONE_SOFTANDHARD_CAL*" TIG;
+#INST "core_inst/ddr2_controller_inst/memc3_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/DONE_SOFTANDHARD_CAL*" TIG;
 
 #Please uncomment the below TIG if used in a design which enables self-refresh mode
 #NET "memc?_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/SELFREFRESH_MCB_REQ" TIG;
@@ -63,32 +63,34 @@ TIMESPEC "TS_SYS_CLK3" = PERIOD "SYS_CLK3"  5  ns HIGH 50 %;
 ############################################################################
 ## I/O TERMINATION                                                          
 ############################################################################
-NET "ddr_dq[*]"                                 IN_TERM = NONE;
-NET "ddr_dqs"                                   IN_TERM = NONE;
-NET "ddr_dqs_n"                                 IN_TERM = NONE;
-NET "ddr_udqs"                                  IN_TERM = NONE;
-NET "ddr_udqs_n"                                IN_TERM = NONE;
-
+NET "ddr_dq[*]"                                 IN_TERM = UNTUNED_SPLIT_25;
+NET "ddr_dqs"                                   IN_TERM = UNTUNED_SPLIT_25;
+NET "ddr_dqs_n"                                 IN_TERM = UNTUNED_SPLIT_25;
+NET "ddr_udqs"                                  IN_TERM = UNTUNED_SPLIT_25;
+NET "ddr_udqs_n"                                IN_TERM = UNTUNED_SPLIT_25;
 ############################################################################
 # I/O STANDARDS 
 ############################################################################
 
-NET  "ddr_dq[*]"                               IOSTANDARD = SSTL18_II ;
-NET  "ddr_a[*]"                                IOSTANDARD = SSTL18_II ;
-NET  "ddr_ba[*]"                               IOSTANDARD = SSTL18_II ;
-NET  "ddr_dqs"                                 IOSTANDARD = DIFF_SSTL18_II ;
-NET  "ddr_udqs"                                IOSTANDARD = DIFF_SSTL18_II ;
-NET  "ddr_dqs_n"                               IOSTANDARD = DIFF_SSTL18_II ;
-NET  "ddr_udqs_n"                              IOSTANDARD = DIFF_SSTL18_II ;
-NET  "ddr_ck"                                  IOSTANDARD = DIFF_SSTL18_II ;
-NET  "ddr_ck_n"                                IOSTANDARD = DIFF_SSTL18_II ;
-NET  "ddr_cke"                                 IOSTANDARD = SSTL18_II ;
-NET  "ddr_ras_n"                               IOSTANDARD = SSTL18_II ;
-NET  "ddr_cas_n"                               IOSTANDARD = SSTL18_II ;
-NET  "ddr_we_n"                                IOSTANDARD = SSTL18_II ;
-NET  "ddr_odt"                                 IOSTANDARD = SSTL18_II ;
-NET  "ddr_dm"                                  IOSTANDARD = SSTL18_II ;
-NET  "ddr_udm"                                 IOSTANDARD = SSTL18_II ;
+NET  "ddr_dq[*]"                                IOSTANDARD = SSTL18_II ;
+NET  "ddr_a[*]"                                 IOSTANDARD = SSTL18_II ;
+NET  "ddr_ba[*]"                                IOSTANDARD = SSTL18_II ;
+NET  "ddr_dqs"                                  IOSTANDARD = SSTL18_II ;
+NET  "ddr_udqs"                                 IOSTANDARD = SSTL18_II ;
+NET  "ddr_dqs"                                  IOSTANDARD = DIFF_SSTL18_II ;
+NET  "ddr_udqs"                                 IOSTANDARD = DIFF_SSTL18_II ;
+NET  "ddr_dqs_n"                                IOSTANDARD = DIFF_SSTL18_II ;
+NET  "ddr_udqs_n"                               IOSTANDARD = DIFF_SSTL18_II ;
+NET  "ddr_ck"                                   IOSTANDARD = DIFF_SSTL18_II ;
+NET  "ddr_ck_n"                                 IOSTANDARD = DIFF_SSTL18_II ;
+NET  "ddr_cke"                                  IOSTANDARD = SSTL18_II ;
+NET  "ddr_ras_n"                                IOSTANDARD = SSTL18_II ;
+NET  "ddr_cas_n"                                IOSTANDARD = SSTL18_II ;
+NET  "ddr_we_n"                                 IOSTANDARD = SSTL18_II ;
+NET  "ddr_odt"                                  IOSTANDARD = SSTL18_II ;
+NET  "ddr_dm"                                   IOSTANDARD = SSTL18_II ;
+NET  "ddr_udm"                                  IOSTANDARD = SSTL18_II ;
+NET  "mcb3_rzq"                                 IOSTANDARD = SSTL18_II ;
 
 ############################################################################
 # MCB 3
@@ -134,12 +136,10 @@ NET  "ddr_dq[7]"                           LOC = "J1" ;
 NET  "ddr_dq[8]"                           LOC = "M3" ;
 NET  "ddr_dq[9]"                           LOC = "M1" ;
 NET  "ddr_dqs"                             LOC = "L4" ;
-NET  "ddr_dqs_n"                           LOC = "L3" ;
 NET  "ddr_odt"                             LOC = "K6" ;
 NET  "ddr_ras_n"                           LOC = "L5" ;
 NET  "ddr_udm"                             LOC = "K4" ;
 NET  "ddr_udqs"                            LOC = "P2" ;
-NET  "ddr_udqs_n"                          LOC = "P1" ;
 NET  "ddr_we_n"                            LOC = "E3" ;
 
 ##################################################################################
@@ -149,7 +149,7 @@ NET  "ddr_we_n"                            LOC = "E3" ;
 #a 2R resistor should be connected between RZQand ground, where R is the desired#
 #input termination value.  Otherwise, RZQ should be left as a no-connect (NC) pin.#
 ##################################################################################
-#NET  "mcb3_rzq"                                  LOC = "N4" ;
+NET  "mcb3_rzq"                                  LOC = "N4" ;
 ##################################################################################
 #ZIO is only required for MCB designs using Calibrated Input Termination.#
 #ZIO can be moved to any valid package pin (i.e. bonded IO) within the#

@@ -128,39 +128,8 @@ module infrastructure #
   assign sys_rst = C_RST_ACT_LOW ? ~sys_rst_i: sys_rst_i;
   assign clk0        = clk0_bufg;
   assign pll_lock    = bufpll_mcb_locked;
-	assign sys_clk_ibufg = sys_clk;
-  generate
-    if (C_INPUT_CLK_TYPE == "DIFFERENTIAL") begin: diff_input_clk
 
-      //***********************************************************************
-      // Differential input clock input buffers
-      //***********************************************************************
-
-      IBUFGDS #
-        (
-         .DIFF_TERM    ("TRUE")
-         )
-        u_ibufg_sys_clk
-          (
-           .I  (sys_clk_p),
-           .IB (sys_clk_n),
-           .O  (sys_clk_ibufg)
-           );
-
-    end else if (C_INPUT_CLK_TYPE == "SINGLE_ENDED") begin: se_input_clk
-
-      //***********************************************************************
-      // SINGLE_ENDED input clock input buffers
-      //***********************************************************************
-
-      /*IBUFG  u_ibufg_sys_clk
-          (
-           .I  (sys_clk),
-           .O  (sys_clk_ibufg)
-           );
-		*/
-   end
-  endgenerate
+  assign sys_clk_ibufg = sys_clk;
 
   //***************************************************************************
   // Global clock generation and distribution
@@ -190,7 +159,7 @@ module infrastructure #
          .CLKOUT4_DUTY_CYCLE (0.500),
          .CLKOUT5_DUTY_CYCLE (0.500),
          .SIM_DEVICE         ("SPARTAN6"),
-         .COMPENSATION       ("INTERNAL"),
+         .COMPENSATION       ("DCM2PLL"),
          .DIVCLK_DIVIDE      (C_DIVCLK_DIVIDE),
          .CLKFBOUT_MULT      (C_CLKFBOUT_MULT),
          .CLKFBOUT_PHASE     (0.0),

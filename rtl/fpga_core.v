@@ -183,10 +183,10 @@ ddr2_controller_inst
     .mcb3_dram_cke          (ddr_cke),                          
     .mcb3_dram_ck           (ddr_ck),                          
     .mcb3_dram_ck_n         (ddr_ck_n),       
-    .mcb3_dram_dqs          (ddr_dqs),                          
-    .mcb3_dram_dqs_n        (ddr_dqs_n),
-    .mcb3_dram_udqs         (ddr_udqs),                       
-    .mcb3_dram_udqs_n       (ddr_udqs_n),  
+    .mcb3_dram_dqs          (ddr_dqs),
+    .mcb3_dram_dqs_n        (ddr_dqs_n),                          
+    .mcb3_dram_udqs         (ddr_udqs),
+    .mcb3_dram_udqs_n       (ddr_udqs_n),                        
     .mcb3_dram_udm          (ddr_udm),     
     .mcb3_dram_dm           (ddr_dm),
     .c3_clk0		        (c3_clk0),
@@ -196,7 +196,6 @@ ddr2_controller_inst
     .c3_calib_done          (c3_calib_done),
     .mcb3_rzq               (ddr_rzq),
                
-    .mcb3_zio               (ddr_zio),
 
     // config_port_0             
     .c3_p0_cmd_clk                          (c3_clk0),

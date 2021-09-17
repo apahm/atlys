@@ -66,7 +66,7 @@
 //*****************************************************************************
 `timescale 1ns/1ps
 
-(* X_CORE_INFO = "mig_v3_92_ddr2_ddr2_s6, Coregen 14.7" , CORE_GENERATION_INFO = "ddr2_ddr2_s6,mig_v3_92,{component_name=ddr2_controller, C3_MEM_INTERFACE_TYPE=DDR2_SDRAM, C3_CLK_PERIOD=5000, C3_MEMORY_PART=ede1116axxx-8e, C3_MEMORY_DEVICE_WIDTH=16, C3_OUTPUT_DRV=FULL, C3_RTT_NOM=50OHMS, C3_DQS#_ENABLE=YES, C3_HIGH_TEMP_SR=NORMAL, C3_PORT_CONFIG=Two 32-bit bi-directional and four 32-bit unidirectional ports, C3_MEM_ADDR_ORDER=ROW_BANK_COLUMN, C3_PORT_ENABLE=Port0_Port2, C3_CLASS_ADDR=II, C3_CLASS_DATA=II, C3_INPUT_PIN_TERMINATION=CALIB_TERM, C3_DATA_TERMINATION=25 Ohms, C3_CLKFBOUT_MULT_F=2, C3_CLKOUT_DIVIDE=1, C3_DEBUG_PORT=1, INPUT_CLK_TYPE=Single-Ended, LANGUAGE=Verilog, SYNTHESIS_TOOL=Foundation_ISE, NO_OF_CONTROLLERS=1}" *)
+(* X_CORE_INFO = "mig_v3_92_ddr2_ddr2_s6, Coregen 14.7" , CORE_GENERATION_INFO = "ddr2_ddr2_s6,mig_v3_92,{component_name=ddr2_controller, C3_MEM_INTERFACE_TYPE=DDR2_SDRAM, C3_CLK_PERIOD=5000, C3_MEMORY_PART=ede1116axxx-8e, C3_MEMORY_DEVICE_WIDTH=16, C3_OUTPUT_DRV=FULL, C3_RTT_NOM=50OHMS, C3_DQS#_ENABLE=YES, C3_HIGH_TEMP_SR=NORMAL, C3_PORT_CONFIG=Two 32-bit bi-directional and four 32-bit unidirectional ports, C3_MEM_ADDR_ORDER=ROW_BANK_COLUMN, C3_PORT_ENABLE=Port0_Port2, C3_CLASS_ADDR=II, C3_CLASS_DATA=II, C3_INPUT_PIN_TERMINATION=UNCALIB_TERM, C3_DATA_TERMINATION=50 Ohms, C3_CLKFBOUT_MULT_F=2, C3_CLKOUT_DIVIDE=1, C3_DEBUG_PORT=0, INPUT_CLK_TYPE=Single-Ended, LANGUAGE=Verilog, SYNTHESIS_TOOL=Foundation_ISE, NO_OF_CONTROLLERS=1}" *)
 module ddr2_controller #
 (
    parameter C3_P0_MASK_SIZE           = 4,
@@ -102,68 +102,67 @@ module ddr2_controller #
 
 (
 
-   inout    wire [C3_NUM_DQ_PINS-1:0]                      mcb3_dram_dq,
-   output   wire [C3_MEM_ADDR_WIDTH-1:0]                   mcb3_dram_a,
-   output   wire [C3_MEM_BANKADDR_WIDTH-1:0]               mcb3_dram_ba,
-   output   wire                                           mcb3_dram_ras_n,
-   output   wire                                           mcb3_dram_cas_n,
-   output   wire                                           mcb3_dram_we_n,
-   output   wire                                           mcb3_dram_odt,
-   output   wire                                           mcb3_dram_cke,
-   output   wire                                           mcb3_dram_dm,
-   inout    wire                                           mcb3_dram_udqs,
-   inout    wire                                           mcb3_dram_udqs_n,
-   inout    wire                                           mcb3_rzq,
-   inout    wire                                           mcb3_zio,
-   output   wire                                           mcb3_dram_udm,
-   input    wire                                           c3_sys_clk,
-   input    wire                                           c3_sys_rst_i,
-   output   wire                                           c3_calib_done,
-   output   wire                                           c3_clk0,
-   output   wire                                           c3_rst0,
-   inout    wire                                           mcb3_dram_dqs,
-   inout    wire                                           mcb3_dram_dqs_n,
-   output   wire                                           mcb3_dram_ck,
-   output   wire                                           mcb3_dram_ck_n,
-   input	   wire   	c3_p0_cmd_clk,
-   input	   wire   	c3_p0_cmd_en,
-   input    wire   [2:0]	c3_p0_cmd_instr,
-   input    wire   [5:0]	c3_p0_cmd_bl,
-   input    wire   [29:0]	c3_p0_cmd_byte_addr,
-   output   wire   		c3_p0_cmd_empty,
-   output   wire   		c3_p0_cmd_full,
-   input	   wire   	c3_p0_wr_clk,
-   input	   wire   	c3_p0_wr_en,
-   input    wire   [C3_P0_MASK_SIZE - 1:0]	c3_p0_wr_mask,
-   input    wire   [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_wr_data,
-   output   wire   		c3_p0_wr_full,
-   output   wire   		c3_p0_wr_empty,
-   output   wire    [6:0]	c3_p0_wr_count,
-   output   wire   		c3_p0_wr_underrun,
-   output   wire   		c3_p0_wr_error,
-   input	   wire   	c3_p0_rd_clk,
-   input	   wire   	c3_p0_rd_en,
-   output   wire    [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_rd_data,
-   output   wire   		c3_p0_rd_full,
-   output   wire   		c3_p0_rd_empty,
-   output   wire    [6:0]	c3_p0_rd_count,
-   output   wire   		c3_p0_rd_overflow,
-   output   wire   		c3_p0_rd_error,
-   input	   wire   	c3_p2_cmd_clk,
-   input	   wire   	c3_p2_cmd_en,
-   input    wire   [2:0]	c3_p2_cmd_instr,
-   input    wire   [5:0]	c3_p2_cmd_bl,
-   input    wire   [29:0]	c3_p2_cmd_byte_addr,
-   output   wire   		c3_p2_cmd_empty,
-   output   wire   		c3_p2_cmd_full,
-   input	   wire   	c3_p2_rd_clk,
-   input	   wire   	c3_p2_rd_en,
-   output   wire    [31:0]	c3_p2_rd_data,
-   output   wire   		c3_p2_rd_full,
-   output   wire   		c3_p2_rd_empty,
-   output   wire    [6:0]	c3_p2_rd_count,
-   output   wire   		c3_p2_rd_overflow,
-   output   wire   		c3_p2_rd_error
+   inout  wire [C3_NUM_DQ_PINS-1:0]                      mcb3_dram_dq,
+   output wire [C3_MEM_ADDR_WIDTH-1:0]                   mcb3_dram_a,
+   output wire [C3_MEM_BANKADDR_WIDTH-1:0]               mcb3_dram_ba,
+   output wire                                           mcb3_dram_ras_n,
+   output wire                                           mcb3_dram_cas_n,
+   output wire                                           mcb3_dram_we_n,
+   output wire                                           mcb3_dram_odt,
+   output wire                                           mcb3_dram_cke,
+   output wire                                           mcb3_dram_dm,
+   inout  wire                                           mcb3_dram_udqs,
+   inout  wire                                           mcb3_dram_udqs_n,
+   inout  wire                                           mcb3_rzq,
+   output wire                                           mcb3_dram_udm,
+   input  wire                                           c3_sys_clk,
+   input  wire                                           c3_sys_rst_i,
+   output wire                                           c3_calib_done,
+   output wire                                           c3_clk0,
+   output wire                                           c3_rst0,
+   inout  wire                                           mcb3_dram_dqs,
+   inout  wire                                           mcb3_dram_dqs_n,
+   output wire                                           mcb3_dram_ck,
+   output wire                                           mcb3_dram_ck_n,
+      input	 wire 	c3_p0_cmd_clk,
+      input	 wire 	c3_p0_cmd_en,
+      input  wire [2:0]	c3_p0_cmd_instr,
+      input  wire [5:0]	c3_p0_cmd_bl,
+      input  wire [29:0]	c3_p0_cmd_byte_addr,
+      output wire 		c3_p0_cmd_empty,
+      output wire 		c3_p0_cmd_full,
+      input	 wire 	c3_p0_wr_clk,
+      input	 wire 	c3_p0_wr_en,
+      input  wire [C3_P0_MASK_SIZE - 1:0]	c3_p0_wr_mask,
+      input  wire [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_wr_data,
+      output wire 		c3_p0_wr_full,
+      output wire 		c3_p0_wr_empty,
+      output wire  [6:0]	c3_p0_wr_count,
+      output wire 		c3_p0_wr_underrun,
+      output wire 		c3_p0_wr_error,
+      input	 wire 	c3_p0_rd_clk,
+      input	 wire 	c3_p0_rd_en,
+      output wire  [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_rd_data,
+      output wire 		c3_p0_rd_full,
+      output wire 		c3_p0_rd_empty,
+      output wire  [6:0]	c3_p0_rd_count,
+      output wire 		c3_p0_rd_overflow,
+      output wire 		c3_p0_rd_error,
+      input	 wire 	c3_p2_cmd_clk,
+      input	 wire 	c3_p2_cmd_en,
+      input  wire [2:0]	c3_p2_cmd_instr,
+      input  wire [5:0]	c3_p2_cmd_bl,
+      input  wire [29:0]	c3_p2_cmd_byte_addr,
+      output wire 		c3_p2_cmd_empty,
+      output wire 		c3_p2_cmd_full,
+      input	 wire 	c3_p2_rd_clk,
+      input	 wire 	c3_p2_rd_en,
+      output wire  [31:0]	c3_p2_rd_data,
+      output wire 		c3_p2_rd_full,
+      output wire 		c3_p2_rd_empty,
+      output wire  [6:0]	c3_p2_rd_count,
+      output wire 		c3_p2_rd_overflow,
+      output wire 		c3_p2_rd_error
 );
 // The parameter CX_PORT_ENABLE shows all the active user ports in the design.
 // For example, the value 6'b111100 tells that only port-2, port-3, port-4
@@ -223,7 +222,7 @@ module ddr2_controller #
    localparam C3_MC_CALIB_BYPASS      = "NO";       
    localparam C3_MC_CALIBRATION_MODE  = "CALIBRATION";       
    localparam C3_MC_CALIBRATION_DELAY  = "HALF";       
-   localparam C3_SKIP_IN_TERM_CAL     = 0;       
+   localparam C3_SKIP_IN_TERM_CAL     = 1;       
    localparam C3_SKIP_DYNAMIC_CAL     = 0;       
    localparam C3_LDQSP_TAP_DELAY_VAL  = 0;       
    localparam C3_LDQSN_TAP_DELAY_VAL  = 0;       
@@ -386,14 +385,6 @@ wire[6:0]			c3_p5_rd_count;
 wire				c3_p5_rd_overflow;
 wire				c3_p5_rd_error;
 
-// debug signals declarations
-   wire [255:0] c3_dbg_data;
-   wire [1:0]  c3_dbg_trig;
-   wire [35:0] c3_control0;
-   wire [35:0] c3_control1;
-   wire [6:0] c3_vio_out;
-
-
 
    reg   c1_aresetn;
    reg   c3_aresetn;
@@ -544,7 +535,6 @@ assign  c3_sys_clk_n = 1'b0;
          .mcbx_dram_odt                  (mcb3_dram_odt), 
          .mcbx_dram_ddr3_rst             ( ), 
          .mcbx_rzq                       (mcb3_rzq),
-         .mcbx_zio                       (mcb3_zio),
          .calib_done                     (c3_calib_done),
          .async_rst                      (c3_async_rst),
          .sysclk_2x                      (c3_sysclk_2x), 
@@ -764,4 +754,4 @@ assign  c3_sys_clk_n = 1'b0;
 
 endmodule   
 
-
+ 
