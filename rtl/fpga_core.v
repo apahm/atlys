@@ -42,7 +42,7 @@ module fpga_core #
     input  wire                                         rst,
 
     /*
-     * Clock: 200 MHz
+     * Clock: 125 MHz
      * DDR2: MIRA P3R1GE3EGF G8E DDR2 
      */
     input   wire                                        ddr_clk,
