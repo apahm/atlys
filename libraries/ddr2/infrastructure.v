@@ -128,9 +128,7 @@ module infrastructure #
   assign sys_rst = C_RST_ACT_LOW ? ~sys_rst_i: sys_rst_i;
   assign clk0        = clk0_bufg;
   assign pll_lock    = bufpll_mcb_locked;
-
   assign sys_clk_ibufg = sys_clk;
-
   //***************************************************************************
   // Global clock generation and distribution
   //***************************************************************************

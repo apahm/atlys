@@ -206,7 +206,7 @@ core_inst (
     .hdmi_rx_p      (hdmi_rx_p),
     .hdmi_rx_n      (hdmi_rx_n),
 
-    .ddr_clk        (clk_ddr),
+    .ddr_clk        (clk_int),
     .ddr_rst        (rst_int),
     .ddr_dq         (ddr_dq),
     .ddr_a          (ddr_a),

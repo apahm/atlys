@@ -66,7 +66,7 @@
 //*****************************************************************************
 `timescale 1ns/1ps
 
-(* X_CORE_INFO = "mig_v3_92_ddr2_ddr2_s6, Coregen 14.7" , CORE_GENERATION_INFO = "ddr2_ddr2_s6,mig_v3_92,{component_name=ddr2_controller, C3_MEM_INTERFACE_TYPE=DDR2_SDRAM, C3_CLK_PERIOD=5000, C3_MEMORY_PART=ede1116axxx-8e, C3_MEMORY_DEVICE_WIDTH=16, C3_OUTPUT_DRV=FULL, C3_RTT_NOM=50OHMS, C3_DQS#_ENABLE=YES, C3_HIGH_TEMP_SR=NORMAL, C3_PORT_CONFIG=Two 32-bit bi-directional and four 32-bit unidirectional ports, C3_MEM_ADDR_ORDER=ROW_BANK_COLUMN, C3_PORT_ENABLE=Port0_Port2, C3_CLASS_ADDR=II, C3_CLASS_DATA=II, C3_INPUT_PIN_TERMINATION=UNCALIB_TERM, C3_DATA_TERMINATION=50 Ohms, C3_CLKFBOUT_MULT_F=2, C3_CLKOUT_DIVIDE=1, C3_DEBUG_PORT=0, INPUT_CLK_TYPE=Single-Ended, LANGUAGE=Verilog, SYNTHESIS_TOOL=Foundation_ISE, NO_OF_CONTROLLERS=1}" *)
+(* X_CORE_INFO = "mig_v3_92_ddr2_ddr2_s6, Coregen 14.7" , CORE_GENERATION_INFO = "ddr2_ddr2_s6,mig_v3_92,{component_name=ddr2_controller, C3_MEM_INTERFACE_TYPE=DDR2_SDRAM, C3_CLK_PERIOD=8000, C3_MEMORY_PART=ede1116axxx-8e, C3_MEMORY_DEVICE_WIDTH=16, C3_OUTPUT_DRV=FULL, C3_RTT_NOM=50OHMS, C3_DQS#_ENABLE=YES, C3_HIGH_TEMP_SR=NORMAL, C3_PORT_CONFIG=Two 32-bit bi-directional and four 32-bit unidirectional ports, C3_MEM_ADDR_ORDER=ROW_BANK_COLUMN, C3_PORT_ENABLE=Port0_Port2, C3_CLASS_ADDR=II, C3_CLASS_DATA=II, C3_INPUT_PIN_TERMINATION=UNCALIB_TERM, C3_DATA_TERMINATION=50 Ohms, C3_CLKFBOUT_MULT_F=4, C3_CLKOUT_DIVIDE=2, C3_DEBUG_PORT=0, INPUT_CLK_TYPE=Single-Ended, LANGUAGE=Verilog, SYNTHESIS_TOOL=Foundation_ISE, NO_OF_CONTROLLERS=1}" *)
 module ddr2_controller #
 (
    parameter C3_P0_MASK_SIZE           = 4,
@@ -76,7 +76,7 @@ module ddr2_controller #
    parameter DEBUG_EN                = 0,       
                                        // # = 1, Enable debug signals/controls,
                                        //   = 0, Disable debug signals/controls.
-   parameter C3_MEMCLK_PERIOD        = 5000,       
+   parameter C3_MEMCLK_PERIOD        = 8000,       
                                        // Memory data transfer clock period
    parameter C3_CALIB_SOFT_IP        = "TRUE",       
                                        // # = TRUE, Enables the soft calibration logic,
@@ -124,45 +124,45 @@ module ddr2_controller #
    inout  wire                                           mcb3_dram_dqs_n,
    output wire                                           mcb3_dram_ck,
    output wire                                           mcb3_dram_ck_n,
-      input	 wire 	c3_p0_cmd_clk,
-      input	 wire 	c3_p0_cmd_en,
-      input  wire [2:0]	c3_p0_cmd_instr,
-      input  wire [5:0]	c3_p0_cmd_bl,
-      input  wire [29:0]	c3_p0_cmd_byte_addr,
-      output wire 		c3_p0_cmd_empty,
-      output wire 		c3_p0_cmd_full,
-      input	 wire 	c3_p0_wr_clk,
-      input	 wire 	c3_p0_wr_en,
-      input  wire [C3_P0_MASK_SIZE - 1:0]	c3_p0_wr_mask,
-      input  wire [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_wr_data,
-      output wire 		c3_p0_wr_full,
-      output wire 		c3_p0_wr_empty,
-      output wire  [6:0]	c3_p0_wr_count,
-      output wire 		c3_p0_wr_underrun,
-      output wire 		c3_p0_wr_error,
-      input	 wire 	c3_p0_rd_clk,
-      input	 wire 	c3_p0_rd_en,
-      output wire  [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_rd_data,
-      output wire 		c3_p0_rd_full,
-      output wire 		c3_p0_rd_empty,
-      output wire  [6:0]	c3_p0_rd_count,
-      output wire 		c3_p0_rd_overflow,
-      output wire 		c3_p0_rd_error,
-      input	 wire 	c3_p2_cmd_clk,
-      input	 wire 	c3_p2_cmd_en,
-      input  wire [2:0]	c3_p2_cmd_instr,
-      input  wire [5:0]	c3_p2_cmd_bl,
-      input  wire [29:0]	c3_p2_cmd_byte_addr,
-      output wire 		c3_p2_cmd_empty,
-      output wire 		c3_p2_cmd_full,
-      input	 wire 	c3_p2_rd_clk,
-      input	 wire 	c3_p2_rd_en,
-      output wire  [31:0]	c3_p2_rd_data,
-      output wire 		c3_p2_rd_full,
-      output wire 		c3_p2_rd_empty,
-      output wire  [6:0]	c3_p2_rd_count,
-      output wire 		c3_p2_rd_overflow,
-      output wire 		c3_p2_rd_error
+      input	   wire 	c3_p0_cmd_clk,
+      input	   wire 	c3_p0_cmd_en,
+      input    wire [2:0]	c3_p0_cmd_instr,
+      input    wire [5:0]	c3_p0_cmd_bl,
+      input    wire [29:0]	c3_p0_cmd_byte_addr,
+      output   wire 		c3_p0_cmd_empty,
+      output   wire 		c3_p0_cmd_full,
+      input	   wire 	c3_p0_wr_clk,
+      input	   wire 	c3_p0_wr_en,
+      input    wire [C3_P0_MASK_SIZE - 1:0]	c3_p0_wr_mask,
+      input    wire [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_wr_data,
+      output   wire 		c3_p0_wr_full,
+      output   wire 		c3_p0_wr_empty,
+      output   wire  [6:0]	c3_p0_wr_count,
+      output   wire 		c3_p0_wr_underrun,
+      output   wire 		c3_p0_wr_error,
+      input	   wire 	c3_p0_rd_clk,
+      input	   wire 	c3_p0_rd_en,
+      output   wire  [C3_P0_DATA_PORT_SIZE - 1:0]	c3_p0_rd_data,
+      output   wire 		c3_p0_rd_full,
+      output   wire 		c3_p0_rd_empty,
+      output   wire  [6:0]	c3_p0_rd_count,
+      output   wire 		c3_p0_rd_overflow,
+      output   wire 		c3_p0_rd_error,
+      input	   wire 	c3_p2_cmd_clk,
+      input	   wire 	c3_p2_cmd_en,
+      input    wire [2:0]	c3_p2_cmd_instr,
+      input    wire [5:0]	c3_p2_cmd_bl,
+      input    wire [29:0]	c3_p2_cmd_byte_addr,
+      output   wire 		c3_p2_cmd_empty,
+      output   wire 		c3_p2_cmd_full,
+      input	   wire 	c3_p2_rd_clk,
+      input	   wire 	c3_p2_rd_en,
+      output   wire  [31:0]	c3_p2_rd_data,
+      output   wire 		c3_p2_rd_full,
+      output   wire 		c3_p2_rd_empty,
+      output   wire  [6:0]	c3_p2_rd_count,
+      output   wire 		c3_p2_rd_overflow,
+      output   wire 		c3_p2_rd_error
 );
 // The parameter CX_PORT_ENABLE shows all the active user ports in the design.
 // For example, the value 6'b111100 tells that only port-2, port-3, port-4
@@ -174,11 +174,11 @@ module ddr2_controller #
 // Chapter-2 of ug388.pdf in the /docs directory for further details.
    localparam C3_PORT_ENABLE              = 6'b000101;
    localparam C3_PORT_CONFIG             =  "B32_B32_R32_R32_R32_R32";
-   localparam C3_CLKOUT0_DIVIDE       = 1;       
-   localparam C3_CLKOUT1_DIVIDE       = 1;       
+   localparam C3_CLKOUT0_DIVIDE       = 2;       
+   localparam C3_CLKOUT1_DIVIDE       = 2;       
    localparam C3_CLKOUT2_DIVIDE       = 16;       
    localparam C3_CLKOUT3_DIVIDE       = 8;       
-   localparam C3_CLKFBOUT_MULT        = 2;       
+   localparam C3_CLKFBOUT_MULT        = 4;       
    localparam C3_DIVCLK_DIVIDE        = 1;       
    localparam C3_ARB_ALGORITHM        = 0;       
    localparam C3_ARB_NUM_TIME_SLOTS   = 12;       
