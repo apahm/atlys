@@ -204,6 +204,16 @@ NET "hdmi_rx_n(1)"                  LOC = "L18" |IOSTANDARD = TMDS_33 ;
 NET "hdmi_rx_p(0)"  	            LOC = "K17" |IOSTANDARD = TMDS_33 ; # Blue	
 NET "hdmi_rx_n(0)"                  LOC = "K18" |IOSTANDARD = TMDS_33 ;
 
+#HDMI in Ports - J1 IN port
+#NET "hdmi_rx_clk_p"  	            LOC = "D11" |IOSTANDARD = TMDS_33 ; # CLK
+#NET "hdmi_rx_clk_n"                 LOC = "C11" |IOSTANDARD = TMDS_33 ;
+#NET "hdmi_rx_p(2)"  	            LOC = "B12" |IOSTANDARD = TMDS_33 ; # Red
+#NET "hdmi_rx_n(2)"                  LOC = "A12" |IOSTANDARD = TMDS_33 ;
+#NET "hdmi_rx_p(1)"  	            LOC = "B11" |IOSTANDARD = TMDS_33 ; # Green	
+#NET "hdmi_rx_n(1)"                  LOC = "A11" |IOSTANDARD = TMDS_33 ;
+#NET "hdmi_rx_p(0)"  	            LOC = "G9" |IOSTANDARD = TMDS_33 ; # Blue	
+#NET "hdmi_rx_n(0)"                  LOC = "F9" |IOSTANDARD = TMDS_33 ;
+
 NET "core_inst/hdmi_top_inst/dvi_rx0/rxclk" TNM_NET = DVI_CLOCK0;
 TIMESPEC TS_DVI_CLOCK0 = PERIOD "DVI_CLOCK0" 12.5 ns HIGH 50%;
 

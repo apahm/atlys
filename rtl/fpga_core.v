@@ -151,6 +151,22 @@ wire c3_calib_done;
 wire ddr_rzq;
 wire ddr_zio;
 
+/* 
+*   LED Debug
+*/
+`ifdef LED_DEBUG
+
+    assign led[0] = c3_calib_done;
+    assign led[1] = hdmi_de;
+    assign led[2] = hdmi_blue_vld;
+    assign led[3] = hdmi_green_vld;
+    assign led[4] = hdmi_red_vld;
+    assign led[5] = hdmi_blue_rdy;
+    assign led[6] = hdmi_green_rdy;
+    assign led[7] = hdmi_red_rdy;
+
+`endif
+
 ddr2_controller# (
     .C3_P0_MASK_SIZE(4),
     .C3_P0_DATA_PORT_SIZE(32),
@@ -378,7 +394,7 @@ uart_fifo (
 );
 
 /* 
-*   Module Ethernet: UDP
+*   Module Ethernet: MAC
 */
 
 // AXI between MAC and Ethernet modules
@@ -394,8 +410,8 @@ wire tx_axis_tready;
 wire tx_axis_tlast;
 wire tx_axis_tuser;
 
-// Ethernet frame between Ethernet modules and UDP stack
-wire rx_eth_hdr_ready = 1'b0;
+
+wire rx_eth_hdr_ready;
 wire rx_eth_hdr_valid;
 wire [47:0] rx_eth_dest_mac;
 wire [47:0] rx_eth_src_mac;
@@ -409,7 +425,7 @@ wire rx_eth_payload_axis_tuser;
 wire tx_eth_hdr_ready;
 wire tx_eth_hdr_valid;
 wire [47:0] tx_eth_dest_mac;
-wire [47:0] tx_eth_src_mac = 48'h02_00_00_00_00_00;;
+wire [47:0] tx_eth_src_mac;
 wire [15:0] tx_eth_type;
 wire [7:0] tx_eth_payload_axis_tdata;
 wire tx_eth_payload_axis_tvalid;
