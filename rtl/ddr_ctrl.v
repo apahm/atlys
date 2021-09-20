@@ -81,4 +81,5 @@ localparam [2:0]
 reg [2:0] state_reg;
 
 
+
 endmodule 
