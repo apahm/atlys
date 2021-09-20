@@ -74,14 +74,6 @@ module axis_gmii_rx #
     output wire                     error_bad_fcs
 );
 
-// bus width assertions
-initial begin
-    if (DATA_WIDTH != 8) begin
-        $error("Error: Interface width must be 8");
-        $finish;
-    end
-end
-
 localparam [7:0]
     ETH_PRE = 8'h55,
     ETH_SFD = 8'hD5;

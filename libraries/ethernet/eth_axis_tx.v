@@ -80,14 +80,6 @@ parameter PTR_WIDTH = $clog2(CYCLE_COUNT);
 
 parameter OFFSET = 14 % KEEP_WIDTH;
 
-// bus width assertions
-initial begin
-    if (KEEP_WIDTH * 8 != DATA_WIDTH) begin
-        $error("Error: AXI stream interface requires byte (8-bit) granularity (instance %m)");
-        $finish;
-    end
-end
-
 /*
 
 Ethernet frame

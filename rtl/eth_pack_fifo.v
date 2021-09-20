@@ -34,8 +34,6 @@ module eth_pack_fifo
     input  wire [7:0]  s_frame_axis_tdata,
     input  wire        s_frame_axis_tvalid,
     output wire        s_frame_axis_tready,
-    input  wire        s_frame_axis_tlast,
-    input  wire        s_frame_axis_tuser,
     /*
      * Ethernet frame output
      */

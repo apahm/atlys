@@ -132,24 +132,6 @@ parameter EXPAND_BUS = M_KEEP_WIDTH_INT > S_KEEP_WIDTH_INT;
 parameter DATA_WIDTH = EXPAND_BUS ? M_DATA_WIDTH : S_DATA_WIDTH;
 parameter KEEP_WIDTH = EXPAND_BUS ? M_KEEP_WIDTH_INT : S_KEEP_WIDTH_INT;
 
-// bus width assertions
-initial begin
-    if (S_DATA_WORD_SIZE * S_KEEP_WIDTH_INT != S_DATA_WIDTH) begin
-        $error("Error: input data width not evenly divisble (instance %m)");
-        $finish;
-    end
-
-    if (M_DATA_WORD_SIZE * M_KEEP_WIDTH_INT != M_DATA_WIDTH) begin
-        $error("Error: output data width not evenly divisble (instance %m)");
-        $finish;
-    end
-
-    if (S_DATA_WORD_SIZE != M_DATA_WORD_SIZE) begin
-        $error("Error: word size mismatch (instance %m)");
-        $finish;
-    end
-end
-
 wire [DATA_WIDTH-1:0]  pre_fifo_axis_tdata;
 wire [KEEP_WIDTH-1:0]  pre_fifo_axis_tkeep;
 wire                   pre_fifo_axis_tvalid;

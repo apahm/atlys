@@ -119,34 +119,6 @@ module axis_async_fifo #
 
 parameter ADDR_WIDTH = (KEEP_ENABLE && KEEP_WIDTH > 1) ? $clog2(DEPTH/KEEP_WIDTH) : $clog2(DEPTH);
 
-// check configuration
-initial begin
-    if (PIPELINE_OUTPUT < 1) begin
-        $error("Error: PIPELINE_OUTPUT must be at least 1 (instance %m)");
-        $finish;
-    end
-
-    if (FRAME_FIFO && !LAST_ENABLE) begin
-        $error("Error: FRAME_FIFO set requires LAST_ENABLE set (instance %m)");
-        $finish;
-    end
-
-    if (DROP_BAD_FRAME && !FRAME_FIFO) begin
-        $error("Error: DROP_BAD_FRAME set requires FRAME_FIFO set (instance %m)");
-        $finish;
-    end
-
-    if (DROP_WHEN_FULL && !FRAME_FIFO) begin
-        $error("Error: DROP_WHEN_FULL set requires FRAME_FIFO set (instance %m)");
-        $finish;
-    end
-
-    if (DROP_BAD_FRAME && (USER_BAD_FRAME_MASK & {USER_WIDTH{1'b1}}) == 0) begin
-        $error("Error: Invalid USER_BAD_FRAME_MASK value (instance %m)");
-        $finish;
-    end
-end
-
 localparam KEEP_OFFSET = DATA_WIDTH;
 localparam LAST_OFFSET = KEEP_OFFSET + (KEEP_ENABLE ? KEEP_WIDTH : 0);
 localparam ID_OFFSET   = LAST_OFFSET + (LAST_ENABLE ? 1          : 0);
