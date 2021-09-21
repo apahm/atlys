@@ -112,7 +112,7 @@ always @* begin
             // idle state - wait s_fifo_wr_data_count == 512
             hdr_ptr_next = 6'd0;
 
-            if (s_fifo_wr_data_count == 11'd512) begin
+            if (s_fifo_wr_data_count == 11'd512 || s_fifo_wr_data_count > 11'd512) begin
                 m_eth_hdr_valid_next = 1'b1;
                 if (m_eth_payload_axis_tready_int_reg) begin
                     m_eth_payload_axis_tvalid_int = 1'b1;
@@ -155,6 +155,7 @@ always @* begin
                     6'h13: begin
                         m_eth_payload_axis_tdata_int = hdr_ptr_reg;
                         s_ip_payload_axis_tready_next = m_eth_payload_axis_tready_int_early;
+                        hdr_ptr_next = 6'd0;
                         state_next = STATE_WRITE_PAYLOAD;
                     end
                 endcase
