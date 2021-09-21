@@ -191,7 +191,6 @@ always @* begin
             state_next = STATE_WRITE_PAYLOAD_LAST;
         end
         STATE_WAIT_LAST: begin
-
         end
     endcase
 end
