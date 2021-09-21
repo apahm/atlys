@@ -149,7 +149,7 @@ module ddr2 (
     `define MAX_SIZE   (1<<(BA_BITS+ROW_BITS+COL_BITS-BL_BITS))
     `define MEM_SIZE   (1<<MEM_BITS)
     `define MAX_PIPE   2*(AL_MAX + CL_MAX)
-
+    `define DEBUG      1
     // Declare Ports
     input   ck;
     input   ck_n;

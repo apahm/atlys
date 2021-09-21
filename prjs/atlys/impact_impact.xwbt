@@ -1,0 +1,8 @@
+INTSTYLE=impact
+INFILE=/home/alex/atlys/prjs/atlys/impact.xsl
+OUTFILE=/home/alex/atlys/prjs/atlys/impact.xsl
+FAMILY=Single
+PART=Single
+WORKINGDIR=/home/alex/atlys/prjs/atlys
+LICENSE=iMPACT
+USER_INFO=iMPACT

@@ -27,9 +27,10 @@ THE SOFTWARE.
 module eth_pack_fifo
 (
     input  wire        ddr_clk,
-
-    input  wire        eth_clk,
     input  wire        ddr_rst,
+    
+    input  wire        eth_clk,
+    input  wire        eth_rst,
 
     input  wire [7:0]  s_frame_axis_tdata,
     input  wire        s_frame_axis_tvalid,
@@ -83,11 +84,11 @@ eth_tx_fifo_inst (
 eth_pack
 eth_pack_inst (
     .clk(eth_clk),
-    .rst(ddr_rst),
+    .rst(eth_rst),
 
-    .s_frame_axis_tdata(fifo_m_axis_tdata),
-    .s_frame_axis_tvalid(fifo_m_axis_tvalid),
-    .s_frame_axis_tready(fifo_m_axis_tready),
+    .s_fifo_axis_tdata(fifo_m_axis_tdata),
+    .s_fifo_axis_tvalid(fifo_m_axis_tvalid),
+    .s_fifo_axis_tready(fifo_m_axis_tready),
     .s_fifo_wr_data_count(fifo_axis_wr_data_count),
     .s_fifo_rd_data_count(fifo_axis_rd_data_count),
     /*

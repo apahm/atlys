@@ -70,9 +70,9 @@ reg [7:0] last_word_data_reg = 8'd0;
 reg s_ip_payload_axis_tready_reg = 1'b0, s_ip_payload_axis_tready_next;
 
 reg m_eth_hdr_valid_reg = 1'b0, m_eth_hdr_valid_next;
-reg [47:0] m_eth_dest_mac_reg = 48'd0;
-reg [47:0] m_eth_src_mac_reg = 48'd0;
-reg [15:0] m_eth_type_reg = 16'd0;
+reg [47:0] m_eth_dest_mac_reg;
+reg [47:0] m_eth_src_mac_reg;
+reg [15:0] m_eth_type_reg;
 
 // internal datapath
 reg [7:0] m_eth_payload_axis_tdata_int;
@@ -172,61 +172,25 @@ always @* begin
             if (s_fifo_axis_tready && s_fifo_axis_tvalid) begin
                 // word transfer through
                 word_count_next = word_count_reg - 6'd1;
-                if (s_ip_payload_axis_tlast) begin
-                    if (word_count_reg != 16'd1) begin
-                        // end of frame, but length does not match
-                        m_eth_payload_axis_tuser_int = 1'b1;
-                        error_payload_early_termination_next = 1'b1;
-                    end
-                    s_ip_payload_axis_tready_next = 1'b0;
-                    state_next = STATE_IDLE;
+                if (word_count_reg == 16'd1) begin
+                    m_eth_payload_axis_tvalid_int = 1'b1;
+                    m_eth_payload_axis_tlast_int = 1'b1;
+                end else if (word_count_reg == 16'd0) begin
+                    m_eth_payload_axis_tvalid_int = 1'b0;
+                    m_eth_payload_axis_tlast_int = 1'b0;
+                    state_next = STATE_WRITE_PAYLOAD_LAST;
                 end else begin
-                    if (word_count_reg == 16'd1) begin
-                        store_last_word = 1'b1;
-                        m_eth_payload_axis_tvalid_int = 1'b0;
-                        state_next = STATE_WRITE_PAYLOAD_LAST;
-                    end else begin
-                        state_next = STATE_WRITE_PAYLOAD;
-                    end
-                end
+                    state_next = STATE_WRITE_PAYLOAD;
+                end               
             end else begin
                 state_next = STATE_WRITE_PAYLOAD;
             end
         end
         STATE_WRITE_PAYLOAD_LAST: begin
-            // read and discard until end of frame
-            s_ip_payload_axis_tready_next = m_eth_payload_axis_tready_int_early;
-
-            m_eth_payload_axis_tdata_int = last_word_data_reg;
-            m_eth_payload_axis_tvalid_int = s_ip_payload_axis_tvalid && s_ip_payload_axis_tlast;
-            m_eth_payload_axis_tlast_int = s_ip_payload_axis_tlast;
-            m_eth_payload_axis_tuser_int = s_ip_payload_axis_tuser;
-
-            if (s_ip_payload_axis_tready && s_ip_payload_axis_tvalid) begin
-                if (s_ip_payload_axis_tlast) begin
-                    s_ip_payload_axis_tready_next = 1'b0;
-                    state_next = STATE_IDLE;
-                end else begin
-                    state_next = STATE_WRITE_PAYLOAD_LAST;
-                end
-            end else begin
-                state_next = STATE_WRITE_PAYLOAD_LAST;
-            end
+            state_next = STATE_WRITE_PAYLOAD_LAST;
         end
         STATE_WAIT_LAST: begin
-            // read and discard until end of frame
-            s_ip_payload_axis_tready_next = 1'b1;
 
-            if (s_ip_payload_axis_tready && s_ip_payload_axis_tvalid) begin
-                if (s_ip_payload_axis_tlast) begin
-                    s_ip_payload_axis_tready_next = 1'b0;
-                    state_next = STATE_IDLE;
-                end else begin
-                    state_next = STATE_WAIT_LAST;
-                end
-            end else begin
-                state_next = STATE_WAIT_LAST;
-            end
         end
     endcase
 end
@@ -236,11 +200,15 @@ always @(posedge clk) begin
         state_reg <= STATE_IDLE;
         s_ip_payload_axis_tready_reg <= 1'b0;
         m_eth_hdr_valid_reg <= 1'b0;
-        m_eth_dest_mac_reg <= 48'hD4_5D_64_A5_F1_A8;
-        m_eth_src_mac_reg <= 48'h02_00_00_00_00_00;
-        m_eth_type_reg <= 16'h0800;
+        m_eth_dest_mac_reg <= 48'h0;
+        m_eth_src_mac_reg <= 48'h0;
+        m_eth_type_reg <= 16'h0;
     end else begin
         state_reg <= state_next;
+
+        m_eth_dest_mac_reg <= 48'hD45D64A5F1A8;
+        m_eth_src_mac_reg <= 48'h020000000000;
+        m_eth_type_reg <= 16'h0800;
 
         s_ip_payload_axis_tready_reg <= s_ip_payload_axis_tready_next;
 

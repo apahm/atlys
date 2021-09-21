@@ -106,6 +106,25 @@ module bench_top;
 		.ddr_udm(ddr_udm)
 	);
 
+
+ddr2
+ddr2_inst (
+    .ck(ddr_ck),
+    .ck_n(ddr_ck_n),
+    .cke(ddr_cke),
+    .cs_n(1'b0),
+    .ras_n(ddr_ras_n),
+    .cas_n(ddr_cas_n),
+    .we_n(ddr_we_n),
+    .dm_rdqs(ddr_udqs),
+    .ba(ddr_ba),
+    .addr(ddr_a),
+    .dq(ddr_dq),
+    .dqs(ddr_dqs),
+    .dqs_n(ddr_dqs_n),
+    .rdqs_n(ddr_udqs_n),
+    .odt(ddr_odt)
+);
 	always #5 clk <= !clk;
 
 	initial begin
@@ -125,7 +144,7 @@ module bench_top;
 
 		// Wait 100 ns for global reset to finish
 		#100;
-
+		reset_n = 1;
 		// Add stimulus here
 
 	end

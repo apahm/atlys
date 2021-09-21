@@ -99,7 +99,7 @@ module fpga_core #
 /* 
 *   Module DDR2 Controller
 */
-
+`define LED_DEBUG
 wire				                c3_p0_cmd_clk;
 wire				                c3_p0_cmd_en;
 wire    [2:0]			            c3_p0_cmd_instr;
@@ -151,14 +151,16 @@ wire c3_calib_done;
 wire ddr_rzq;
 wire ddr_zio;
 
+wire s_frame_axis_tready;
+
 /* 
 *   LED Debug
 */
 `ifdef LED_DEBUG
 
     assign led[0] = c3_calib_done;
-    assign led[1] = hdmi_de;
-    assign led[2] = hdmi_blue_vld;
+    assign led[1] = c3_rst0;
+    assign led[2] = s_frame_axis_tready;
     assign led[3] = hdmi_green_vld;
     assign led[4] = hdmi_red_vld;
     assign led[5] = hdmi_blue_rdy;
@@ -397,6 +399,7 @@ uart_fifo (
 *   Module Ethernet: MAC
 */
 
+
 // AXI between MAC and Ethernet modules
 wire [7:0] rx_axis_tdata;
 wire rx_axis_tvalid;
@@ -540,65 +543,27 @@ eth_axis_tx_inst (
 );
 
 
-axis_fifo #(
-    .DEPTH(8192),
-    .DATA_WIDTH(8),
-    .KEEP_ENABLE(0),
-    .ID_ENABLE(0),
-    .DEST_ENABLE(0),
-    .USER_ENABLE(1),
-    .USER_WIDTH(1),
-    .FRAME_FIFO(0)
-)
-udp_payload_fifo (
-    .clk(clk),
-    .rst(rst),
-
-    // AXI input
-    .s_axis_tdata(rx_eth_payload_axis_tdata),
-    .s_axis_tkeep(0),
-    .s_axis_tvalid(rx_eth_payload_axis_tvalid),
-    .s_axis_tready(rx_eth_payload_axis_tready),
-    .s_axis_tlast(rx_eth_payload_axis_tlast),
-    .s_axis_tid(0),
-    .s_axis_tdest(0),
-    .s_axis_tuser(rx_eth_payload_axis_tuser),
-
-    // AXI output
-    .m_axis_tdata(tx_eth_payload_axis_tdata),
-    .m_axis_tkeep(),
-    .m_axis_tvalid(tx_eth_payload_axis_tvalid),
-    .m_axis_tready(tx_eth_payload_axis_tready),
-    .m_axis_tlast(tx_eth_payload_axis_tlast),
-    .m_axis_tid(),
-    .m_axis_tdest(),
-    .m_axis_tuser(tx_eth_payload_axis_tuser),
-
-    // Status
-    .status_overflow(),
-    .status_bad_frame(),
-    .status_good_frame()
-);
 
 eth_pack_fifo
 eth_pack_fifo_inst
 (
     .ddr_clk(c3_clk0),
-    .eth_clk(clk),
-
     .ddr_rst(c3_rst0),
+    
+    .eth_clk(clk),
+    .eth_rst(rst),
 
-    .s_frame_axis_tdata(),
-    .s_frame_axis_tvalid(),
-    .s_frame_axis_tready(),
+    .s_frame_axis_tdata(8'b1),
+    .s_frame_axis_tvalid(1'b1),
+    .s_frame_axis_tready(s_frame_axis_tready),
 
     .m_eth_hdr_valid(tx_eth_hdr_valid),
     .m_eth_hdr_ready(tx_eth_hdr_ready),
     .m_eth_dest_mac(tx_eth_dest_mac),
     .m_eth_src_mac(tx_eth_src_mac),
-    .m_eth_type(tx_eth_src_mac),
+    .m_eth_type(tx_eth_type),
     .m_eth_payload_axis_tdata(tx_eth_payload_axis_tdata),
-    .m_eth_payload_axis_tvalid(tx_eth_payload_axis_tdata),
+    .m_eth_payload_axis_tvalid(tx_eth_payload_axis_tvalid),
     .m_eth_payload_axis_tready(tx_eth_payload_axis_tready),
     .m_eth_payload_axis_tlast(tx_eth_payload_axis_tlast),
     .m_eth_payload_axis_tuser(tx_eth_payload_axis_tuser)
