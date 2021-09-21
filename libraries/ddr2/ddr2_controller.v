@@ -176,7 +176,7 @@ module ddr2_controller #
    localparam C3_PORT_CONFIG             =  "B32_B32_R32_R32_R32_R32";
    localparam C3_CLKOUT0_DIVIDE       = 2;       
    localparam C3_CLKOUT1_DIVIDE       = 2;       
-   localparam C3_CLKOUT2_DIVIDE       = 16;       
+   localparam C3_CLKOUT2_DIVIDE       = 4;       
    localparam C3_CLKOUT3_DIVIDE       = 8;       
    localparam C3_CLKFBOUT_MULT        = 4;       
    localparam C3_DIVCLK_DIVIDE        = 1;       

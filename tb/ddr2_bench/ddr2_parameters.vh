@@ -31,37 +31,6 @@
 
                                           // SYMBOL UNITS DESCRIPTION
                                           // ------ ----- -----------
-`ifdef sg187E
-    parameter TCK_MIN          =    1875; // tCK    ps    Minimum Clock Cycle Time
-    parameter TJIT_PER         =      90; // tJIT(per)  ps Period JItter
-    parameter TJIT_DUTY        =      75; // tJIT(duty) ps Half Period Jitter
-    parameter TJIT_CC          =     180; // tJIT(cc)   ps Cycle to Cycle jitter
-    parameter TERR_2PER        =     132; // tERR(nper) ps Accumulated Error (2-cycle)
-    parameter TERR_3PER        =     157; // tERR(nper) ps Accumulated Error (3-cycle)
-    parameter TERR_4PER        =     175; // tERR(nper) ps Accumulated Error (4-cycle)
-    parameter TERR_5PER        =     188; // tERR(nper) ps Accumulated Error (5-cycle)
-    parameter TERR_N1PER       =     250; // tERR(nper) ps Accumulated Error (6-10-cycle)
-    parameter TERR_N2PER       =     425; // tERR(nper) ps Accumulated Error (11-50-cycle)
-    parameter TQHS             =     250; // tQHS   ps    Data hold skew factor
-    parameter TAC              =     350; // tAC    ps    DQ output access time from CK/CK#
-    parameter TDS              =       0; // tDS    ps    DQ and DM input setup time relative to DQS
-    parameter TDH              =      75; // tDH    ps    DQ and DM input hold time relative to DQS
-    parameter TDQSCK           =     300; // tDQSCK ps    DQS output access time from CK/CK#
-    parameter TDQSQ            =     175; // tDQSQ  ps    DQS-DQ skew, DQS to last DQ valid, per group, per access
-    parameter TIS              =     125; // tIS    ps    Input Setup Time
-    parameter TIH              =     200; // tIH    ps    Input Hold Time
-    parameter TRC              =   54000; // tRC    ps    Active to Active/Auto Refresh command time
-    parameter TRCD             =   13125; // tRCD   ps    Active to Read/Write command time
-    parameter TWTR             =    7500; // tWTR   ps    Write to Read command delay
-    parameter TRP              =   13125; // tRP    ps    Precharge command period
-    parameter TRPA             =   15000; // tRPA   ps    Precharge All period
-    parameter TXARDS           =      10; // tXARDS tCK   Exit low power active power down to a read command
-    parameter TXARD            =       3; // tXARD  tCK   Exit active power down to a read command
-    parameter TXP              =       3; // tXP    tCK   Exit power down to a non-read command
-    parameter TANPD            =       4; // tANPD  tCK   ODT to power-down entry latency
-    parameter TAXPD            =      11; // tAXPD  tCK   ODT power-down exit latency
-    parameter CL_TIME          =   13125; // CL     ps    Minimum CAS Latency
-`else `ifdef sg25E
     parameter TCK_MIN          =    2500; // tCK    ps    Minimum Clock Cycle Time
     parameter TJIT_PER         =     100; // tJIT(per)  ps Period JItter
     parameter TJIT_DUTY        =     100; // tJIT(duty) ps Half Period Jitter
@@ -91,180 +60,8 @@
     parameter TANPD            =       3; // tANPD  tCK   ODT to power-down entry latency
     parameter TAXPD            =      10; // tAXPD  tCK   ODT power-down exit latency
     parameter CL_TIME          =   12500; // CL     ps    Minimum CAS Latency
-`else `ifdef sg25
-    parameter TCK_MIN          =    2500; // tCK    ps    Minimum Clock Cycle Time
-    parameter TJIT_PER         =     100; // tJIT(per)  ps Period JItter
-    parameter TJIT_DUTY        =     100; // tJIT(duty) ps Half Period Jitter
-    parameter TJIT_CC          =     200; // tJIT(cc)   ps Cycle to Cycle jitter
-    parameter TERR_2PER        =     150; // tERR(nper) ps Accumulated Error (2-cycle)
-    parameter TERR_3PER        =     175; // tERR(nper) ps Accumulated Error (3-cycle)
-    parameter TERR_4PER        =     200; // tERR(nper) ps Accumulated Error (4-cycle)
-    parameter TERR_5PER        =     200; // tERR(nper) ps Accumulated Error (5-cycle)
-    parameter TERR_N1PER       =     300; // tERR(nper) ps Accumulated Error (6-10-cycle)
-    parameter TERR_N2PER       =     450; // tERR(nper) ps Accumulated Error (11-50-cycle)
-    parameter TQHS             =     300; // tQHS   ps    Data hold skew factor
-    parameter TAC              =     400; // tAC    ps    DQ output access time from CK/CK#
-    parameter TDS              =      50; // tDS    ps    DQ and DM input setup time relative to DQS
-    parameter TDH              =     125; // tDH    ps    DQ and DM input hold time relative to DQS
-    parameter TDQSCK           =     350; // tDQSCK ps    DQS output access time from CK/CK#
-    parameter TDQSQ            =     200; // tDQSQ  ps    DQS-DQ skew, DQS to last DQ valid, per group, per access
-    parameter TIS              =     175; // tIS    ps    Input Setup Time
-    parameter TIH              =     250; // tIH    ps    Input Hold Time
-    parameter TRC              =   55000; // tRC    ps    Active to Active/Auto Refresh command time
-    parameter TRCD             =   15000; // tRCD   ps    Active to Read/Write command time
-    parameter TWTR             =    7500; // tWTR   ps    Write to Read command delay
-    parameter TRP              =   15000; // tRP    ps    Precharge command period
-    parameter TRPA             =   17500; // tRPA   ps    Precharge All period
-    parameter TXARDS           =       8; // tXARDS tCK   Exit low power active power down to a read command
-    parameter TXARD            =       2; // tXARD  tCK   Exit active power down to a read command
-    parameter TXP              =       2; // tXP    tCK   Exit power down to a non-read command
-    parameter TANPD            =       3; // tANPD  tCK   ODT to power-down entry latency
-    parameter TAXPD            =      10; // tAXPD  tCK   ODT power-down exit latency
-    parameter CL_TIME          =   15000; // CL     ps    Minimum CAS Latency
-`else `ifdef sg3E
-    parameter TCK_MIN          =    3000; // tCK    ps    Minimum Clock Cycle Time
-    parameter TJIT_PER         =     125; // tJIT(per)  ps Period JItter
-    parameter TJIT_DUTY        =     125; // tJIT(duty) ps Half Period Jitter
-    parameter TJIT_CC          =     250; // tJIT(cc)   ps Cycle to Cycle jitter
-    parameter TERR_2PER        =     175; // tERR(nper) ps Accumulated Error (2-cycle)
-    parameter TERR_3PER        =     225; // tERR(nper) ps Accumulated Error (3-cycle)
-    parameter TERR_4PER        =     250; // tERR(nper) ps Accumulated Error (4-cycle)
-    parameter TERR_5PER        =     250; // tERR(nper) ps Accumulated Error (5-cycle)
-    parameter TERR_N1PER       =     350; // tERR(nper) ps Accumulated Error (6-10-cycle)
-    parameter TERR_N2PER       =     450; // tERR(nper) ps Accumulated Error (11-50-cycle)
-    parameter TQHS             =     340; // tQHS   ps    Data hold skew factor
-    parameter TAC              =     450; // tAC    ps    DQ output access time from CK/CK#
-    parameter TDS              =     100; // tDS    ps    DQ and DM input setup time relative to DQS
-    parameter TDH              =     175; // tDH    ps    DQ and DM input hold time relative to DQS
-    parameter TDQSCK           =     400; // tDQSCK ps    DQS output access time from CK/CK#
-    parameter TDQSQ            =     240; // tDQSQ  ps    DQS-DQ skew, DQS to last DQ valid, per group, per access
-    parameter TIS              =     200; // tIS    ps    Input Setup Time
-    parameter TIH              =     275; // tIH    ps    Input Hold Time
-    parameter TRC              =   54000; // tRC    ps    Active to Active/Auto Refresh command time
-    parameter TRCD             =   12000; // tRCD   ps    Active to Read/Write command time
-    parameter TWTR             =    7500; // tWTR   ps    Write to Read command delay
-    parameter TRP              =   12000; // tRP    ps    Precharge command period
-    parameter TRPA             =   15000; // tRPA   ps    Precharge All period
-    parameter TXARDS           =       7; // tXARDS tCK   Exit low power active power down to a read command
-    parameter TXARD            =       2; // tXARD  tCK   Exit active power down to a read command
-    parameter TXP              =       2; // tXP    tCK   Exit power down to a non-read command
-    parameter TANPD            =       3; // tANPD  tCK   ODT to power-down entry latency
-    parameter TAXPD            =       8; // tAXPD  tCK   ODT power-down exit latency
-    parameter CL_TIME          =   12000; // CL     ps    Minimum CAS Latency
-`else `ifdef sg3
-    parameter TCK_MIN          =    3000; // tCK    ps    Minimum Clock Cycle Time
-    parameter TJIT_PER         =     125; // tJIT(per)  ps Period JItter
-    parameter TJIT_DUTY        =     125; // tJIT(duty) ps Half Period Jitter
-    parameter TJIT_CC          =     250; // tJIT(cc)   ps Cycle to Cycle jitter
-    parameter TERR_2PER        =     175; // tERR(nper) ps Accumulated Error (2-cycle)
-    parameter TERR_3PER        =     225; // tERR(nper) ps Accumulated Error (3-cycle)
-    parameter TERR_4PER        =     250; // tERR(nper) ps Accumulated Error (4-cycle)
-    parameter TERR_5PER        =     250; // tERR(nper) ps Accumulated Error (5-cycle)
-    parameter TERR_N1PER       =     350; // tERR(nper) ps Accumulated Error (6-10-cycle)
-    parameter TERR_N2PER       =     450; // tERR(nper) ps Accumulated Error (11-50-cycle)
-    parameter TQHS             =     340; // tQHS   ps    Data hold skew factor
-    parameter TAC              =     450; // tAC    ps    DQ output access time from CK/CK#
-    parameter TDS              =     100; // tDS    ps    DQ and DM input setup time relative to DQS
-    parameter TDH              =     175; // tDH    ps    DQ and DM input hold time relative to DQS
-    parameter TDQSCK           =     400; // tDQSCK ps    DQS output access time from CK/CK#
-    parameter TDQSQ            =     240; // tDQSQ  ps    DQS-DQ skew, DQS to last DQ valid, per group, per access
-    parameter TIS              =     200; // tIS    ps    Input Setup Time
-    parameter TIH              =     275; // tIH    ps    Input Hold Time
-    parameter TRC              =   55000; // tRC    ps    Active to Active/Auto Refresh command time
-    parameter TRCD             =   15000; // tRCD   ps    Active to Read/Write command time
-    parameter TWTR             =    7500; // tWTR   ps    Write to Read command delay
-    parameter TRP              =   15000; // tRP    ps    Precharge command period
-    parameter TRPA             =   18000; // tRPA   ps    Precharge All period
-    parameter TXARDS           =       7; // tXARDS tCK   Exit low power active power down to a read command
-    parameter TXARD            =       2; // tXARD  tCK   Exit active power down to a read command
-    parameter TXP              =       2; // tXP    tCK   Exit power down to a non-read command
-    parameter TANPD            =       3; // tANPD  tCK   ODT to power-down entry latency
-    parameter TAXPD            =       8; // tAXPD  tCK   ODT power-down exit latency
-    parameter CL_TIME          =   15000; // CL     ps    Minimum CAS Latency
-`else `ifdef sg37E
-    parameter TCK_MIN          =    3750; // tCK    ps    Minimum Clock Cycle Time
-    parameter TJIT_PER         =     125; // tJIT(per)  ps Period JItter
-    parameter TJIT_DUTY        =     125; // tJIT(duty) ps Half Period Jitter
-    parameter TJIT_CC          =     250; // tJIT(cc)   ps Cycle to Cycle jitter
-    parameter TERR_2PER        =     175; // tERR(nper) ps Accumulated Error (2-cycle)
-    parameter TERR_3PER        =     225; // tERR(nper) ps Accumulated Error (3-cycle)
-    parameter TERR_4PER        =     250; // tERR(nper) ps Accumulated Error (4-cycle)
-    parameter TERR_5PER        =     250; // tERR(nper) ps Accumulated Error (5-cycle)
-    parameter TERR_N1PER       =     350; // tERR(nper) ps Accumulated Error (6-10-cycle)
-    parameter TERR_N2PER       =     450; // tERR(nper) ps Accumulated Error (11-50-cycle)
-    parameter TQHS             =     400; // tQHS   ps    Data hold skew factor
-    parameter TAC              =     500; // tAC    ps    DQ output access time from CK/CK#
-    parameter TDS              =     100; // tDS    ps    DQ and DM input setup time relative to DQS
-    parameter TDH              =     225; // tDH    ps    DQ and DM input hold time relative to DQS
-    parameter TDQSCK           =     450; // tDQSCK ps    DQS output access time from CK/CK#
-    parameter TDQSQ            =     300; // tDQSQ  ps    DQS-DQ skew, DQS to last DQ valid, per group, per access
-    parameter TIS              =     250; // tIS    ps    Input Setup Time
-    parameter TIH              =     375; // tIH    ps    Input Hold Time
-    parameter TRC              =   55000; // tRC    ps    Active to Active/Auto Refresh command time
-    parameter TRCD             =   15000; // tRCD   ps    Active to Read/Write command time
-    parameter TWTR             =    7500; // tWTR   ps    Write to Read command delay
-    parameter TRP              =   15000; // tRP    ps    Precharge command period
-    parameter TRPA             =   18750; // tRPA   ps    Precharge All period
-    parameter TXARDS           =       6; // tXARDS tCK   Exit low power active power down to a read command
-    parameter TXARD            =       2; // tXARD  tCK   Exit active power down to a read command
-    parameter TXP              =       2; // tXP    tCK   Exit power down to a non-read command
-    parameter TANPD            =       3; // tANPD  tCK   ODT to power-down entry latency
-    parameter TAXPD            =       8; // tAXPD  tCK   ODT power-down exit latency
-    parameter CL_TIME          =   15000; // CL     ps    Minimum CAS Latency
-`else `define sg5E
-    parameter TCK_MIN          =    5000; // tCK    ps    Minimum Clock Cycle Time
-    parameter TJIT_PER         =     125; // tJIT(per)  ps Period JItter
-    parameter TJIT_DUTY        =     150; // tJIT(duty) ps Half Period Jitter
-    parameter TJIT_CC          =     250; // tJIT(cc)   ps Cycle to Cycle jitter
-    parameter TERR_2PER        =     175; // tERR(nper) ps Accumulated Error (2-cycle)
-    parameter TERR_3PER        =     225; // tERR(nper) ps Accumulated Error (3-cycle)
-    parameter TERR_4PER        =     250; // tERR(nper) ps Accumulated Error (4-cycle)
-    parameter TERR_5PER        =     250; // tERR(nper) ps Accumulated Error (5-cycle)
-    parameter TERR_N1PER       =     350; // tERR(nper) ps Accumulated Error (6-10-cycle)
-    parameter TERR_N2PER       =     450; // tERR(nper) ps Accumulated Error (11-50-cycle)
-    parameter TQHS             =     450; // tQHS   ps    Data hold skew factor
-    parameter TAC              =     600; // tAC    ps    DQ output access time from CK/CK#
-    parameter TDS              =     150; // tDS    ps    DQ and DM input setup time relative to DQS
-    parameter TDH              =     275; // tDH    ps    DQ and DM input hold time relative to DQS
-    parameter TDQSCK           =     500; // tDQSCK ps    DQS output access time from CK/CK#
-    parameter TDQSQ            =     350; // tDQSQ  ps    DQS-DQ skew, DQS to last DQ valid, per group, per access
-    parameter TIS              =     350; // tIS    ps    Input Setup Time
-    parameter TIH              =     475; // tIH    ps    Input Hold Time
-    parameter TRC              =   55000; // tRC    ps    Active to Active/Auto Refresh command time
-    parameter TRCD             =   15000; // tRCD   ps    Active to Read/Write command time
-    parameter TWTR             =   10000; // tWTR   ps    Write to Read command delay
-    parameter TRP              =   15000; // tRP    ps    Precharge command period
-    parameter TRPA             =   20000; // tRPA   ps    Precharge All period
-    parameter TXARDS           =       6; // tXARDS tCK   Exit low power active power down to a read command
-    parameter TXARD            =       2; // tXARD  tCK   Exit active power down to a read command
-    parameter TXP              =       2; // tXP    tCK   Exit power down to a non-read command
-    parameter TANPD            =       3; // tANPD  tCK   ODT to power-down entry latency
-    parameter TAXPD            =       8; // tAXPD  tCK   ODT power-down exit latency
-    parameter CL_TIME          =   15000; // CL     ps    Minimum CAS Latency
-`endif `endif `endif `endif `endif `endif
 
-`ifdef x16
-  `ifdef sg187E
     parameter TFAW             =   45000; // tFAW  ps     Four Bank Activate window
-  `else `ifdef sg25E
-    parameter TFAW             =   45000; // tFAW  ps     Four Bank Activate window
-  `else `ifdef sg25 
-    parameter TFAW             =   45000; // tFAW  ps     Four Bank Activate window
-  `else // sg3E, sg3, sg37E, sg5E
-    parameter TFAW             =   50000; // tFAW  ps     Four Bank Activate window
-  `endif `endif `endif
-`else // x4, x8
-  `ifdef sg187E
-    parameter TFAW             =   35000; // tFAW  ps     Four Bank Activate window
-  `else `ifdef sg25E
-    parameter TFAW             =   35000; // tFAW  ps     Four Bank Activate window
-  `else `ifdef sg25 
-    parameter TFAW             =   35000; // tFAW  ps     Four Bank Activate window
-  `else // sg3E, sg3, sg37E, sg5E
-    parameter TFAW             =   37500; // tFAW  ps     Four Bank Activate window
-  `endif `endif `endif
-`endif
-
     // Timing Parameters
 
     // Mode Register
@@ -321,23 +118,6 @@
 
     // Size Parameters based on Part Width
 
-`ifdef x4
-    parameter ADDR_BITS        =      14; // Address Bits
-    parameter ROW_BITS         =      14; // Number of Address bits
-    parameter COL_BITS         =      11; // Number of Column bits
-    parameter DM_BITS          =       1; // Number of Data Mask bits
-    parameter DQ_BITS          =       4; // Number of Data bits
-    parameter DQS_BITS         =       1; // Number of Dqs bits
-    parameter TRRD             =    7500; // tRRD   Active bank a to Active bank b command time
-`else `ifdef x8
-    parameter ADDR_BITS        =      14; // Address Bits
-    parameter ROW_BITS         =      14; // Number of Address bits
-    parameter COL_BITS         =      10; // Number of Column bits
-    parameter DM_BITS          =       1; // Number of Data Mask bits
-    parameter DQ_BITS          =       8; // Number of Data bits
-    parameter DQS_BITS         =       1; // Number of Dqs bits
-    parameter TRRD             =    7500; // tRRD   Active bank a to Active bank b command time
-`else `define x16
     parameter ADDR_BITS        =      13; // Address Bits
     parameter ROW_BITS         =      13; // Number of Address bits
     parameter COL_BITS         =      10; // Number of Column bits
@@ -345,19 +125,6 @@
     parameter DQ_BITS          =      16; // Number of Data bits
     parameter DQS_BITS         =       2; // Number of Dqs bits
     parameter TRRD             =   10000; // tRRD   Active bank a to Active bank b command time
-`endif `endif
-
-`ifdef QUAD_RANK
-    `define DUAL_RANK // also define DUAL_RANK
-    parameter CS_BITS          =       4; // Number of Chip Select Bits
-    parameter RANKS            =       4; // Number of Chip Select Bits
-`else `ifdef DUAL_RANK
-    parameter CS_BITS          =       2; // Number of Chip Select Bits
-    parameter RANKS            =       2; // Number of Chip Select Bits
-`else
-    parameter CS_BITS          =       2; // Number of Chip Select Bits
-    parameter RANKS            =       1; // Number of Chip Select Bits
-`endif `endif
 
     // Size Parameters
     parameter BA_BITS          =       3; // Set this parmaeter to control how many Bank Address bits

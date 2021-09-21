@@ -29,7 +29,7 @@ module eth_pack_fifo
     input  wire        ddr_clk,
 
     input  wire        eth_clk,
-    input  wire        rst,
+    input  wire        ddr_rst,
 
     input  wire [7:0]  s_frame_axis_tdata,
     input  wire        s_frame_axis_tvalid,
@@ -49,21 +49,20 @@ module eth_pack_fifo
     output wire        m_eth_payload_axis_tuser
 );
 
-wire fifo_m_axis_tvalid;
-wire fifo_m_axis_tready;
-wire fifo_m_axis_tdata;
-wire fifo_m_axis_tlast;
-wire fifo_axis_wr_data_count;
-wire fifo_axis_rd_data_count;
-wire fifo_axis_overflow;
-wire fifo_axis_underflow;
+wire        fifo_m_axis_tvalid;
+wire        fifo_m_axis_tready;
+wire [8:0]  fifo_m_axis_tdata;
+wire [10:0] fifo_axis_wr_data_count;
+wire [10:0] fifo_axis_rd_data_count;
+wire        fifo_axis_overflow;
+wire        fifo_axis_underflow;
 
 
-eth_pack_fifo 
-eth_pack_fifo_inst (
+eth_tx_fifo 
+eth_tx_fifo_inst (
     .m_aclk(eth_clk), // input m_aclk
     .s_aclk(ddr_clk), // input s_aclk
-    .s_aresetn(~rst), // input s_aresetn
+    .s_aresetn(~ddr_rst), // input s_aresetn
 
     .s_axis_tvalid(s_frame_axis_tvalid), // input s_axis_tvalid
     .s_axis_tready(s_frame_axis_tready), // output s_axis_tready
@@ -84,7 +83,7 @@ eth_pack_fifo_inst (
 eth_pack
 eth_pack_inst (
     .clk(eth_clk),
-    .rst(rst),
+    .rst(ddr_rst),
 
     .s_frame_axis_tdata(fifo_m_axis_tdata),
     .s_frame_axis_tvalid(fifo_m_axis_tvalid),

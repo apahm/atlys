@@ -32,8 +32,8 @@ module eth_pack
     input   wire [7:0]   s_fifo_axis_tdata,
     input   wire         s_fifo_axis_tvalid,
     output  wire         s_fifo_axis_tready,
-    input   wire         s_fifo_wr_data_count,
-    input   wire         s_fifo_rd_data_count,
+    input   wire [10:0]  s_fifo_wr_data_count,
+    input   wire [10:0]  s_fifo_rd_data_count,
     /*
      * Ethernet frame output
      */
@@ -82,7 +82,7 @@ reg       m_eth_payload_axis_tlast_int;
 reg       m_eth_payload_axis_tuser_int;
 wire      m_eth_payload_axis_tready_int_early;
 
-assign s_ip_payload_axis_tready = s_ip_payload_axis_tready_reg;
+assign s_fifo_axis_tready = s_ip_payload_axis_tready_reg;
 
 assign m_eth_hdr_valid = m_eth_hdr_valid_reg;
 assign m_eth_dest_mac = m_eth_dest_mac_reg;
@@ -109,11 +109,10 @@ always @* begin
 
     case (state_reg)
         STATE_IDLE: begin
-            // idle state - wait for data
+            // idle state - wait s_fifo_wr_data_count == 512
             hdr_ptr_next = 6'd0;
 
-            if () begin
-                s_ip_hdr_ready_next = 1'b0;
+            if (s_fifo_wr_data_count == 11'd512) begin
                 m_eth_hdr_valid_next = 1'b1;
                 if (m_eth_payload_axis_tready_int_reg) begin
                     m_eth_payload_axis_tvalid_int = 1'b1;
@@ -134,30 +133,14 @@ always @* begin
                 m_eth_payload_axis_tvalid_int = 1;
                 state_next = STATE_WRITE_HEADER;
                 case (hdr_ptr_reg)
-                    6'h00: begin
-                        m_eth_payload_axis_tdata_int = hdr_ptr_reg; // ip_version, ip_ihl
-                    end
-                    6'h01: begin
-                        m_eth_payload_axis_tdata_int = hdr_ptr_reg;
-                    end
-                    6'h02: begin
-                        m_eth_payload_axis_tdata_int = hdr_ptr_reg;
-                    end
-                    6'h03: begin
-                        m_eth_payload_axis_tdata_int = hdr_ptr_reg;
-                    end
-                    6'h04: begin
-                        m_eth_payload_axis_tdata_int = hdr_ptr_reg;
-                    end
-                    6'h05: begin
-                        m_eth_payload_axis_tdata_int = hdr_ptr_reg;
-                    end
-                    6'h06: begin
-                        m_eth_payload_axis_tdata_int = hdr_ptr_reg;
-                    end
-                    6'h07: begin
-                        m_eth_payload_axis_tdata_int = hdr_ptr_reg;
-                    end
+                    6'h00: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
+                    6'h01: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
+                    6'h02: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
+                    6'h03: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
+                    6'h04: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
+                    6'h05: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
+                    6'h06: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
+                    6'h07: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
                     6'h08: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
                     6'h09: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
                     6'h0A: m_eth_payload_axis_tdata_int = hdr_ptr_reg;
@@ -183,12 +166,10 @@ always @* begin
             // write payload
             s_ip_payload_axis_tready_next = m_eth_payload_axis_tready_int_early;
 
-            m_eth_payload_axis_tdata_int = s_ip_payload_axis_tdata;
-            m_eth_payload_axis_tvalid_int = s_ip_payload_axis_tvalid;
-            m_eth_payload_axis_tlast_int = s_ip_payload_axis_tlast;
-            m_eth_payload_axis_tuser_int = s_ip_payload_axis_tuser;
+            m_eth_payload_axis_tdata_int = s_fifo_axis_tdata;
+            m_eth_payload_axis_tvalid_int = s_fifo_axis_tvalid;
 
-            if (s_ip_payload_axis_tready && s_ip_payload_axis_tvalid) begin
+            if (s_fifo_axis_tready && s_fifo_axis_tvalid) begin
                 // word transfer through
                 word_count_next = word_count_reg - 6'd1;
                 if (s_ip_payload_axis_tlast) begin
@@ -197,7 +178,6 @@ always @* begin
                         m_eth_payload_axis_tuser_int = 1'b1;
                         error_payload_early_termination_next = 1'b1;
                     end
-                    s_ip_hdr_ready_next = !m_eth_hdr_valid_next;
                     s_ip_payload_axis_tready_next = 1'b0;
                     state_next = STATE_IDLE;
                 end else begin
@@ -224,7 +204,6 @@ always @* begin
 
             if (s_ip_payload_axis_tready && s_ip_payload_axis_tvalid) begin
                 if (s_ip_payload_axis_tlast) begin
-                    s_ip_hdr_ready_next = !m_eth_hdr_valid_next;
                     s_ip_payload_axis_tready_next = 1'b0;
                     state_next = STATE_IDLE;
                 end else begin
@@ -240,7 +219,6 @@ always @* begin
 
             if (s_ip_payload_axis_tready && s_ip_payload_axis_tvalid) begin
                 if (s_ip_payload_axis_tlast) begin
-                    s_ip_hdr_ready_next = !m_eth_hdr_valid_next;
                     s_ip_payload_axis_tready_next = 1'b0;
                     state_next = STATE_IDLE;
                 end else begin
@@ -258,6 +236,9 @@ always @(posedge clk) begin
         state_reg <= STATE_IDLE;
         s_ip_payload_axis_tready_reg <= 1'b0;
         m_eth_hdr_valid_reg <= 1'b0;
+        m_eth_dest_mac_reg <= 48'hD4_5D_64_A5_F1_A8;
+        m_eth_src_mac_reg <= 48'h02_00_00_00_00_00;
+        m_eth_type_reg <= 16'h0800;
     end else begin
         state_reg <= state_next;
 

@@ -57,7 +57,7 @@ NET "core_inst/ddr2_controller_inst/memc3_wrapper_inst/mcb_ui_top_inst/mcb_raw_w
 ## Clock constraints                                                        
 ############################################################################
 NET "core_inst/ddr2_controller_inst/memc3_infrastructure_inst/sys_clk_ibufg" TNM_NET = "SYS_CLK3";
-TIMESPEC "TS_SYS_CLK3" = PERIOD "SYS_CLK3"  5  ns HIGH 50 %;
+TIMESPEC "TS_SYS_CLK3" = PERIOD "SYS_CLK3"  8  ns HIGH 50 %;
 ############################################################################
 
 ############################################################################

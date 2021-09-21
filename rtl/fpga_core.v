@@ -580,4 +580,29 @@ udp_payload_fifo (
     .status_good_frame()
 );
 
+eth_pack_fifo
+eth_pack_fifo_inst
+(
+    .ddr_clk(c3_clk0),
+    .eth_clk(clk),
+
+    .ddr_rst(c3_rst0),
+
+    .s_frame_axis_tdata(),
+    .s_frame_axis_tvalid(),
+    .s_frame_axis_tready(),
+
+    .m_eth_hdr_valid(tx_eth_hdr_valid),
+    .m_eth_hdr_ready(tx_eth_hdr_ready),
+    .m_eth_dest_mac(tx_eth_dest_mac),
+    .m_eth_src_mac(tx_eth_src_mac),
+    .m_eth_type(tx_eth_src_mac),
+    .m_eth_payload_axis_tdata(tx_eth_payload_axis_tdata),
+    .m_eth_payload_axis_tvalid(tx_eth_payload_axis_tdata),
+    .m_eth_payload_axis_tready(tx_eth_payload_axis_tready),
+    .m_eth_payload_axis_tlast(tx_eth_payload_axis_tlast),
+    .m_eth_payload_axis_tuser(tx_eth_payload_axis_tuser)
+);
+
+
 endmodule
