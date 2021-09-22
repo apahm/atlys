@@ -42,15 +42,12 @@ module single_port_ram#
 
 reg [DATA_WIDTH - 1:0] ram [2**ADDR_WIDTH-1:0];
 
-always @(posedge clk) 
-    begin
-        if(write_enable) 
-        begin
-            ram[address] <= data_in;
-            data_out <= data_in;
-        end
-        else
-            data_out <= ram[address];
-    end
+always @(posedge clk) begin
+    if(write_enable) begin
+        ram[address] <= data_in;
+        data_out <= data_in;
+    end else
+        data_out <= ram[address];
+end
 
 endmodule

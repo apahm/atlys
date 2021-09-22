@@ -73,12 +73,16 @@ module ddr_ctrl #(
     input   wire    		    c3_p2_rd_error
 );
 
-localparam [5:0] MAX_BURST_LENGHT = 6'd64;
+localparam [5:0] MAX_BURST_LENGHT = 6'd63;
 
-localparam [2:0]
-    STATE_WAIT_CALIB = 3'd0,
-    STATE_WRITE_COMMAND = 3'd1,
-    STATE_WRITE = 3'd2;
+localparam [3:0]
+    STATE_WAIT_CALIB = 4'd0,
+    STATE_WRITE_COMMAND = 4'd1,
+    STATE_WAIT_FIFO_EMPTY = 4'd2,
+    STATE_WRITE = 4'd3,
+    STATE_READ_COMMAND = 4'd4,
+    STATE_READ = 4'd5,
+    STATE_COMPARE = 4'd6;
 
 localparam [2:0] 
     WRITE = 3'b0,
@@ -108,6 +112,16 @@ reg [29:0]	p2_cmd_byte_addr_reg;
 
 reg         p2_rd_en_reg;
 
+// Test regs
+reg [29:0] addr_ptr_reg;
+reg [5:0]  word_count_reg;
+reg [31:0] error_count_reg;
+reg [8:0] address_iter_reg;
+
+// Test memory reg
+reg [31:0] memory_reg [0:63];
+reg [31:0] memory_read_reg [0:63];
+
 always @(posedge clk) begin
 	if (rst) begin
         state_reg <= STATE_WAIT_CALIB;
@@ -122,6 +136,10 @@ always @(posedge clk) begin
         p0_wr_data_reg <= 32'b0;
 
         p0_rd_en_reg <= 1'b0;
+
+        addr_ptr_reg <= 30'b0;
+        word_count_reg <= 6'b0;
+        address_iter_reg <= 9'hFC;
 	end else begin
 		case (state_reg)
 			STATE_WAIT_CALIB: begin
@@ -133,22 +151,68 @@ always @(posedge clk) begin
 			STATE_WRITE_COMMAND: begin
                 if(!c3_p0_cmd_full) begin
                     p0_cmd_en_reg <= 1'b1;
-                    p0_cmd_instr_reg <= WRITE;
-                    p0_cmd_bl_reg <= 6'b0;
-                    p0_cmd_byte_addr_reg <= 30'b0;
+                    p0_cmd_instr_reg <= WRITE_AUTO_PRECHARGE;
+                    p0_cmd_bl_reg <= MAX_BURST_LENGHT;
+                    p0_cmd_byte_addr_reg <= addr_ptr_reg;
 
+                    addr_ptr_reg <= addr_ptr_reg + 30'hFC;
+ 
                     state_reg <= STATE_WRITE;
                 end else begin
                     state_reg <= STATE_WRITE_COMMAND;
                 end
 			end
-			STATE_WRITE: begin
+			STATE_WAIT_FIFO_EMPTY: begin
+                if(c3_p0_wr_empty) begin
+                    state_reg <= STATE_WRITE;
+                end else begin
+                    state_reg <= STATE_WAIT_FIFO_EMPTY;
+                end 
+			end
+            STATE_WRITE: begin
+                if(word_count_reg == 6'd63)
+                    state_reg <= STATE_WRITE_COMMAND;
+                    word_count_reg <= 6'b0;
+                end else begin
+                    p0_wr_en_reg <= 1'b1;
+                    p0_wr_mask_reg <= 4'b0;
+                    p0_wr_data_reg <= memory_reg[word_count_reg];
+                    word_count_reg <= word_count_reg + 1'b1;
+                    state_reg <= STATE_WRITE;
+                end
+            end
+            STATE_WRITE: begin
+                if(word_count_reg == 6'd63)
+                    state_reg <= STATE_WRITE_COMMAND;
+                    word_count_reg <= 6'b0;
+                end else begin
+                    p0_wr_en_reg <= 1'b1;
+                    p0_wr_mask_reg <= 4'b0;
+                    p0_wr_data_reg <= memory_reg[word_count_reg];
+                    word_count_reg <= word_count_reg + 1'b1;
+                    state_reg <= STATE_WRITE;
+                end
+            end
+            STATE_READ_COMMAND: begin
+                if(!c3_p0_cmd_full) begin
+                    p0_cmd_en_reg <= 1'b1;
+                    p0_cmd_instr_reg <= READ_AUTO_PRECHRGE;
+                    p0_cmd_bl_reg <= MAX_BURST_LENGHT;
+                    p0_cmd_byte_addr_reg <= addr_ptr_reg;
+
+                    addr_ptr_reg <= addr_ptr_reg + 30'hFC;
+ 
+                    state_reg <= STATE_READ;
+                end else begin
+                    state_reg <= STATE_READ_COMMAND;
+                end
+            end
+            STATE_READ: begin
                 
-			end
-
-			INIT_PGM_MODE: begin
-
-			end
+            end
+            STATE_COMPARE: begin
+                
+            end
 		endcase
 	end
 end
