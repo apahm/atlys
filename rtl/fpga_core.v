@@ -99,7 +99,6 @@ module fpga_core #
 /* 
 *   Module DDR2 Controller
 */
-`define LED_DEBUG
 wire				                c3_p0_cmd_clk;
 wire				                c3_p0_cmd_en;
 wire    [2:0]			            c3_p0_cmd_instr;
@@ -260,6 +259,57 @@ ddr2_controller_inst
     .c3_p2_rd_count                         (c3_p2_rd_count),
     .c3_p2_rd_overflow                      (c3_p2_rd_overflow),
     .c3_p2_rd_error                         (c3_p2_rd_error)
+);
+
+
+ddr_test
+ddr_test_inst
+(
+    .clk(c3_clk0),
+    .rst(c3_rst0),
+
+    .c3_calib_done(c3_calib_done),
+
+    .c3_p0_cmd_en(c3_p0_cmd_en),
+    .c3_p0_cmd_instr(c3_p0_cmd_instr),
+    .c3_p0_cmd_bl(c3_p0_cmd_bl),
+    .c3_p0_cmd_byte_addr(c3_p0_cmd_byte_addr),
+    .c3_p0_cmd_empty(c3_p0_cmd_empty),
+    .c3_p0_cmd_full(c3_p0_cmd_full),
+
+    .c3_p0_wr_en(c3_p0_wr_en),
+    .c3_p0_wr_mask(c3_p0_wr_mask),
+    .c3_p0_wr_data(c3_p0_wr_data),
+    .c3_p0_wr_full(c3_p0_wr_full),
+    .c3_p0_wr_empty(c3_p0_wr_empty),
+    .c3_p0_wr_count(c3_p0_wr_count),
+    .c3_p0_wr_underrun(c3_p0_wr_underrun),
+    .c3_p0_wr_error(c3_p0_wr_error),
+
+    .c3_p0_rd_en(c3_p0_rd_en),
+    .c3_p0_rd_data(c3_p0_rd_data),
+    .c3_p0_rd_full(c3_p0_rd_full),
+    .c3_p0_rd_empty(c3_p0_rd_empty),
+	.c3_p0_rd_count(c3_p0_rd_count),
+    .c3_p0_rd_overflow(c3_p0_rd_overflow),
+    .c3_p0_rd_error(c3_p0_rd_error),
+
+    .c3_p2_cmd_en(c3_p2_cmd_en),
+    .c3_p2_cmd_instr(c3_p2_cmd_instr),
+    .c3_p2_cmd_bl(c3_p2_cmd_bl),
+    .c3_p2_cmd_byte_addr(c3_p2_cmd_byte_addr),
+    .c3_p2_cmd_empty(c3_p2_cmd_empty),
+    .c3_p2_cmd_full(c3_p2_cmd_full),
+
+    .c3_p2_rd_en(c3_p2_rd_en),
+    .c3_p2_rd_data(c3_p2_rd_data),
+    .c3_p2_rd_full(c3_p2_rd_full),
+    .c3_p2_rd_empty(c3_p2_rd_empty),
+    .c3_p2_rd_count(c3_p2_rd_count),
+    .c3_p2_rd_overflow(c3_p2_rd_overflow),
+    .c3_p2_rd_error(c3_p2_rd_error),
+
+    .led(led) 
 );
 
 /* 

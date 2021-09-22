@@ -24,9 +24,7 @@ THE SOFTWARE.
 
 `timescale 1ns / 1ps
 
-module ddr_ctrl #(
-
-)
+module ddr_test
 (
     input wire                  clk,
     input wire                  rst,
