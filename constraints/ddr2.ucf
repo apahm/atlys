@@ -37,7 +37,7 @@ CONFIG MCB_PERFORMANCE= STANDARD;
 ##################################################################################
 NET "core_inst/ddr2_controller_inst/memc3_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/selfrefresh_mcb_mode" TIG;
 NET "core_inst/ddr2_controller_inst/c3_pll_lock" TIG;
-#INST "core_inst/ddr2_controller_inst/memc3_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/DONE_SOFTANDHARD_CAL*" TIG;
+INST "core_inst/ddr2_controller_inst/memc3_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/DONE_SOFTANDHARD_CAL*" TIG;
 
 #Please uncomment the below TIG if used in a design which enables self-refresh mode
 #NET "memc?_wrapper_inst/mcb_ui_top_inst/mcb_raw_wrapper_inst/gen_term_calib.mcb_soft_calibration_top_inst/mcb_soft_calibration_inst/SELFREFRESH_MCB_REQ" TIG;
@@ -63,11 +63,11 @@ TIMESPEC "TS_SYS_CLK3" = PERIOD "SYS_CLK3"  8  ns HIGH 50 %;
 ############################################################################
 ## I/O TERMINATION                                                          
 ############################################################################
-NET "ddr_dq[*]"                                 IN_TERM = UNTUNED_SPLIT_25;
-NET "ddr_dqs"                                   IN_TERM = UNTUNED_SPLIT_25;
-NET "ddr_dqs_n"                                 IN_TERM = UNTUNED_SPLIT_25;
-NET "ddr_udqs"                                  IN_TERM = UNTUNED_SPLIT_25;
-NET "ddr_udqs_n"                                IN_TERM = UNTUNED_SPLIT_25;
+NET "ddr_dq[*]"                                 IN_TERM = UNTUNED_SPLIT_50;
+NET "ddr_dqs"                                   IN_TERM = UNTUNED_SPLIT_50;
+NET "ddr_dqs_n"                                 IN_TERM = UNTUNED_SPLIT_50;
+NET "ddr_udqs"                                  IN_TERM = UNTUNED_SPLIT_50;
+NET "ddr_udqs_n"                                IN_TERM = UNTUNED_SPLIT_50;
 ############################################################################
 # I/O STANDARDS 
 ############################################################################
@@ -75,8 +75,6 @@ NET "ddr_udqs_n"                                IN_TERM = UNTUNED_SPLIT_25;
 NET  "ddr_dq[*]"                                IOSTANDARD = SSTL18_II ;
 NET  "ddr_a[*]"                                 IOSTANDARD = SSTL18_II ;
 NET  "ddr_ba[*]"                                IOSTANDARD = SSTL18_II ;
-NET  "ddr_dqs"                                  IOSTANDARD = SSTL18_II ;
-NET  "ddr_udqs"                                 IOSTANDARD = SSTL18_II ;
 NET  "ddr_dqs"                                  IOSTANDARD = DIFF_SSTL18_II ;
 NET  "ddr_udqs"                                 IOSTANDARD = DIFF_SSTL18_II ;
 NET  "ddr_dqs_n"                                IOSTANDARD = DIFF_SSTL18_II ;
