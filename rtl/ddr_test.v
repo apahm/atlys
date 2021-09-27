@@ -97,7 +97,7 @@ localparam [2:0]
     REFRESH = 3'b100;
 
 
-reg [2:0] state_reg;
+reg [3:0] state_reg;
 
 reg         p0_cmd_en_reg;
 reg [2:0]	p0_cmd_instr_reg;
@@ -140,6 +140,7 @@ assign c3_p0_cmd_instr = p0_cmd_instr_reg;
 assign c3_p0_cmd_bl = p0_cmd_bl_reg;
 assign c3_p0_cmd_byte_addr = p0_cmd_byte_addr_reg;
 
+reg [3:0] wait_reg;
 always @(posedge clk) begin
 	if (rst) begin
         state_reg <= STATE_WAIT_CALIB;
@@ -160,11 +161,12 @@ always @(posedge clk) begin
         address_iter_reg <= 9'hFC;
         error_count_reg <= 32'b0;
         led_reg <= 8'b0;
+        wait_reg <= 'b0;
 	end else begin
 		case (state_reg)
 			STATE_WAIT_CALIB: begin
                 if(c3_calib_done)
-                    state_reg <= STATE_WRITE_COMMAND;
+                    state_reg <= STATE_WRITE;
                 else
                     state_reg <= STATE_WAIT_CALIB;
 			end
@@ -176,22 +178,19 @@ always @(posedge clk) begin
                     p0_cmd_byte_addr_reg <= addr_ptr_reg;
 
                     addr_ptr_reg <= addr_ptr_reg + 30'hFC;
-                    state_reg <= STATE_WAIT_FIFO_EMPTY;
+                    state_reg <= STATE_TEST_SUCCESSFUL;
                 end else begin
                     state_reg <= STATE_WRITE_COMMAND;
                 end
 			end
 			STATE_WAIT_FIFO_EMPTY: begin
-                p0_cmd_en_reg <= 1'b0;
-                if(c3_p0_wr_empty) begin
-                    state_reg <= STATE_WRITE;
-                end else begin
-                    state_reg <= STATE_WAIT_FIFO_EMPTY;
-                end 
+                wait_reg <= wait_reg + 1;
+                if(wait_reg == 3)
+                    state_reg <= STATE_WRITE_COMMAND;
 			end
             STATE_WRITE: begin
                 if(word_count_reg == 'd64) begin
-                    state_reg <= STATE_TEST_SUCCESSFUL;
+                    state_reg <= STATE_WAIT_FIFO_EMPTY;
                     p0_wr_en_reg <= 1'b0; 
                     word_count_reg <= 6'b0;
                 end else begin
@@ -249,6 +248,7 @@ always @(posedge clk) begin
             end
             STATE_TEST_SUCCESSFUL: begin
                 state_reg <= STATE_TEST_SUCCESSFUL;
+                p0_cmd_en_reg <= 1'b0;
             end
 		endcase
 	end
