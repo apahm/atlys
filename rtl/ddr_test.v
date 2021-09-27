@@ -80,9 +80,9 @@ localparam [3:0] WRITE_READ_FIFO_DEPTH = 7'd64;
 
 localparam [3:0]
     STATE_WAIT_CALIB = 4'd0,
-    STATE_WRITE_COMMAND = 4'd1,
-    STATE_WAIT_FIFO_EMPTY = 4'd2,
-    STATE_WRITE = 4'd3,
+    STATE_WRITE = 4'd1,
+    STATE_WAIT = 4'd2,
+    STATE_WRITE_COMMAND = 4'd3,
     STATE_READ_COMMAND = 4'd4,
     STATE_WAIT_FIFO_FULL = 4'd5,
     STATE_READ = 4'd6,
@@ -123,13 +123,15 @@ reg [6:0]  word_count_reg;
 reg [31:0] error_count_reg;
 reg [8:0] address_iter_reg;
 reg [7:0] led_reg;
+reg [3:0] wait_reg;
+
 // Test memory reg
 reg [31:0] memory_reg [0:63];
 reg [31:0] memory_read_reg [0:63];
 
-assign led = c3_p0_wr_count;
+assign led = led_reg;
 
-assign c3_p0_rd_en = p0_rd_en_reg;
+assign c3_p0_rd_en = (STATE_READ == state_reg);
 
 assign c3_p0_wr_en = p0_wr_en_reg;
 assign c3_p0_wr_mask = p0_wr_mask_reg;
@@ -140,7 +142,6 @@ assign c3_p0_cmd_instr = p0_cmd_instr_reg;
 assign c3_p0_cmd_bl = p0_cmd_bl_reg;
 assign c3_p0_cmd_byte_addr = p0_cmd_byte_addr_reg;
 
-reg [3:0] wait_reg;
 always @(posedge clk) begin
 	if (rst) begin
         state_reg <= STATE_WAIT_CALIB;
@@ -170,27 +171,9 @@ always @(posedge clk) begin
                 else
                     state_reg <= STATE_WAIT_CALIB;
 			end
-			STATE_WRITE_COMMAND: begin
-                if(!c3_p0_cmd_full) begin
-                    p0_cmd_en_reg <= 1'b1;
-                    p0_cmd_instr_reg <= WRITE_AUTO_PRECHARGE;
-                    p0_cmd_bl_reg <= MAX_BURST_LENGHT;
-                    p0_cmd_byte_addr_reg <= addr_ptr_reg;
-
-                    addr_ptr_reg <= addr_ptr_reg + 30'hFC;
-                    state_reg <= STATE_TEST_SUCCESSFUL;
-                end else begin
-                    state_reg <= STATE_WRITE_COMMAND;
-                end
-			end
-			STATE_WAIT_FIFO_EMPTY: begin
-                wait_reg <= wait_reg + 1;
-                if(wait_reg == 3)
-                    state_reg <= STATE_WRITE_COMMAND;
-			end
             STATE_WRITE: begin
                 if(word_count_reg == 'd64) begin
-                    state_reg <= STATE_WAIT_FIFO_EMPTY;
+                    state_reg <= STATE_WAIT;
                     p0_wr_en_reg <= 1'b0; 
                     word_count_reg <= 6'b0;
                 end else begin
@@ -201,21 +184,39 @@ always @(posedge clk) begin
                     state_reg <= STATE_WRITE;
                 end
             end
-            STATE_READ_COMMAND: begin
+            STATE_WAIT: begin
+                wait_reg <= wait_reg + 1;
+                if(wait_reg == 1)
+                    state_reg <= STATE_WRITE_COMMAND;
+			end
+			STATE_WRITE_COMMAND: begin
                 if(!c3_p0_cmd_full) begin
+                    p0_cmd_en_reg <= 1'b1;
+                    p0_cmd_instr_reg <= WRITE_AUTO_PRECHARGE;
+                    p0_cmd_bl_reg <= MAX_BURST_LENGHT;
+                    p0_cmd_byte_addr_reg <= addr_ptr_reg;
+                   
+                    state_reg <= STATE_READ_COMMAND;
+                end else begin
+                    state_reg <= STATE_WRITE_COMMAND;
+                end
+			end
+            STATE_READ_COMMAND: begin
+                
+                if(!c3_p0_cmd_full && c3_p0_wr_empty) begin
                     p0_cmd_en_reg <= 1'b1;
                     p0_cmd_instr_reg <= READ_AUTO_PRECHRGE;
                     p0_cmd_bl_reg <= MAX_BURST_LENGHT;
                     p0_cmd_byte_addr_reg <= addr_ptr_reg;
 
-                    addr_ptr_reg <= addr_ptr_reg + 30'hFC;
- 
-                    state_reg <= STATE_READ;
+                    state_reg <= STATE_WAIT_FIFO_FULL;
                 end else begin
+                    p0_cmd_en_reg <= 1'b0;
                     state_reg <= STATE_READ_COMMAND;
                 end
             end
             STATE_WAIT_FIFO_FULL: begin
+                p0_cmd_en_reg <= 1'b0;
                 if(c3_p0_rd_full) begin
                     state_reg <= STATE_READ;
                 end else begin
@@ -223,20 +224,18 @@ always @(posedge clk) begin
                 end 
             end
             STATE_READ: begin
-                if(word_count_reg == 6'd63) begin
+                if(word_count_reg == 'd64) begin
                     state_reg <= STATE_COMPARE;
                     word_count_reg <= 6'b0;
-                    p0_rd_en_reg <= 1'b0;
                 end else begin
-                    p0_rd_en_reg <= 1'b1;
                     memory_read_reg[word_count_reg] <= c3_p0_rd_data;
                     word_count_reg <= word_count_reg + 1'b1;
                     state_reg <= STATE_READ;
                 end
             end
             STATE_COMPARE: begin
-                if(word_count_reg == 6'd63) begin
-                    state_reg <= STATE_READ_COMMAND;
+                if(word_count_reg == 'd64) begin
+                    state_reg <= STATE_TEST_SUCCESSFUL;
                     word_count_reg <= 6'b0;
                 end else begin
                     if(memory_read_reg[word_count_reg] != memory_reg[word_count_reg]) begin
@@ -248,7 +247,7 @@ always @(posedge clk) begin
             end
             STATE_TEST_SUCCESSFUL: begin
                 state_reg <= STATE_TEST_SUCCESSFUL;
-                p0_cmd_en_reg <= 1'b0;
+                led_reg <= error_count_reg;
             end
 		endcase
 	end
