@@ -142,6 +142,12 @@ assign c3_p0_cmd_instr = p0_cmd_instr_reg;
 assign c3_p0_cmd_bl = p0_cmd_bl_reg;
 assign c3_p0_cmd_byte_addr = p0_cmd_byte_addr_reg;
 
+assign c3_p2_cmd_en = 'b0;
+assign c3_p2_cmd_instr = 'b0;
+assign c3_p2_cmd_bl = 'b0;
+assign c3_p2_cmd_byte_addr = 'b0;
+assign c3_p2_rd_en = 'b0;
+
 always @(posedge clk) begin
 	if (rst) begin
         state_reg <= STATE_WAIT_CALIB;

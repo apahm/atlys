@@ -178,7 +178,8 @@ sync_signal_inst (
 
 
 fpga_core #(
-    .TARGET("XILINX")
+    .TARGET("XILINX"),
+    .MIG_SIM("TRUE")
 )
 core_inst (
 

@@ -31,7 +31,8 @@ THE SOFTWARE.
  */
 module fpga_core #
 (
-    parameter TARGET = "GENERIC"
+    parameter TARGET = "GENERIC",
+    parameter MIG_SIM = "TRUE"
 )
 (
     /*
@@ -176,7 +177,7 @@ ddr2_controller# (
     .DEBUG_EN(0),
     .C3_MEMCLK_PERIOD(8000),
     .C3_CALIB_SOFT_IP("TRUE"),
-    .C3_SIMULATION("FALSE"),
+    .C3_SIMULATION(MIG_SIM),
     .C3_RST_ACT_LOW(0),
     .C3_INPUT_CLK_TYPE("SINGLE_ENDED"),
     .C3_MEM_ADDR_ORDER("ROW_BANK_COLUMN"),

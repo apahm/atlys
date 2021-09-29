@@ -116,13 +116,13 @@ ddr2_inst (
     .ras_n(ddr_ras_n),
     .cas_n(ddr_cas_n),
     .we_n(ddr_we_n),
-    .dm_rdqs(ddr_udqs),
+    .dm_rdqs({ddr_udm, ddr_dm}),
     .ba(ddr_ba),
     .addr(ddr_a),
     .dq(ddr_dq),
-    .dqs(ddr_dqs),
-    .dqs_n(ddr_dqs_n),
-    .rdqs_n(ddr_udqs_n),
+    .dqs({ddr_udqs, ddr_dqs}),
+    .dqs_n({ddr_udqs_n, ddr_dqs_n}),
+    .rdqs_n(),
     .odt(ddr_odt)
 );
 
