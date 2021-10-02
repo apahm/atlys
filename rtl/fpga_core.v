@@ -263,6 +263,7 @@ ddr2_controller_inst
 );
 
 
+/*
 ddr_test
 ddr_test_inst
 (
@@ -312,6 +313,7 @@ ddr_test_inst
 
     .led(led) 
 );
+*/
 
 /* 
 *   Module HDMI
