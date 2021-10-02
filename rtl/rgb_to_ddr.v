@@ -50,11 +50,12 @@ module rgb_to_ddr# (
     input   wire    		                        c3_p0_wr_underrun,
     input   wire    		                        c3_p0_wr_error,
 
-    input   wire    [RGB_WIDTH - 1:0]               s_fifo_axis_tdata,
-    input   wire                                    s_fifo_axis_tvalid,
-    output  wire                                    s_fifo_axis_tready,
-    input   wire    [DATA_COUNT_WIDTH -1:0]         s_fifo_wr_data_count,
-    input   wire    [DATA_COUNT_WIDTH -1:0]         s_fifo_rd_data_count,
+    input   wire    [RGB_WIDTH - 1:0]               fifo_data_out,
+    output  wire                                    fifo_read_enable,
+    input   wire    [DATA_COUNT_WIDTH -1:0]         fifo_wr_data_count,
+    input   wire    [DATA_COUNT_WIDTH -1:0]         fifo_rd_data_count,
+    input   wire                                    fifo_full,
+    input   wire                                    fifo_empty,
 
     output  wire    [7:0]                   led 
 );
@@ -124,10 +125,16 @@ always @(posedge clk) begin
 		case (state_reg)
 			STATE_WAIT_CALIB: begin
                 if(c3_calib_done)
-                    state_reg <= STATE_WRITE;
+                    state_reg <= STATE_WAIT_RGB_DATA;
                 else
                     state_reg <= STATE_WAIT_CALIB;
 			end
+            STATE_WAIT_RGB_DATA: begin
+                if(fifo_wr_data_count == 'd64 || fifo_wr_data_count > 'd64)
+                    state_reg <= STATE_WRITE;
+                else
+                    state_reg <= STATE_WAIT_RGB_DATA;
+            end
             STATE_WRITE: begin
                 if(word_count_reg == 'd64) begin
                     state_reg <= STATE_WAIT;

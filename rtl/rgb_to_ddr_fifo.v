@@ -36,41 +36,45 @@ module rgb_to_ddr_fifo# (
     input  wire                     hdmi_pixel_clk,
     input  wire                     hdmi_pixel_rst,
 
-    input  wire [RGB_WIDTH - 1:0]   s_frame_axis_tdata,
-    input  wire                     s_frame_axis_tvalid,
-    output wire                     s_frame_axis_tready
+    input  wire [RGB_WIDTH - 1:0]   fifo_data_in,
+    input  wire                     fifo_write_enable
 
 );
 
 
-wire                                fifo_m_axis_tvalid;
-wire                                fifo_m_axis_tready;
-wire [RGB_WIDTH - 1:0]              fifo_m_axis_tdata;
-wire [DATA_COUNT_WIDTH - 1:0]       fifo_axis_wr_data_count;
-wire [DATA_COUNT_WIDTH - 1:0]       fifo_axis_rd_data_count;
-wire                                fifo_axis_overflow;
-wire                                fifo_axis_underflow;
+wire                                fifo_read_enable;
+wire                                fifo_write_enable;
+wire [RGB_WIDTH - 1:0]              fifo_data_in;
+wire [RGB_WIDTH - 1:0]              fifo_data_out;
+wire [DATA_COUNT_WIDTH - 1:0]       fifo_wr_data_count;
+wire [DATA_COUNT_WIDTH - 1:0]       fifo_rd_data_count;
+wire                                fifo_overflow;
+wire                                fifo_underflow;
+wire                                fifo_full;
+wire                                fifo_empty;
 
 
-rgb_rx_fifo 
+rbg_rx_fifo 
 rgb_rx_fifo_inst (
-    .m_aclk(ddr_clk), // input m_aclk
-    .s_aclk(hdmi_pixel_clk), // input s_aclk
-    .s_aresetn(~hdmi_pixel_rst), // input s_aresetn
-
-    .s_axis_tvalid(s_frame_axis_tvalid), // input s_axis_tvalid
-    .s_axis_tready(s_frame_axis_tready), // output s_axis_tready
-    .s_axis_tdata(s_frame_axis_tdata), // input [23 : 0] s_axis_tdata
-
-    .m_axis_tvalid(fifo_m_axis_tvalid), // output m_axis_tvalid
-    .m_axis_tready(fifo_m_axis_tready), // input m_axis_tready
-    .m_axis_tdata(fifo_m_axis_tdata), // output [23 : 0] m_axis_tdata
-
-    .axis_wr_data_count(fifo_axis_wr_data_count), // output [DATA_COUNT_WIDTH - 1: 0] axis_wr_data_count
-    .axis_rd_data_count(fifo_axis_rd_data_count), // output [DATA_COUNT_WIDTH - 1: 0] axis_rd_data_count
+  .rst(hdmi_pixel_rst), // input rst
   
-    .axis_overflow(axis_overflow), // output axis_overflow
-    .axis_underflow(axis_underflow) // output axis_underflow
+  .wr_clk(hdmi_pixel_clk), // input wr_clk
+  .rd_clk(ddr_clk), // input rd_clk
+
+  .din(fifo_data_in), // input [23 : 0] din
+  .wr_en(fifo_write_enable), // input wr_en
+  
+  .rd_en(fifo_read_enable), // input rd_en
+  .dout(fifo_data_out), // output [23 : 0] dout
+  
+  .full(fifo_full), // output full
+  .empty(fifo_empty), // output empty
+
+  .overflow(fifo_overflow), // output overflow
+  .underflow(fifo_underflow), // output underflow
+
+  .rd_data_count(fifo_wr_data_count), // output [9 : 0] rd_data_count
+  .wr_data_count(fifo_rd_data_count) // output [9 : 0] wr_data_count
 );
 
 
@@ -82,11 +86,12 @@ rgb_to_ddr_inst (
     .clk(ddr_clk),
     .rst(ddr_rst),
 
-    .s_fifo_axis_tdata(fifo_m_axis_tdata),
-    .s_fifo_axis_tvalid(fifo_m_axis_tvalid),
-    .s_fifo_axis_tready(fifo_m_axis_tready),
-    .s_fifo_wr_data_count(fifo_axis_wr_data_count),
-    .s_fifo_rd_data_count(fifo_axis_rd_data_count)
+    .fifo_data_out(fifo_data_out),
+    .fifo_read_enable(fifo_read_enable),
+    .fifo_wr_data_count(fifo_wr_data_count),
+    .fifo_rd_data_count(fifo_rd_data_count),
+    .fifo_full(fifo_full),
+    .fifo_empty(fifo_empty)
 );
 
 endmodule 
