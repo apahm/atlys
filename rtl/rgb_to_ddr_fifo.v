@@ -25,7 +25,9 @@ THE SOFTWARE.
 `timescale 1ns / 1ps
 
 module rgb_to_ddr_fifo# (
+    // RED 8 bit, Green 8 bit, Blue 8 bit
     parameter RGB_WIDTH = 24,
+    // RGB Receive fifo depth 
     parameter FIFO_DEPTH = 1024,
     parameter DATA_COUNT_WIDTH = $clog2(FIFO_DEPTH) + 1
 )
@@ -52,7 +54,6 @@ wire                                fifo_overflow;
 wire                                fifo_underflow;
 wire                                fifo_full;
 wire                                fifo_empty;
-
 
 rbg_rx_fifo 
 rgb_rx_fifo_inst (
