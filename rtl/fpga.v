@@ -70,6 +70,8 @@ module fpga (
     input   wire                hdmi_rx_clk_n,      
     input   wire    [2:0]       hdmi_rx_p,
     input   wire    [2:0]       hdmi_rx_n,
+    input   wire                hdmi_rx_scl,
+    inout   wire                hdmi_rx_sda,
 
     /*
      * DDR2: MIRA P3R1GE3EGF G8E DDR2 
@@ -176,6 +178,17 @@ sync_signal_inst (
     .out({uart_rxd_int})
 );
 
+
+i2c_edid# (
+	.HEX_FILE("/home/alex/atlys/hex/BENQ_E2200HD.hex")
+) 
+i2c_edid_inst 
+(
+	.clk(clk_int),
+	.rst(rst_int),
+	.scl(hdmi_rx_scl),
+	.sda(hdmi_rx_sda)
+);
 
 fpga_core #(
     .TARGET("XILINX"),

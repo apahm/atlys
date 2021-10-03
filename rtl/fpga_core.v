@@ -96,7 +96,7 @@ module fpga_core #
     input   wire    [2:0]                               hdmi_rx_n
     
 );
-
+`define LED_DEBUG
 /* 
 *   Module DDR2 Controller
 */
@@ -263,7 +263,7 @@ ddr2_controller_inst
 );
 
 
-/*
+
 ddr_test
 ddr_test_inst
 (
@@ -309,11 +309,11 @@ ddr_test_inst
     .c3_p2_rd_empty(c3_p2_rd_empty),
     .c3_p2_rd_count(c3_p2_rd_count),
     .c3_p2_rd_overflow(c3_p2_rd_overflow),
-    .c3_p2_rd_error(c3_p2_rd_error),
+    .c3_p2_rd_error(c3_p2_rd_error)
 
-    .led(led) 
+    
 );
-*/
+
 
 /* 
 *   Module HDMI

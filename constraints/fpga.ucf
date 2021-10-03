@@ -217,5 +217,5 @@ NET "hdmi_rx_n(0)"                  LOC = "K18" |IOSTANDARD = TMDS_33 ;
 NET "core_inst/hdmi_top_inst/dvi_rx0/rxclk" TNM_NET = DVI_CLOCK0;
 TIMESPEC TS_DVI_CLOCK0 = PERIOD "DVI_CLOCK0" 12.5 ns HIGH 50%;
 
-#NET "hdmi_rx_scl"                   LOC = "M16";
-#NET "hdmi_rx_sda"                   LOC = "M18";
+NET "hdmi_rx_scl"                   LOC = "M16"| IOSTANDARD = LVCMOS33;
+NET "hdmi_rx_sda"                   LOC = "M18"| IOSTANDARD = LVCMOS33;
