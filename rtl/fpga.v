@@ -180,7 +180,7 @@ sync_signal_inst (
 
 
 i2c_edid# (
-	.HEX_FILE("/home/alex/atlys/hex/BENQ_E2200HD.hex")
+	.HEX_FILE("/home/alex/atlys/hex/AOC.hex")
 ) 
 i2c_edid_inst 
 (
