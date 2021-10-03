@@ -96,7 +96,7 @@ module fpga_core #
     input   wire    [2:0]                               hdmi_rx_n
     
 );
-`define LED_DEBUG
+`define LED_DEBUG_HDMI
 /* 
 *   Module DDR2 Controller
 */
@@ -161,6 +161,19 @@ wire s_frame_axis_tready;
     assign led[0] = c3_calib_done;
     assign led[1] = c3_rst0;
     assign led[2] = s_frame_axis_tready;
+    assign led[3] = hdmi_green_vld;
+    assign led[4] = hdmi_red_vld;
+    assign led[5] = hdmi_blue_rdy;
+    assign led[6] = hdmi_green_rdy;
+    assign led[7] = hdmi_red_rdy;
+
+`endif
+
+`ifdef LED_DEBUG_HDMI
+
+    assign led[0] = hdmi_de;
+    assign led[1] = hdmi_vsync;
+    assign led[2] = hdmi_hsync;
     assign led[3] = hdmi_green_vld;
     assign led[4] = hdmi_red_vld;
     assign led[5] = hdmi_blue_rdy;
@@ -319,7 +332,8 @@ ddr_test_inst
 *   Module HDMI
 */
 
-wire hdmi_pixel_clk;          
+wire hdmi_pixel_clk;
+wire hdmi_reset;          
 wire hdmi_hsync;         
 wire hdmi_vsync;         
 wire hdmi_de;            
@@ -343,7 +357,7 @@ hdmi_top_inst
     .hdmi_rx_p          (hdmi_rx_p),
     .hdmi_rx_n          (hdmi_rx_n),
 
-    .reset              (),
+    .reset              (hdmi_reset),
     .pclk               (hdmi_pixel_clk),
 
     .hsync              (hdmi_hsync),
