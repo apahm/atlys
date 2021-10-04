@@ -26,7 +26,7 @@ THE SOFTWARE.
 
 module hdmi_rx (
     input   wire reset,          // rx reset
-    input   wire pclk,           // regenerated pixel clock
+    input   wire clk,           // regenerated pixel clock
 
     input   wire hsync,          // hsync data
     input   wire vsync,          // vsync data
@@ -44,27 +44,93 @@ module hdmi_rx (
     input   wire [7:0] blue,
 
     output  wire [23:0]   fifo_data_in,
-    output  wire          fifo_write_enable   
+    output  wire          fifo_write_enable  
+      
 );
 
 localparam [3:0]
-    STATE_WAIT_CALIB = 4'd0,
-    STATE_WRITE = 4'd1,
-    STATE_WAIT = 4'd2;
+    STATE_WAIT_HDMI_READY = 4'd0,
+    STATE_WAIT_BEGIN_FRAME = 4'd1,
+    STATE_WAIT_VSYNC = 4'd2,
+    STATE_WAIT_HSYNC = 4'd3,
+    STATE_WAIT_DATA_EN = 4'd4;
 
 reg [3:0] state_reg;
 
+reg de_reg;
+reg vsync_reg;
+reg hsync_reg;
+
+reg         fifo_write_enable_reg;
+reg [15:0]  fifo_data_counter_reg;
+reg [15:0]  row_count_reg;
+wire hdmi_ready;
+
+assign fifo_data_in = {red, green, blue};
+assign hdmi_ready = blue_rdy && green_rdy && red_rdy && blue_vld && green_vld && red_vld;
+
+always @(posedge clk) begin
+    if(rst) begin
+        de_reg <= 1'b0;
+        vsync_reg <= 1'b0;
+        hsync_reg <= 1'b0;
+    end else begin
+        de_reg <= de;
+        vsync_reg <= vsync;
+        hsync_reg <= hsync;
+    end
+end
+
 always @(posedge clk) begin
 	if (rst) begin
-        state_reg <= STATE_WAIT_CALIB;
-
+        state_reg <= STATE_WAIT_HDMI_READY;
+        fifo_write_enable_reg <= 1'b0;
+        fifo_data_counter_reg <= 'b0;
+        row_count_reg <= 'b0;
 	end else begin
 		case (state_reg)
-			STATE_WAIT_CALIB: begin
-
+			STATE_WAIT_HDMI_READY: begin
+                if(hdmi_ready)
+                    state_reg <= STATE_WAIT_BEGIN_FRAME;
+                else
+                    state_reg <= STATE_WAIT_HDMI_READY;
 			end
-            STATE_WRITE: begin
+            STATE_WAIT_BEGIN_FRAME: begin
+                if(de == 1'b1 && vsync == 1'b0) begin
+                    state_reg <= STATE_WAIT_VSYNC;
+                end else
+                    state_reg <= STATE_WAIT_BEGIN_FRAME;
+            end
+            STATE_WAIT_VSYNC: begin
+                if(vsync_reg == 1'b0 && vsync == 1'b1) begin
+                    state_reg <= STATE_WAIT_DATA_EN;
+                end else 
+                    state_reg <= STATE_WAIT_VSYNC;
+            end
+            STATE_WAIT_HSYNC: begin
+                if(hsync == 1'b0 && hsync_reg == 1'b1) begin
+                    state_reg <= STATE_WAIT_DATA_EN;
+                end else
+                    state_reg <= STATE_WAIT_HSYNC;
+            end
+            STATE_WAIT_DATA_EN: begin
+                if(row_count_reg == 'd63) begin
+                    state_reg <= STATE_WAIT_BEGIN_FRAME;
+                end else begin
+                    if(fifo_data_counter_reg == 'd63) begin
+                        fifo_write_enable_reg <= 1'b0;
+                        fifo_data_counter_reg <= 'b0;
+                        row_count_reg <= row_count_reg + 1'b1;
+                        state_reg <= STATE_WAIT_HSYNC;
+                    end else begin
+                        fifo_write_enable_reg <= de;
 
+                        if(vsync == 1'b1 && de == 1'b1) begin
+                            fifo_data_counter_reg <= fifo_data_counter_reg + 1'b1;
+                        end else 
+                            state_reg <= STATE_WAIT_DATA_EN;
+                    end
+                end
             end
 		endcase
 	end
