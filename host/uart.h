@@ -37,6 +37,7 @@ public:
     void connect();
 
     QByteArray test_uart();
+    int start_write_frame();
 
 private:
     const quint8 STARTBYTE = 0x40; 

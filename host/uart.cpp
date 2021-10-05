@@ -99,3 +99,10 @@ QByteArray Uart::test_uart()
     return 0;
 }
 
+int Uart::start_write_frame()
+{
+    QByteArray sentData;
+    sentData.resize(1);
+    sentData[0] = 0xFF;
+    return m_pSerialPort->write(sentData);
+}

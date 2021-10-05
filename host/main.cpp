@@ -23,11 +23,12 @@ THE SOFTWARE.
 */
 
 #include "uart.h"
+#include <iostream>
 
 int main()
 {
     Uart uart;
-    uart.test_uart();
-
+    //uart.test_uart();
+    std::cout << uart.start_write_frame() << std::endl;
     return 0;
 }
