@@ -76,8 +76,8 @@ eth_tx_fifo_inst (
     .axis_wr_data_count(fifo_axis_wr_data_count), // output [10 : 0] axis_wr_data_count
     .axis_rd_data_count(fifo_axis_rd_data_count), // output [10 : 0] axis_rd_data_count
   
-    .axis_overflow(axis_overflow), // output axis_overflow
-    .axis_underflow(axis_underflow) // output axis_underflow
+    .axis_overflow(fifo_axis_overflow), // output axis_overflow
+    .axis_underflow(fifo_axis_underflow) // output axis_underflow
 );
 
 

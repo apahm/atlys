@@ -139,7 +139,7 @@ BUFG tmdsclk_bufg (
     .I(rxclk), 
     .O(tmdsclk)
 );
-
+wire clkfbout;
   //
   // PLL is used to generate three clocks:
   // 1. pclk:    same rate as TMDS clock

@@ -80,19 +80,19 @@ module infrastructure #
    
    )
   (
-   input  sys_clk_p,
-   input  sys_clk_n,
-   input  sys_clk,
-   input  sys_rst_i,
-   output clk0,
-   output rst0,
-   output async_rst,
-   output sysclk_2x,
-   output sysclk_2x_180,
-   output mcb_drp_clk,
-   output pll_ce_0,
-   output pll_ce_90,
-   output pll_lock
+   input  wire sys_clk_p,
+   input  wire sys_clk_n,
+   input  wire sys_clk,
+   input  wire sys_rst_i,
+   output wire clk0,
+   output wire rst0,
+   output wire async_rst,
+   output wire sysclk_2x,
+   output wire sysclk_2x_180,
+   output wire mcb_drp_clk,
+   output wire pll_ce_0,
+   output wire pll_ce_90,
+   output wire pll_lock
 
    );
 

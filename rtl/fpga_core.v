@@ -346,6 +346,7 @@ wire hdmi_red_rdy;
 wire [7:0] hdmi_red;    
 wire [7:0] hdmi_green;   
 wire [7:0] hdmi_blue;  
+wire start_write_frame;
 
 hdmi_top 
 hdmi_top_inst
@@ -380,7 +381,17 @@ hdmi_top_inst
 *   Module Uart
 */
 
-
+uart_control_fifo
+uart_control_fifo_inst
+(
+    .clk(clk),
+    .rst(rst),
+    
+    .uart_rxd(uart_rxd),
+    .uart_txd(uart_txd),
+    
+    .start_write_frame(start_write_frame)
+);
 /* 
 *   Module Ethernet: MAC
 */
