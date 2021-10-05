@@ -28,13 +28,45 @@ THE SOFTWARE.
 
 module uart_control
 (
-    input wire          clk,
-    input wire          rst,
-    
-    input wire [7:0]    rx_uart_data_fifo,
-    input wire          rx_uart_valid_fifo,
+    input   wire          clk,
+    input   wire          rst,
 
-    output wire         start_write_frame
+    input   wire [7:0]  rx_fifo_data,
+    output  wire        rx_fifo_read_enable,
+    input   wire        rx_fifo_full,
+    input   wire        rx_fifo_empty,
+    input   wire [5:0]  rx_fifo_data_count,
+
+    output  wire        start_write_frame
 );
+
+localparam [3:0]
+    WAIT_COMMAND = 4'd0;
+    READ_FIFO_DATA = 4'd1,
+    SEND_START_COMMAND = 4'd2;
+
+reg [3:0] state_reg;
+
+always @(posedge clk) begin
+	if (rst) begin
+        state_reg <= WAIT_COMMAND;
+
+	end else begin
+		case (state_reg)
+			WAIT_COMMAND: begin
+                if(!rx_fifo_empty)
+                    state_reg <= READ_FIFO_DATA;
+                else
+                    state_reg <= WAIT_COMMAND;
+			end
+            READ_FIFO_DATA: begin
+                
+            end
+            SEND_START_COMMAND: begin
+                
+            end
+		endcase
+	end
+end
 
 endmodule
