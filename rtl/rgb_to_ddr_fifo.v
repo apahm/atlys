@@ -28,7 +28,7 @@ module rgb_to_ddr_fifo# (
     // RED 8 bit, Green 8 bit, Blue 8 bit
     parameter RGB_WIDTH = 24,
     // RGB Receive fifo depth 
-    parameter FIFO_DEPTH = 1024,
+    parameter FIFO_DEPTH = 4096,
     parameter DATA_COUNT_WIDTH = $clog2(FIFO_DEPTH) + 1
 )
 (
@@ -57,25 +57,25 @@ wire                                fifo_empty;
 
 rbg_rx_fifo 
 rgb_rx_fifo_inst (
-  .rst(hdmi_pixel_rst), // input rst
+    .rst(hdmi_pixel_rst), // input rst
   
-  .wr_clk(hdmi_pixel_clk), // input wr_clk
-  .rd_clk(ddr_clk), // input rd_clk
+    .wr_clk(hdmi_pixel_clk), // input wr_clk
+    .rd_clk(ddr_clk), // input rd_clk
 
-  .din(fifo_data_in), // input [23 : 0] din
-  .wr_en(fifo_write_enable), // input wr_en
+    .din(fifo_data_in), // input [23 : 0] din
+    .wr_en(fifo_write_enable), // input wr_en
   
-  .rd_en(fifo_read_enable), // input rd_en
-  .dout(fifo_data_out), // output [23 : 0] dout
+    .rd_en(fifo_read_enable), // input rd_en
+    .dout(fifo_data_out), // output [23 : 0] dout
   
-  .full(fifo_full), // output full
-  .empty(fifo_empty), // output empty
+    .full(fifo_full), // output full
+    .empty(fifo_empty), // output empty
 
-  .overflow(fifo_overflow), // output overflow
-  .underflow(fifo_underflow), // output underflow
+    .overflow(fifo_overflow), // output overflow
+    .underflow(fifo_underflow), // output underflow
 
-  .rd_data_count(fifo_wr_data_count), // output [9 : 0] rd_data_count
-  .wr_data_count(fifo_rd_data_count) // output [9 : 0] wr_data_count
+    .rd_data_count(fifo_wr_data_count), // output [9 : 0] rd_data_count
+    .wr_data_count(fifo_rd_data_count) // output [9 : 0] wr_data_count
 );
 
 

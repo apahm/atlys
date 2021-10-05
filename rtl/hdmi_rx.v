@@ -44,16 +44,19 @@ module hdmi_rx (
     input   wire [7:0] blue,
 
     output  wire [23:0]   fifo_data_in,
-    output  wire          fifo_write_enable  
+    output  wire          fifo_write_enable,
+
+    input   wire          start_write  
       
 );
 
 localparam [3:0]
-    STATE_WAIT_HDMI_READY = 4'd0,
-    STATE_WAIT_BEGIN_FRAME = 4'd1,
-    STATE_WAIT_VSYNC = 4'd2,
-    STATE_WAIT_HSYNC = 4'd3,
-    STATE_WAIT_DATA_EN = 4'd4;
+    STATE_WAIT_COMMAND_START = 4'd0;
+    STATE_WAIT_HDMI_READY = 4'd1,
+    STATE_WAIT_BEGIN_FRAME = 4'd2,
+    STATE_WAIT_VSYNC = 4'd4,
+    STATE_WAIT_HSYNC = 4'd5,
+    STATE_WAIT_DATA_EN = 4'd6;
 
 reg [3:0] state_reg;
 
@@ -89,6 +92,12 @@ always @(posedge clk) begin
         row_count_reg <= 'b0;
 	end else begin
 		case (state_reg)
+            STATE_WAIT_COMMAND_START: begin
+                if(start_write)
+                    state_reg <= STATE_WAIT_HDMI_READY;
+                else
+                    state_reg <= STATE_WAIT_COMMAND_START;
+            end
 			STATE_WAIT_HDMI_READY: begin
                 if(hdmi_ready)
                     state_reg <= STATE_WAIT_BEGIN_FRAME;
