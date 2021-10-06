@@ -96,7 +96,6 @@ module fpga_core #
     input   wire    [2:0]                               hdmi_rx_n
     
 );
-`define LED_DEBUG_HDMI
 /* 
 *   Module DDR2 Controller
 */
@@ -405,7 +404,9 @@ hdmi_rx_inst
     .fifo_data_in(fifo_data_in),
     .fifo_write_enable(fifo_write_enable),
     
-    .start_write(start_write_frame)  
+    .start_write(start_write_frame),
+
+    .led(led)
 );
 
 rgb_to_ddr_fifo
@@ -433,7 +434,10 @@ uart_control_fifo_inst
     .uart_txd(uart_txd),
     
     .start_write_frame(start_write_frame)
+
 );
+
+
 /* 
 *   Module Ethernet: MAC
 */

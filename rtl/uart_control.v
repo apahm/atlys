@@ -38,6 +38,7 @@ module uart_control
     input   wire [5:0]  rx_fifo_data_count,
 
     output  wire        start_write_frame
+
 );
 
 localparam [3:0]
@@ -49,7 +50,6 @@ localparam [3:0]
     SUCCESSFUL = 4'd5;
 
 reg [3:0] state_reg;
-
 reg rx_fifo_re_reg;
 reg [7:0] rx_read_data_reg;
 reg [7:0] start_delay_count_reg;

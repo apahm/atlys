@@ -25,6 +25,7 @@ THE SOFTWARE.
 #include <iostream>
 
 #include "uart.h"
+#define DEBUG
 
 Uart::Uart()
 {
@@ -104,5 +105,7 @@ int Uart::start_write_frame()
     QByteArray sentData;
     sentData.resize(1);
     sentData[0] = 0xFF;
-    return m_pSerialPort->write(sentData);
+    int ret = m_pSerialPort->write(sentData);
+    m_pSerialPort->waitForBytesWritten(100);
+    return ret;
 }

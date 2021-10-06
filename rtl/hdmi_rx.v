@@ -46,7 +46,9 @@ module hdmi_rx (
     output  wire [23:0]   fifo_data_in,
     output  wire          fifo_write_enable,
 
-    input   wire          start_write  
+    input   wire          start_write,
+
+    output wire [7:0]     led  
       
 );
 
@@ -58,6 +60,8 @@ localparam [3:0]
     STATE_WAIT_HSYNC = 4'd5,
     STATE_WAIT_DATA_EN = 4'd6;
 
+wire hdmi_ready;
+
 reg [3:0] state_reg;
 
 reg de_reg;
@@ -67,10 +71,10 @@ reg hsync_reg;
 reg         fifo_write_enable_reg;
 reg [15:0]  fifo_data_counter_reg;
 reg [15:0]  row_count_reg;
-wire hdmi_ready;
 
 assign fifo_data_in = {red, green, blue};
 assign hdmi_ready = blue_rdy && green_rdy && red_rdy && blue_vld && green_vld && red_vld;
+assign led = state_reg;
 
 always @(posedge clk) begin
     if(rst) begin
@@ -86,7 +90,7 @@ end
 
 always @(posedge clk) begin
 	if (rst) begin
-        state_reg <= STATE_WAIT_HDMI_READY;
+        state_reg <= STATE_WAIT_COMMAND_START;
         fifo_write_enable_reg <= 1'b0;
         fifo_data_counter_reg <= 'b0;
         row_count_reg <= 'b0;

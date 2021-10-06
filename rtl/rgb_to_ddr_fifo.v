@@ -43,7 +43,7 @@ module rgb_to_ddr_fifo# (
 
 );
 
-wire 											fifo_read_enable;
+wire 								fifo_read_enable;
 wire [RGB_WIDTH - 1:0]              fifo_data_out;
 wire [DATA_COUNT_WIDTH - 1:0]       fifo_wr_data_count;
 wire [DATA_COUNT_WIDTH - 1:0]       fifo_rd_data_count;

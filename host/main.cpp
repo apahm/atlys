@@ -28,7 +28,7 @@ THE SOFTWARE.
 int main()
 {
     Uart uart;
-    //uart.test_uart();
     std::cout << uart.start_write_frame() << std::endl;
+    //uart.test_uart();
     return 0;
 }
