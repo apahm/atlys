@@ -346,7 +346,11 @@ wire hdmi_red_rdy;
 wire [7:0] hdmi_red;    
 wire [7:0] hdmi_green;   
 wire [7:0] hdmi_blue;  
+
+wire fifo_data_in;
 wire start_write_frame;
+wire fifo_write_enable;
+
 
 hdmi_top 
 hdmi_top_inst
@@ -375,6 +379,44 @@ hdmi_top_inst
     .red                (hdmi_red),
     .green              (hdmi_green),
     .blue               (hdmi_blue)
+);
+
+hdmi_rx
+hdmi_rx_inst 
+(
+    .rst(hdmi_reset),          
+    .clk(hdmi_pixel_clk),
+
+    .hsync(hdmi_hsync),         
+    .vsync(hdmi_vsync),         
+    .de(hdmi_de),            
+    
+    .blue_vld(hdmi_blue_vld),
+    .green_vld(hdmi_green_vld),
+    .red_vld(hdmi_red_vld),
+    .blue_rdy(hdmi_blue_rdy),
+    .green_rdy(hdmi_green_rdy),
+    .red_rdy(hdmi_red_rdy),
+    
+    .red(hdmi_red),      
+    .green(hdmi_green),  
+    .blue(hdmi_blue),
+    
+    .fifo_data_in(fifo_data_in),
+    .fifo_write_enable(fifo_write_enable),
+    
+    .start_write(start_write_frame)  
+);
+
+rgb_to_ddr_fifo
+rgb_to_ddr_fifo_inst
+(
+    .ddr_clk(c3_clk0),
+    .ddr_rst(c3_rst0),
+    .hdmi_pixel_clk(hdmi_pixel_clk),
+    .hdmi_pixel_rst(hdmi_reset),
+    .fifo_data_in(fifo_data_in),
+    .fifo_write_enable(fifo_write_enable)
 );
 
 /* 
@@ -488,32 +530,6 @@ eth_mac_inst (
     .ifg_delay(12)
 );
 
-eth_axis_rx
-eth_axis_rx_inst (
-    .clk(clk),
-    .rst(rst),
-    // AXI input
-    .s_axis_tdata(rx_axis_tdata),
-    .s_axis_tvalid(rx_axis_tvalid),
-    .s_axis_tready(rx_axis_tready),
-    .s_axis_tlast(rx_axis_tlast),
-    .s_axis_tuser(rx_axis_tuser),
-    // Ethernet frame output
-    .m_eth_hdr_valid(rx_eth_hdr_valid),
-    .m_eth_hdr_ready(rx_eth_hdr_ready),
-    .m_eth_dest_mac(rx_eth_dest_mac),
-    .m_eth_src_mac(rx_eth_src_mac),
-    .m_eth_type(rx_eth_type),
-    .m_eth_payload_axis_tdata(rx_eth_payload_axis_tdata),
-    .m_eth_payload_axis_tvalid(rx_eth_payload_axis_tvalid),
-    .m_eth_payload_axis_tready(rx_eth_payload_axis_tready),
-    .m_eth_payload_axis_tlast(rx_eth_payload_axis_tlast),
-    .m_eth_payload_axis_tuser(rx_eth_payload_axis_tuser),
-    // Status signals
-    .busy(),
-    .error_header_early_termination()
-);
-
 eth_axis_tx
 eth_axis_tx_inst (
     .clk(clk),
@@ -538,8 +554,6 @@ eth_axis_tx_inst (
     // Status signals
     .busy()
 );
-
-
 
 eth_pack_fifo
 eth_pack_fifo_inst

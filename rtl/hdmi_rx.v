@@ -25,7 +25,7 @@ THE SOFTWARE.
 `timescale 1ns / 1ps
 
 module hdmi_rx (
-    input   wire reset,          // rx reset
+    input   wire rst,          // rx reset
     input   wire clk,           // regenerated pixel clock
 
     input   wire hsync,          // hsync data
@@ -51,7 +51,7 @@ module hdmi_rx (
 );
 
 localparam [3:0]
-    STATE_WAIT_COMMAND_START = 4'd0;
+    STATE_WAIT_COMMAND_START = 4'd0,
     STATE_WAIT_HDMI_READY = 4'd1,
     STATE_WAIT_BEGIN_FRAME = 4'd2,
     STATE_WAIT_VSYNC = 4'd4,

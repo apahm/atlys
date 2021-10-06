@@ -43,10 +43,7 @@ module rgb_to_ddr_fifo# (
 
 );
 
-
-wire                                fifo_read_enable;
-wire                                fifo_write_enable;
-wire [RGB_WIDTH - 1:0]              fifo_data_in;
+wire 											fifo_read_enable;
 wire [RGB_WIDTH - 1:0]              fifo_data_out;
 wire [DATA_COUNT_WIDTH - 1:0]       fifo_wr_data_count;
 wire [DATA_COUNT_WIDTH - 1:0]       fifo_rd_data_count;
@@ -78,7 +75,7 @@ rgb_rx_fifo_inst (
     .wr_data_count(fifo_rd_data_count) // output [9 : 0] wr_data_count
 );
 
-
+/*
 rgb_to_ddr# (
     .RGB_WIDTH(RGB_WIDTH),
     .DATA_COUNT_WIDTH(DATA_COUNT_WIDTH)
@@ -94,5 +91,6 @@ rgb_to_ddr_inst (
     .fifo_full(fifo_full),
     .fifo_empty(fifo_empty)
 );
+*/
 
 endmodule 
